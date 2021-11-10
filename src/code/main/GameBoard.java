@@ -1,4 +1,9 @@
-package code;
+package code.main;
+
+import code.components.Wall;
+import code.components.Ball;
+import code.components.Brick;
+import code.components.Paddle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,20 +29,20 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     private Timer gameTimer;
 
-    private Wall wall;
+    private final Wall wall;
 
     private String message;
 
     private boolean showPauseMenu;
 
-    private Font menuFont;
+    private final Font menuFont;
 
     private Rectangle continueButtonRect;
     private Rectangle exitButtonRect;
     private Rectangle restartButtonRect;
     private int strLen;
 
-    private DebugConsole debugConsole;
+    private final DebugConsole debugConsole;
 
 
     public GameBoard(JFrame owner){
@@ -53,7 +58,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         this.initialize();
         message = "Press SPACE to start";
-        wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2,new Point(300,430));
+        wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2.0,new Point(300,430));
 
         debugConsole = new DebugConsole(owner,wall,this);
         //initialize the first level
@@ -111,13 +116,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.setColor(Color.BLUE);
         g2d.drawString(message,250,225);
 
-        drawBall(wall.ball,g2d);
+        drawBall(wall.getBall(),g2d);
 
-        for(Brick b : wall.bricks)
+        for(Brick b : wall.getBricks())
             if(!b.isBroken())
                 drawBrick(b,g2d);
 
-        drawPlayer(wall.player,g2d);
+        drawPlayer(wall.getPlayer(),g2d);
 
         if(showPauseMenu)
             drawMenu(g2d);
@@ -145,7 +150,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.setColor(tmp);
     }
 
-    public void drawBall(Ball ball,Graphics2D g2d){
+    public void drawBall(Ball ball, Graphics2D g2d){
         Color tmp = g2d.getColor();
 
         Shape s = ball.getBallFace();
@@ -254,10 +259,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     public void keyPressed(KeyEvent e) {
         int code=e.getKeyCode();
         if(code==KeyEvent.VK_LEFT){
-            wall.player.moveLeft();
+            wall.getPlayer().moveLeft();
         }
         if(code==KeyEvent.VK_RIGHT){
-            wall.player.movRight();
+            wall.getPlayer().movRight();
         }
         if(code==KeyEvent.VK_SPACE){
             if(!showPauseMenu)
@@ -279,7 +284,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        wall.player.stop();
+        wall.getPlayer().stop();
     }
 
     @Override

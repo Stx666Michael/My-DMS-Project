@@ -1,4 +1,4 @@
-package code;
+package code.components;
 
 import java.awt.*;
 import java.awt.Point;
@@ -13,13 +13,11 @@ abstract public class Brick  {
     public static final int DEF_CRACK_DEPTH = 1;
     public static final int DEF_STEPS = 35;
 
-
     public static final int UP_IMPACT = 100;
     public static final int DOWN_IMPACT = 200;
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
-
-
+    private final String name;
 
     public class Crack{
 
@@ -33,13 +31,10 @@ abstract public class Brick  {
         public static final int VERTICAL = 100;
         public static final int HORIZONTAL = 200;
 
+        private final GeneralPath crack;
 
-
-        private GeneralPath crack;
-
-        private int crackDepth;
-        private int steps;
-
+        private final int crackDepth;
+        private final int steps;
 
         public Crack(int crackDepth, int steps){
 
@@ -48,8 +43,6 @@ abstract public class Brick  {
             this.steps = steps;
 
         }
-
-
 
         public GeneralPath draw(){
 
@@ -156,15 +149,15 @@ abstract public class Brick  {
             Point out = new Point();
             int pos;
 
-            switch(direction){
-                case HORIZONTAL:
+            switch (direction) {
+                case HORIZONTAL -> {
                     pos = rnd.nextInt(to.x - from.x) + from.x;
-                    out.setLocation(pos,to.y);
-                    break;
-                case VERTICAL:
+                    out.setLocation(pos, to.y);
+                }
+                case VERTICAL -> {
                     pos = rnd.nextInt(to.y - from.y) + from.y;
-                    out.setLocation(to.x,pos);
-                    break;
+                    out.setLocation(to.x, pos);
+                }
             }
             return out;
         }
@@ -173,27 +166,24 @@ abstract public class Brick  {
 
     private static Random rnd;
 
-    private String name;
     Shape brickFace;
 
-    private Color border;
-    private Color inner;
+    private final Color border;
+    private final Color inner;
 
-    private int fullStrength;
+    private final int fullStrength;
     private int strength;
 
     private boolean broken;
 
-
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
+        this.name = name;
         rnd = new Random();
         broken = false;
-        this.name = name;
         brickFace = makeBrickFace(pos,size);
         this.border = border;
         this.inner = inner;
         this.fullStrength = this.strength = strength;
-
     }
 
     protected abstract Shape makeBrickFace(Point pos,Dimension size);
@@ -222,13 +212,13 @@ abstract public class Brick  {
         if(broken)
             return 0;
         int out  = 0;
-        if(brickFace.contains(b.right))
+        if(brickFace.contains(b.getRight()))
             out = LEFT_IMPACT;
-        else if(brickFace.contains(b.left))
+        else if(brickFace.contains(b.getLeft()))
             out = RIGHT_IMPACT;
-        else if(brickFace.contains(b.up))
+        else if(brickFace.contains(b.getUp()))
             out = DOWN_IMPACT;
-        else if(brickFace.contains(b.down))
+        else if(brickFace.contains(b.getDown()))
             out = UP_IMPACT;
         return out;
     }

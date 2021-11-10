@@ -1,6 +1,8 @@
-package code;
+package code.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
 
@@ -8,15 +10,15 @@ abstract public class Ball {
 
     private Shape ballFace;
 
-    private Point2D center;
+    private final Point2D center;
 
-    Point2D up;
-    Point2D down;
-    Point2D left;
-    Point2D right;
+    private final Point2D up;
+    private final Point2D down;
+    private final Point2D left;
+    private final Point2D right;
 
-    private Color border;
-    private Color inner;
+    private final Color border;
+    private final Color inner;
 
     private int speedX;
     private int speedY;
@@ -29,11 +31,11 @@ abstract public class Ball {
         left = new Point2D.Double();
         right = new Point2D.Double();
 
-        up.setLocation(center.getX(),center.getY()-(radiusB / 2));
-        down.setLocation(center.getX(),center.getY()+(radiusB / 2));
+        up.setLocation(center.getX(),center.getY()-(radiusB / 2.0));
+        down.setLocation(center.getX(),center.getY()+(radiusB / 2.0));
 
-        left.setLocation(center.getX()-(radiusA /2),center.getY());
-        right.setLocation(center.getX()+(radiusA /2),center.getY());
+        left.setLocation(center.getX()-(radiusA /2.0),center.getY());
+        right.setLocation(center.getX()+(radiusA /2.0),center.getY());
 
 
         ballFace = makeBall(center,radiusA,radiusB);
@@ -89,6 +91,22 @@ abstract public class Ball {
 
     public Point2D getPosition(){
         return center;
+    }
+
+    public Point2D getRight() {
+        return right;
+    }
+
+    public Point2D getLeft() {
+        return left;
+    }
+
+    public Point2D getUp() {
+        return up;
+    }
+
+    public Point2D getDown() {
+        return down;
     }
 
     public Shape getBallFace(){

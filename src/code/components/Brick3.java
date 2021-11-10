@@ -1,4 +1,4 @@
-package code;
+package code.components;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

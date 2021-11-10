@@ -1,4 +1,4 @@
-package code;
+package code.components;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -12,17 +12,17 @@ public class Wall {
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
 
-    private Random rnd;
-    private Rectangle area;
+    private final Random rnd;
+    private final Rectangle area;
 
-    Brick[] bricks;
-    Ball ball;
-    Paddle player;
+    private Brick[] bricks;
+    private Ball ball;
+    private final Paddle player;
 
-    private Brick[][] levels;
+    private final Brick[][] levels;
     private int level;
 
-    private Point startPoint;
+    private final Point startPoint;
     private int brickCount;
     private int ballCount;
     private boolean ballLost;
@@ -176,22 +176,26 @@ public class Wall {
 
     public boolean impactWall(){
         for(Brick b : bricks){
-            switch(b.findImpact(ball)) {
+            switch (b.findImpact(ball)) {
                 //Vertical Impact
-                case Brick.UP_IMPACT:
+                case Brick.UP_IMPACT -> {
                     ball.reverseY();
-                    return b.setImpact(ball.down, Brick.Crack.UP);
-                case Brick.DOWN_IMPACT:
+                    return b.setImpact(ball.getDown(), Brick.Crack.UP);
+                }
+                case Brick.DOWN_IMPACT -> {
                     ball.reverseY();
-                    return b.setImpact(ball.up,Brick.Crack.DOWN);
+                    return b.setImpact(ball.getUp(), Brick.Crack.DOWN);
+                }
 
                 //Horizontal Impact
-                case Brick.LEFT_IMPACT:
+                case Brick.LEFT_IMPACT -> {
                     ball.reverseX();
-                    return b.setImpact(ball.right,Brick.Crack.RIGHT);
-                case Brick.RIGHT_IMPACT:
+                    return b.setImpact(ball.getRight(), Brick.Crack.RIGHT);
+                }
+                case Brick.RIGHT_IMPACT -> {
                     ball.reverseX();
-                    return b.setImpact(ball.left,Brick.Crack.LEFT);
+                    return b.setImpact(ball.getLeft(), Brick.Crack.LEFT);
+                }
             }
         }
         return false;
@@ -208,6 +212,18 @@ public class Wall {
 
     public int getBallCount(){
         return ballCount;
+    }
+
+    public Brick[] getBricks() {
+        return bricks;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public Paddle getPlayer() {
+        return player;
     }
 
     public boolean isBallLost(){
@@ -266,21 +282,11 @@ public class Wall {
     }
 
     public Brick makeBrick(Point point, Dimension size, int type){
-        Brick out;
-        switch(type){
-            case CLAY:
-                out = new Brick2(point,size);
-                break;
-            case STEEL:
-                out = new Brick3(point,size);
-                break;
-            case CEMENT:
-                out = new Brick1(point, size);
-                break;
-            default:
-                throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
-        }
-        return  out;
+        return switch (type) {
+            case CLAY -> new Brick2(point, size);
+            case STEEL -> new Brick3(point, size);
+            case CEMENT -> new Brick1(point, size);
+            default -> throw new IllegalArgumentException(String.format("Unknown Type:%d\n", type));
+        };
     }
-
 }

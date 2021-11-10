@@ -1,7 +1,6 @@
-package code;
+package code.components;
 
 import java.awt.*;
-
 
 public class Paddle {
 
@@ -11,11 +10,11 @@ public class Paddle {
 
     public static final int DEF_MOVE_AMOUNT = 5;
 
-    private Rectangle paddleFace;
-    private Point ballPoint;
+    private final Rectangle paddleFace;
+    private final Point ballPoint;
     private int moveAmount;
-    private int min;
-    private int max;
+    private final int min;
+    private final int max;
 
 
     public Paddle(Point ballPoint, int width, int height, Rectangle container) {
@@ -33,7 +32,7 @@ public class Paddle {
     }
 
     public boolean impact(Ball b){
-        return paddleFace.contains(b.getPosition()) && paddleFace.contains(b.down) ;
+        return paddleFace.contains(b.getPosition()) && paddleFace.contains(b.getDown()) ;
     }
 
     public void move(){

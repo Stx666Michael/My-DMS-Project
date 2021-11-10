@@ -1,7 +1,6 @@
-package code;
+package code.main;
 
 import java.awt.*;
-import java.awt.desktop.AppEvent;
 
 public class StartGame {
 

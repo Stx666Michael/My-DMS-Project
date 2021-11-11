@@ -1,4 +1,6 @@
-package code.components;
+package code.controller;
+
+import code.model.*;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

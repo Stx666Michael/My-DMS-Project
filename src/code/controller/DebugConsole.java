@@ -1,7 +1,6 @@
-package code.main;
+package code.controller;
 
-import code.components.Ball;
-import code.components.Wall;
+import code.model.Ball;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
-package code.main;
+package code.controller;
 
-import code.components.Wall;
+import code.controller.Wall;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 public class DebugPanel extends JPanel {
 
     private static final Color DEF_BKG = Color.WHITE;
-
 
     private JSlider ballXSpeed;
     private JSlider ballYSpeed;

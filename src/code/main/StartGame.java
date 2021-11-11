@@ -1,5 +1,7 @@
 package code.main;
 
+import code.controller.GameFrame;
+
 import java.awt.*;
 
 public class StartGame {

@@ -1,10 +1,11 @@
-package code.main;
+package code.controller;
+
+import code.view.GameRenderer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-
 
 public class GameFrame extends JFrame implements WindowFocusListener {
 
@@ -17,7 +18,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         gaming = false;
         this.setLayout(new BorderLayout());
         gameBoard = new GameBoard(this);
+        GameRenderer gameRenderer = new GameRenderer(gameBoard);
         this.add(gameBoard,BorderLayout.CENTER);
+        this.add(gameRenderer,BorderLayout.CENTER);
         initialize();
         this.addWindowFocusListener(this);
     }

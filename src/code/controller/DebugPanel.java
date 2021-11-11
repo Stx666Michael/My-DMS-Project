@@ -1,6 +1,6 @@
 package code.controller;
 
-import code.controller.Wall;
+import code.model.Wall;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

@@ -15,15 +15,12 @@ public class GameRenderer extends JComponent {
 
     private final GameBoard gameBoard;
 
-    private static final String CONTINUE = "Continue";
-    private static final String RESTART = "Restart";
-    private static final String EXIT = "Exit";
+    private static final String CONTINUE = "Continue (Esc)";
+    private static final String RESTART = "Restart (R)";
+    private static final String EXIT = "Exit (Q)";
     private static final String PAUSE = "Pause Menu";
 
     private static final Color MENU_COLOR = new Color(0,255,0);
-
-    private static final int DEF_WIDTH = 600;
-    private static final int DEF_HEIGHT = 450;
 
     private static final Color BG_COLOR = Color.WHITE;
 
@@ -36,7 +33,7 @@ public class GameRenderer extends JComponent {
             public void run() {
                 repaint();
             }
-        }, 100, 1);
+        }, 100, 10);
     }
 
     public void paintComponent(Graphics g) {
@@ -55,8 +52,9 @@ public class GameRenderer extends JComponent {
 
         drawPlayer(gameBoard.getWall().getPlayer(),g2d);
 
-        if(gameBoard.isShowPauseMenu())
+        if(gameBoard.isShowPauseMenu()) {
             drawMenu(g2d);
+        }
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -76,7 +74,6 @@ public class GameRenderer extends JComponent {
 
         g2d.setColor(brick.getBorderColor());
         g2d.draw(brick.getBrick());
-
 
         g2d.setColor(tmp);
     }
@@ -122,7 +119,7 @@ public class GameRenderer extends JComponent {
         g2d.setComposite(ac);
 
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0,0,DEF_WIDTH,DEF_HEIGHT);
+        g2d.fillRect(0,0, gameBoard.getWidth(), gameBoard.getHeight());
 
         g2d.setComposite(tmp);
         g2d.setColor(tmpColor);

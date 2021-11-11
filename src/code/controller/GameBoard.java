@@ -1,16 +1,15 @@
 package code.controller;
 
+import code.model.Wall;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-//import java.awt.font.FontRenderContext;
 
 public class GameBoard extends JComponent implements KeyListener,MouseListener,MouseMotionListener {
 
-    private static final int TEXT_SIZE = 30;
-
-    private static final int DEF_WIDTH = 600;
-    private static final int DEF_HEIGHT = 450;
+    private final int DEF_WIDTH = 600;
+    private final int DEF_HEIGHT = 450;
 
     private final Timer gameTimer;
 
@@ -35,7 +34,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         strLen = 0;
         showPauseMenu = false;
 
-        menuFont = new Font("Monospaced",Font.PLAIN,TEXT_SIZE);
+        int TEXT_SIZE = 30;
+        menuFont = new Font("Monospaced",Font.PLAIN, TEXT_SIZE);
 
         this.initialize();
         message = "Press SPACE to start";
@@ -83,6 +83,14 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 gameTimer.stop();
             }
         }
+    }
+
+    public int getHeight() {
+        return DEF_HEIGHT;
+    }
+
+    public int getWidth() {
+        return DEF_WIDTH;
     }
 
     public String getMessage() {
@@ -147,7 +155,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.getPlayer().movRight();
         }
         if(code==KeyEvent.VK_SPACE){
-            System.out.println(3);
             if(!showPauseMenu)
                 if(gameTimer.isRunning())
                     gameTimer.stop();
@@ -156,12 +163,22 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         }
         if(code==KeyEvent.VK_ESCAPE){
             showPauseMenu = !showPauseMenu;
-            //repaint();
             gameTimer.stop();
         }
         if(code==KeyEvent.VK_F1){
             if(e.isAltDown() && e.isShiftDown())
                 debugConsole.setVisible(true);
+        }
+        if(showPauseMenu) {
+            if(code==KeyEvent.VK_R){
+                message = "Restarting Game...";
+                wall.ballReset();
+                wall.wallReset();
+                showPauseMenu = false;
+            }
+            if(code==KeyEvent.VK_Q){
+                System.exit(0);
+            }
         }
     }
 
@@ -172,23 +189,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        Point p = mouseEvent.getPoint();
-        if(!showPauseMenu)
-            return;
-        if(continueButtonRect.contains(p)){
-            showPauseMenu = false;
-            //repaint();
-        }
-        else if(restartButtonRect.contains(p)){
-            message = "Restarting Game...";
-            wall.ballReset();
-            wall.wallReset();
-            showPauseMenu = false;
-            //repaint();
-        }
-        else if(exitButtonRect.contains(p)){
-            System.exit(0);
-        }
 
     }
 
@@ -219,22 +219,12 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-        Point p = mouseEvent.getPoint();
-        if(exitButtonRect != null && showPauseMenu) {
-            if (exitButtonRect.contains(p) || continueButtonRect.contains(p) || restartButtonRect.contains(p))
-                this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            else
-                this.setCursor(Cursor.getDefaultCursor());
-        }
-        else{
-            this.setCursor(Cursor.getDefaultCursor());
-        }
+
     }
 
     public void onLostFocus(){
         gameTimer.stop();
         message = "Focus Lost";
-        //repaint();
     }
 
 }

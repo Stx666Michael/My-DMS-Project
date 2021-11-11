@@ -1,6 +1,7 @@
 package code.controller;
 
 import code.model.Ball;
+import code.model.Wall;
 
 import javax.swing.*;
 import java.awt.*;

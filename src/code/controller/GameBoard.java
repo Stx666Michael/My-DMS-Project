@@ -17,6 +17,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     private String message;
 
+    private boolean showStartScreen;
     private boolean showPauseMenu;
 
     private final Font menuFont;
@@ -33,6 +34,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         strLen = 0;
         showPauseMenu = false;
+        showStartScreen = true;
 
         int TEXT_SIZE = 30;
         menuFont = new Font("Monospaced",Font.PLAIN, TEXT_SIZE);
@@ -53,12 +55,9 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(this);
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
     }
 
     public void step() {
-        //System.out.print(1);
         wall.move();
         wall.findImpacts();
         message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
@@ -99,6 +98,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     public Wall getWall() {
         return wall;
+    }
+
+    public boolean isShowStartScreen() {
+        return showStartScreen;
     }
 
     public boolean isShowPauseMenu() {
@@ -143,6 +146,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
+
     }
 
     @Override
@@ -155,19 +159,25 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.getPlayer().movRight();
         }
         if(code==KeyEvent.VK_SPACE){
-            if(!showPauseMenu)
+            if(!showPauseMenu && !showStartScreen)
                 if(gameTimer.isRunning())
                     gameTimer.stop();
                 else
                     gameTimer.start();
         }
         if(code==KeyEvent.VK_ESCAPE){
-            showPauseMenu = !showPauseMenu;
-            gameTimer.stop();
+            if(!showStartScreen){
+                showPauseMenu = !showPauseMenu;
+                gameTimer.stop();
+            }
         }
         if(code==KeyEvent.VK_F1){
             if(e.isAltDown() && e.isShiftDown())
                 debugConsole.setVisible(true);
+        }
+        if(showStartScreen) {
+            if(code==KeyEvent.VK_S)
+                showStartScreen = false;
         }
         if(showPauseMenu) {
             if(code==KeyEvent.VK_R){

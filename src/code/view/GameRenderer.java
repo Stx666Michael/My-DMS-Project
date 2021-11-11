@@ -15,17 +15,20 @@ public class GameRenderer extends JComponent {
 
     private final GameBoard gameBoard;
 
-    private static final String CONTINUE = "Continue (Esc)";
-    private static final String RESTART = "Restart (R)";
-    private static final String EXIT = "Exit (Q)";
-    private static final String PAUSE = "Pause Menu";
+    private final String START = "Start (S)";
+    private final String CONTINUE = "Continue (Esc)";
+    private final String RESTART = "Restart (R)";
+    private final String EXIT = "Exit (Q)";
+    private final String PAUSE = "Pause Menu";
 
-    private static final Color MENU_COLOR = new Color(0,255,0);
+    private final Color MENU_COLOR = new Color(0,255,0);
 
-    private static final Color BG_COLOR = Color.WHITE;
+    private final Color BG_COLOR = Color.WHITE;
 
     public GameRenderer(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
+
+        this.setPreferredSize(new Dimension(gameBoard.getWidth(),gameBoard.getHeight()));
 
         Timer renderTimer = new Timer();
         renderTimer.schedule(new TimerTask() {
@@ -36,6 +39,7 @@ public class GameRenderer extends JComponent {
         }, 100, 10);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -54,6 +58,10 @@ public class GameRenderer extends JComponent {
 
         if(gameBoard.isShowPauseMenu()) {
             drawMenu(g2d);
+        }
+
+        if(gameBoard.isShowStartScreen()) {
+            drawStartScreen(g2d);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -123,6 +131,23 @@ public class GameRenderer extends JComponent {
 
         g2d.setComposite(tmp);
         g2d.setColor(tmpColor);
+    }
+
+    public void drawStartScreen(Graphics2D g2d) {
+        obscureGameBoard(g2d);
+
+        g2d.setFont(gameBoard.getMenuFont());
+        g2d.setColor(MENU_COLOR);
+
+        if(gameBoard.getStrLen() == 0){
+            FontRenderContext frc = g2d.getFontRenderContext();
+            gameBoard.setStrLen(gameBoard.getMenuFont().getStringBounds(START,frc).getBounds().width);
+        }
+
+        int x = (gameBoard.getWidth() - gameBoard.getStrLen()) / 2;
+        int y = gameBoard.getHeight() / 2;
+
+        g2d.drawString(START,x,y);
     }
 
     public void drawPauseMenu(Graphics2D g2d){

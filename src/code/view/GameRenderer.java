@@ -15,7 +15,13 @@ public class GameRenderer extends JComponent {
 
     private final GameBoard gameBoard;
 
-    private final String START = "Start (S)";
+    private final String TITLE = "BREAKOUT";
+    private final String BEGIN = "Begin (B)";
+    private final String SETTINGS = "Settings (S)";
+    private final String THEME = "Theme Colour";
+    private final String SPEED = "Ball Speed";
+    private final String MOVE = "Move Control";
+    private final String CONFIRM = "Confirm (C)";
     private final String CONTINUE = "Continue (Esc)";
     private final String RESTART = "Restart (R)";
     private final String EXIT = "Exit (Q)";
@@ -24,6 +30,11 @@ public class GameRenderer extends JComponent {
     private final Color MENU_COLOR = new Color(0,255,0);
 
     private final Color BG_COLOR = Color.WHITE;
+
+    private final int TEXT_SIZE = 30;
+    private final Font menuFont = new Font("Monospaced", Font.PLAIN, TEXT_SIZE);
+
+    private int strLen = 0;
 
     public GameRenderer(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
@@ -56,12 +67,20 @@ public class GameRenderer extends JComponent {
 
         drawPlayer(gameBoard.getWall().getPlayer(),g2d);
 
-        if(gameBoard.isShowPauseMenu()) {
-            drawMenu(g2d);
+        if(gameBoard.isShowStartScreen() || gameBoard.isShowSettingMenu() || gameBoard.isShowPauseMenu()) {
+            obscureGameBoard(g2d);
         }
 
         if(gameBoard.isShowStartScreen()) {
             drawStartScreen(g2d);
+        }
+
+        if(gameBoard.isShowSettingMenu()) {
+            drawSettingMenu(g2d);
+        }
+
+        if(gameBoard.isShowPauseMenu()) {
+            drawPauseMenu(g2d);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -113,17 +132,11 @@ public class GameRenderer extends JComponent {
         g2d.setColor(tmp);
     }
 
-    public void drawMenu(Graphics2D g2d){
-        obscureGameBoard(g2d);
-        drawPauseMenu(g2d);
-    }
-
     public void obscureGameBoard(Graphics2D g2d){
-
         Composite tmp = g2d.getComposite();
         Color tmpColor = g2d.getColor();
 
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.55f);
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.75f);
         g2d.setComposite(ac);
 
         g2d.setColor(Color.BLACK);
@@ -134,70 +147,72 @@ public class GameRenderer extends JComponent {
     }
 
     public void drawStartScreen(Graphics2D g2d) {
-        obscureGameBoard(g2d);
+        FontRenderContext frc = g2d.getFontRenderContext();
 
-        g2d.setFont(gameBoard.getMenuFont());
+        g2d.setFont(menuFont);
         g2d.setColor(MENU_COLOR);
 
-        if(gameBoard.getStrLen() == 0){
-            FontRenderContext frc = g2d.getFontRenderContext();
-            gameBoard.setStrLen(gameBoard.getMenuFont().getStringBounds(START,frc).getBounds().width);
-        }
+        strLen = menuFont.getStringBounds(TITLE,frc).getBounds().width;
 
-        int x = (gameBoard.getWidth() - gameBoard.getStrLen()) / 2;
-        int y = gameBoard.getHeight() / 2;
+        int x = (gameBoard.getWidth() - strLen) / 2;
+        int y = gameBoard.getHeight() / 4;
+        g2d.drawString(TITLE,x,y);
 
-        g2d.drawString(START,x,y);
+        strLen = menuFont.getStringBounds(SETTINGS,frc).getBounds().width;
+
+        x = (gameBoard.getWidth() - strLen) / 2;
+        y *= 2;
+        g2d.drawString(SETTINGS,x,y);
+
+        strLen = menuFont.getStringBounds(BEGIN,frc).getBounds().width;
+
+        x = (gameBoard.getWidth() - strLen) / 2;
+        y *= 1.5;
+        g2d.drawString(BEGIN,x,y);
+    }
+
+    public void drawSettingMenu(Graphics2D g2d){
+        g2d.setFont(menuFont);
+        g2d.setColor(MENU_COLOR);
+
+        int x = gameBoard.getWidth() / 8;
+        int y = gameBoard.getHeight() / 5;
+        g2d.drawString(THEME,x,y);
+
+        y *= 2;
+        g2d.drawString(SPEED,x,y);
+
+        y *= 1.5;
+        g2d.drawString(MOVE,x,y);
+
+        y *= 4/3.0;
+        g2d.drawString(CONFIRM,x,y);
     }
 
     public void drawPauseMenu(Graphics2D g2d){
-        Font tmpFont = g2d.getFont();
-        Color tmpColor = g2d.getColor();
+        FontRenderContext frc = g2d.getFontRenderContext();
 
-        g2d.setFont(gameBoard.getMenuFont());
+        g2d.setFont(menuFont);
         g2d.setColor(MENU_COLOR);
 
-        if(gameBoard.getStrLen() == 0){
-            FontRenderContext frc = g2d.getFontRenderContext();
-            gameBoard.setStrLen(gameBoard.getMenuFont().getStringBounds(PAUSE,frc).getBounds().width);
-        }
+        strLen = menuFont.getStringBounds(PAUSE,frc).getBounds().width;
 
-        int x = (gameBoard.getWidth() - gameBoard.getStrLen()) / 2;
-        int y = gameBoard.getHeight() / 10;
-
+        int x = (gameBoard.getWidth() - strLen) / 2;
+        int y = gameBoard.getHeight() / 6;
         g2d.drawString(PAUSE,x,y);
 
         x = gameBoard.getWidth() / 8;
-        y = gameBoard.getHeight() / 4;
-
-        if(gameBoard.getContinueButtonRect() == null){
-            FontRenderContext frc = g2d.getFontRenderContext();
-            gameBoard.setContinueButtonRect(gameBoard.getMenuFont().getStringBounds(CONTINUE,frc).getBounds());
-            gameBoard.getContinueButtonRect().setLocation(x,y-gameBoard.getContinueButtonRect().height);
-        }
-
+        y *= 2;
         g2d.drawString(CONTINUE,x,y);
 
-        y *= 2;
+        y *= 1.5;
+        g2d.drawString(SETTINGS,x,y);
 
-        if(gameBoard.getRestartButtonRect() == null){
-            gameBoard.setRestartButtonRect((Rectangle) gameBoard.getContinueButtonRect().clone());
-            gameBoard.getRestartButtonRect().setLocation(x,y-gameBoard.getRestartButtonRect().height);
-        }
-
+        y *= 4/3.0;
         g2d.drawString(RESTART,x,y);
 
-        y *= 3.0/2;
-
-        if(gameBoard.getExitButtonRect() == null){
-            gameBoard.setExitButtonRect((Rectangle) gameBoard.getContinueButtonRect().clone());
-            gameBoard.getExitButtonRect().setLocation(x,y-gameBoard.getExitButtonRect().height);
-        }
-
+        y *= 1.25;
         g2d.drawString(EXIT,x,y);
-
-        g2d.setFont(tmpFont);
-        g2d.setColor(tmpColor);
     }
 
 }

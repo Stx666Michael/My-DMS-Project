@@ -18,26 +18,17 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private String message;
 
     private boolean showStartScreen;
+    private boolean showSettingMenu;
     private boolean showPauseMenu;
-
-    private final Font menuFont;
-
-    private Rectangle continueButtonRect;
-    private Rectangle exitButtonRect;
-    private Rectangle restartButtonRect;
-    private int strLen;
 
     private final DebugConsole debugConsole;
 
     public GameBoard(JFrame owner){
         super();
 
-        strLen = 0;
-        showPauseMenu = false;
         showStartScreen = true;
-
-        int TEXT_SIZE = 30;
-        menuFont = new Font("Monospaced",Font.PLAIN, TEXT_SIZE);
+        showSettingMenu = false;
+        showPauseMenu = false;
 
         this.initialize();
         message = "Press SPACE to start";
@@ -104,44 +95,12 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         return showStartScreen;
     }
 
+    public boolean isShowSettingMenu() {
+        return showSettingMenu;
+    }
+
     public boolean isShowPauseMenu() {
         return showPauseMenu;
-    }
-
-    public Font getMenuFont() {
-        return menuFont;
-    }
-
-    public int getStrLen() {
-        return strLen;
-    }
-
-    public Rectangle getContinueButtonRect() {
-        return continueButtonRect;
-    }
-
-    public Rectangle getRestartButtonRect() {
-        return restartButtonRect;
-    }
-
-    public Rectangle getExitButtonRect() {
-        return exitButtonRect;
-    }
-
-    public void setStrLen(int strLen) {
-        this.strLen = strLen;
-    }
-
-    public void setContinueButtonRect(Rectangle continueButtonRect) {
-        this.continueButtonRect = continueButtonRect;
-    }
-
-    public void setRestartButtonRect(Rectangle restartButtonRect) {
-        this.restartButtonRect = restartButtonRect;
-    }
-
-    public void setExitButtonRect(Rectangle exitButtonRect) {
-        this.exitButtonRect = exitButtonRect;
     }
 
     @Override
@@ -159,14 +118,14 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.getPlayer().movRight();
         }
         if(code==KeyEvent.VK_SPACE){
-            if(!showPauseMenu && !showStartScreen)
+            if(!showPauseMenu && !showStartScreen && !showSettingMenu)
                 if(gameTimer.isRunning())
                     gameTimer.stop();
                 else
                     gameTimer.start();
         }
         if(code==KeyEvent.VK_ESCAPE){
-            if(!showStartScreen){
+            if(!showStartScreen && !showSettingMenu){
                 showPauseMenu = !showPauseMenu;
                 gameTimer.stop();
             }
@@ -176,9 +135,18 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 debugConsole.setVisible(true);
         }
         if(showStartScreen) {
-            if(code==KeyEvent.VK_S)
+            if(code==KeyEvent.VK_B)
                 showStartScreen = false;
         }
+        if(showStartScreen || showPauseMenu) {
+            if(code==KeyEvent.VK_S){
+                showStartScreen = false;
+                showPauseMenu = false;
+                showSettingMenu = true;
+            }
+        }
+        if(code==KeyEvent.VK_C)
+            showSettingMenu = false;
         if(showPauseMenu) {
             if(code==KeyEvent.VK_R){
                 message = "Restarting Game...";

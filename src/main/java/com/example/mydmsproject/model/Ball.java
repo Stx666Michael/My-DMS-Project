@@ -1,4 +1,4 @@
-package code.model;
+package com.example.mydmsproject.model;
 
 import java.awt.Color;
 import java.awt.Point;

@@ -1,9 +1,9 @@
-package code.view;
+package com.example.mydmsproject.view;
 
-import code.controller.GameBoard;
-import code.model.Ball;
-import code.model.Brick;
-import code.model.Paddle;
+import com.example.mydmsproject.controller.GameBoard;
+import com.example.mydmsproject.model.Ball;
+import com.example.mydmsproject.model.Brick;
+import com.example.mydmsproject.model.Paddle;
 
 import javax.swing.*;
 import java.awt.*;

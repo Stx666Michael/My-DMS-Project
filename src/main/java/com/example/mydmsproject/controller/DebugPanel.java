@@ -1,6 +1,6 @@
-package code.controller;
+package com.example.mydmsproject.controller;
 
-import code.model.Wall;
+import com.example.mydmsproject.model.Wall;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

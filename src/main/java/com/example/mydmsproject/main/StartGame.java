@@ -1,6 +1,6 @@
-package code.main;
+package com.example.mydmsproject.main;
 
-import code.controller.GameFrame;
+import com.example.mydmsproject.controller.GameFrame;
 
 import java.awt.*;
 

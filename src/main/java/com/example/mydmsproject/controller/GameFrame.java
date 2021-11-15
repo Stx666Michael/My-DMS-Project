@@ -1,6 +1,6 @@
-package code.controller;
+package com.example.mydmsproject.controller;
 
-import code.view.GameRenderer;
+import com.example.mydmsproject.view.GameRenderer;
 
 import javax.swing.*;
 import java.awt.*;

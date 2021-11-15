@@ -1,5 +1,4 @@
 # Default ignored files
-/shelf/
 /.idea/
-/out/
+/target/
 my-dms-project.iml

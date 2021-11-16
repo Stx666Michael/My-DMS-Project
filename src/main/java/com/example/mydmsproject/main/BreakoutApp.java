@@ -1,20 +1,25 @@
 package com.example.mydmsproject.main;
 
+import com.example.mydmsproject.model.StartScreen;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class BreakoutApp extends Application {
+
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 450;
+    private static Stage stage;
+
+    private static StartScreen start;
+    //private static GameScreen game;
+
+    private static Scene startScene;
+    //private static Scene gameScene;
 
     public static void main(String[] args) {
         launch(args);
@@ -22,23 +27,12 @@ public class BreakoutApp extends Application {
 
     @Override
     public void start(Stage theStage) {
-        theStage.setTitle("Breakout");
+        BreakoutApp.stage = theStage;
+        stage.setTitle("Breakout");
 
-        Group root = new Group();
-        Scene theScene = new Scene(root);
-        theStage.setScene(theScene);
-
-        Canvas canvas = new Canvas(600, 450);
-        root.getChildren().add(canvas);
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.RED);
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(2);
-        Font theFont = Font.font("Times New Roman", FontWeight.BOLD, 48);
-        gc.setFont(theFont);
-        gc.fillText("Breakout", 200, 100);
-        gc.strokeText("Breakout", 200, 100);
+        start = new StartScreen(stage, WIDTH, HEIGHT);
+        startScene = new Scene(start, WIDTH, HEIGHT);
+        stage.setScene(startScene);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
             System.out.print(">");
@@ -47,6 +41,7 @@ public class BreakoutApp extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        theStage.show();
+        stage.show();
     }
+
 }

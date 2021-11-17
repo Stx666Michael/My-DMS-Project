@@ -1,4 +1,4 @@
-package com.example.mydmsproject.model;
+package com.example.mydmsproject.model.old;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;

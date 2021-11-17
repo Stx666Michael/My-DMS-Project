@@ -1,7 +1,7 @@
-package com.example.mydmsproject.controller;
+package com.example.mydmsproject.controller.old;
 
-import com.example.mydmsproject.model.Ball;
-import com.example.mydmsproject.model.Wall;
+import com.example.mydmsproject.model.old.Ball;
+import com.example.mydmsproject.model.old.Wall;
 
 import javax.swing.*;
 import java.awt.*;

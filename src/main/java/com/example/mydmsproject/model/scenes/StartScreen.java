@@ -1,10 +1,9 @@
-package com.example.mydmsproject.model;
+package com.example.mydmsproject.model.scenes;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -15,18 +14,22 @@ import javafx.stage.Stage;
 
 public class StartScreen extends BorderPane {
 
-    private Stage stage;
+    private final Stage stage;
     private final int width;
     private final int height;
     private final int buttonWidth;
     private final int buttonHeight;
     private final Font titleFont;
+
+    private final SettingScreen settings;
+    private GameScreen game;
+
+    private static Scene settingScene;
+    private static Scene gameScene;
+
     private static final String TITLE = "BREAKOUT";
     private static final String START = "Start!";
     private static final String SETTINGS = "Settings";
-
-    private static SettingScreen settings;
-    private static Scene settingScene;
 
     public StartScreen(Stage stage, int WIDTH, int HEIGHT) {
         this.stage = stage;
@@ -58,7 +61,19 @@ public class StartScreen extends BorderPane {
         start.setPrefSize(buttonWidth, buttonHeight);
         settings.setPrefSize(buttonWidth, buttonHeight);
 
-        settings.setOnAction(e -> stage.setScene(settingScene));
+        start.setOnAction(e -> {
+            game = new GameScreen(stage, width, height);
+            gameScene = new Scene(game, width, height);
+            stage.setScene(gameScene);
+            gameScene.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.SPACE)
+                    game.begin();
+            });
+        });
+        settings.setOnAction(e -> {
+            this.settings.setLastScene(stage.getScene());
+            stage.setScene(settingScene);
+        });
 
         menu.getChildren().addAll(title, start, settings);
         menu.setMaxSize(width,height/2.0);

@@ -8,4 +8,6 @@ module com.example.mydmsproject {
     opens com.example.mydmsproject.main to javafx.fxml;
     exports com.example.mydmsproject.controller;
     opens com.example.mydmsproject.controller to javafx.fxml;
+    exports com.example.mydmsproject.controller.old;
+    opens com.example.mydmsproject.controller.old to javafx.fxml;
 }

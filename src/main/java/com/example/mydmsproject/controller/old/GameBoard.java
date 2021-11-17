@@ -1,6 +1,6 @@
-package com.example.mydmsproject.controller;
+package com.example.mydmsproject.controller.old;
 
-import com.example.mydmsproject.model.Wall;
+import com.example.mydmsproject.model.old.Wall;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         //initialize the first level
         wall.nextLevel();
 
-        gameTimer = new Timer(1,e -> step());
+        gameTimer = new Timer(5,e -> step());
     }
 
     public void initialize(){

@@ -1,6 +1,6 @@
-package com.example.mydmsproject.controller;
+package com.example.mydmsproject.controller.old;
 
-import com.example.mydmsproject.view.GameRenderer;
+import com.example.mydmsproject.view.GameRendererOld;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         gaming = false;
         this.setLayout(new BorderLayout());
         gameBoard = new GameBoard(this);
-        GameRenderer gameRenderer = new GameRenderer(gameBoard);
+        GameRendererOld gameRenderer = new GameRendererOld(gameBoard);
         this.add(gameBoard,BorderLayout.CENTER);
         this.add(gameRenderer,BorderLayout.CENTER);
         initialize();

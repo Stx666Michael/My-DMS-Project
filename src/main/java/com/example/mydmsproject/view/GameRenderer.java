@@ -23,7 +23,7 @@ public class GameRenderer {
         this.player = player;
         this.gc = gc;
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> render()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> render()));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

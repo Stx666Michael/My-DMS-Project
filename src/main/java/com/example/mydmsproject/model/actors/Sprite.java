@@ -21,6 +21,30 @@ public class Sprite {
         velocityY = 0;
     }
 
+    public void render(GraphicsContext gc) {
+        gc.drawImage( image, positionX, positionY );
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public Rectangle2D getBoundary() {
+        return new Rectangle2D(positionX,positionY,width,height);
+    }
+
     public void setImage(Image i) {
         image = i;
         width = i.getWidth();
@@ -45,22 +69,6 @@ public class Sprite {
     public void update() {
         positionX += velocityX;
         positionY += velocityY;
-    }
-
-    public void render(GraphicsContext gc) {
-        gc.drawImage( image, positionX, positionY );
-    }
-
-    public Rectangle2D getBoundary() {
-        return new Rectangle2D(positionX,positionY,width,height);
-    }
-
-    public int getWidth() {
-        return (int) this.getBoundary().getWidth();
-    }
-
-    public int getHeight() {
-        return (int) this.getBoundary().getHeight();
     }
 
     public boolean intersects(Sprite s) {

@@ -18,7 +18,7 @@ public class Wall {
         width = WIDTH;
         height = HEIGHT;
         this.stage = stage;
-        speedBound = 1;
+        speedBound = 5;
 
         ball = new Ball();
         player = new Paddle();

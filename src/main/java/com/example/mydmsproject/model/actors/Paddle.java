@@ -2,17 +2,19 @@ package com.example.mydmsproject.model.actors;
 
 public class Paddle extends Sprite {
 
+    private int moveSpeed = 5;
+
     public Paddle() {
-        this.setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
+        setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
     }
 
     public void moveLeft() {
-        setVelocity(-2, 0);
+        setVelocity(-moveSpeed, 0);
         update();
     }
 
     public void moveRight() {
-        setVelocity(2, 0);
+        setVelocity(moveSpeed, 0);
         update();
     }
 }

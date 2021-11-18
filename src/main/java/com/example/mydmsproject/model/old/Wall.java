@@ -1,7 +1,5 @@
 package com.example.mydmsproject.model.old;
 
-import com.example.mydmsproject.model.old.*;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;

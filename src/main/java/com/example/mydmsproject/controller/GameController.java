@@ -86,12 +86,24 @@ public class GameController {
         Brick[] tmp = bricks.toArray(new Brick[bricks.size()]);
         for (Brick brick : tmp) {
             switch (brick.findImpact(ball)) {
-                case Brick.UP_IMPACT, Brick.DOWN_IMPACT -> {
-                    ball.reverseY();
+                case Brick.UP_IMPACT -> {
+                    if (ball.getVelocityY() > 0)
+                        ball.reverseY();
                     bricks.remove(brick);
                 }
-                case Brick.LEFT_IMPACT, Brick.RIGHT_IMPACT -> {
-                    ball.reverseX();
+                case Brick.DOWN_IMPACT -> {
+                    if (ball.getVelocityY() < 0)
+                        ball.reverseY();
+                    bricks.remove(brick);
+                }
+                case Brick.LEFT_IMPACT -> {
+                    if (ball.getVelocityX() > 0)
+                        ball.reverseX();
+                    bricks.remove(brick);
+                }
+                case Brick.RIGHT_IMPACT -> {
+                    if (ball.getVelocityX() < 0)
+                        ball.reverseX();
                     bricks.remove(brick);
                 }
             }

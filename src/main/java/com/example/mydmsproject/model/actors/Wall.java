@@ -23,15 +23,15 @@ public class Wall {
         width = WIDTH;
         height = HEIGHT;
         this.stage = stage;
-        ballSpeedBound = 1;
+        ballSpeedBound = 2;
         playerSpeedBound = 2;
         upSpaceHeight = height / 10;
 
         ball = new Ball(ballSpeedBound);
-        player = new Paddle(playerSpeedBound);
+        player = new Paddle(playerSpeedBound, width);
 
-        ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight());
-        player.setPosition((width-player.getWidth())/2.0, height- player.getHeight());
+        ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight()*2);
+        player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
         bricks = makeBricks(1);
 
         GameRenderer renderer = new GameRenderer(width, height, ball, player, bricks, gc);

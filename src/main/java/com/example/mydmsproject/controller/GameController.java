@@ -6,27 +6,36 @@ import com.example.mydmsproject.model.actors.Paddle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GameController {
 
+    private final int refreshInterval = 5;
+    private final int KEYS = 1;
+    private final int MOUSE = 2;
+    private int moveControl = MOUSE;
     private final int width;
+    private final double screenWidth;
     private final Ball ball;
     private final Paddle player;
     private final ArrayList<Brick> bricks;
     private final ArrayList<String> input = new ArrayList<>();
+    private Point mouseLocation;
+    private double playerSpeed;
 
     public GameController(int WIDTH, int HEIGHT, Stage stage, Ball ball, Paddle player, ArrayList<Brick> bricks) {
         width = WIDTH;
-        //height = HEIGHT;
         this.ball = ball;
         this.player = player;
         this.bricks = bricks;
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = screenSize.getWidth();
 
         Scene gameScene = stage.getScene();
 
@@ -40,7 +49,7 @@ public class GameController {
             input.remove(code);
         });
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(5), event -> update()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> update()));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -48,38 +57,36 @@ public class GameController {
 
     private void update() {
         ball.update();
-        if (input.contains("LEFT"))
-            player.moveLeft();
-        if (input.contains("RIGHT"))
-            player.moveRight();
+        if (moveControl == KEYS) {
+            if (input.contains("LEFT"))
+                player.moveLeft();
+            if (input.contains("RIGHT"))
+                player.moveRight();
+        }
+        else if (moveControl == MOUSE) {
+            mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            double mouseX = mouseLocation.getX()-((screenWidth-width)+player.getWidth())/2;
+            playerSpeed = (mouseX-player.getPositionX()) / refreshInterval;
+            player.setPositionX(mouseX);
+        }
         findImpacts();
     }
 
     private void findImpacts() {
-        if (impactPlayer()) {
+        if (ball.impactPlayer(player)) {
             ball.reverseY();
+            if (moveControl == KEYS)
+                ball.addVelocity(player.getVelocityX()/10, 0);
+            else if (moveControl == MOUSE)
+                ball.addVelocity(playerSpeed/10, 0);
         }
-        else if (impactBorderX()) {
+        else if (ball.impactBorderX(width)) {
             ball.reverseX();
         }
-        else if (impactBorderY()) {
+        else if (ball.impactBorderY()) {
             ball.reverseY();
         }
         impactBricks();
-    }
-
-    private boolean impactPlayer() {
-        return (player.intersects(ball) && ball.getVelocityY()>0);
-    }
-
-    private boolean impactBorderX() {
-        Rectangle2D rec = ball.getBoundary();
-        return (rec.getMinX()<0 || rec.getMaxX()>width);
-    }
-
-    private boolean impactBorderY() {
-        Rectangle2D rec = ball.getBoundary();
-        return (rec.getMinY()<0 && ball.getVelocityY()<0);
     }
 
     private void impactBricks() {

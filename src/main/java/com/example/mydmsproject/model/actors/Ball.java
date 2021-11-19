@@ -18,4 +18,17 @@ public class Ball extends Sprite {
     public void reverseY() {
         setVelocity(getVelocityX(), -getVelocityY());
     }
+
+    public boolean impactPlayer(Paddle player) {
+        return (player.intersects(this) && getVelocityY()>0);
+    }
+
+    public boolean impactBorderX(int width) {
+        return (getBoundary().getMinX()<0 || getBoundary().getMaxX()>width);
+    }
+
+    public boolean impactBorderY() {
+        return (getBoundary().getMinY()<0 && getVelocityY()<0);
+    }
+
 }

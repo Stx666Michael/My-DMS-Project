@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class GameRenderer {
 
+    private final int refreshInterval = 10;
     private final int width;
     private final int height;
     private final Ball ball;
@@ -28,7 +29,7 @@ public class GameRenderer {
         this.bricks = bricks;
         this.gc = gc;
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> render()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> render()));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

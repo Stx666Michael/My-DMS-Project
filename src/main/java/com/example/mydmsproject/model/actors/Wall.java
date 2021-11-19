@@ -5,39 +5,60 @@ import com.example.mydmsproject.view.GameRenderer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Wall {
 
     private final int width;
     private final int height;
     private final Ball ball;
     private final Paddle player;
+    private ArrayList<Brick> bricks;
     private final Stage stage;
-    private int speedBound;
+    private int ballSpeedBound;
+    private int playerSpeedBound;
+    private int upSpaceHeight;
 
     public Wall(int WIDTH, int HEIGHT, Stage stage, GraphicsContext gc) {
         width = WIDTH;
         height = HEIGHT;
         this.stage = stage;
-        speedBound = 5;
+        ballSpeedBound = 1;
+        playerSpeedBound = 2;
+        upSpaceHeight = height / 10;
 
-        ball = new Ball();
-        player = new Paddle();
+        ball = new Ball(ballSpeedBound);
+        player = new Paddle(playerSpeedBound);
 
         ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight());
         player.setPosition((width-player.getWidth())/2.0, height- player.getHeight());
+        bricks = makeBricks(1);
 
-        double speedX, speedY;
-        speedX = (Math.random()-1)*speedBound;
-        speedY = Math.sqrt(Math.pow(speedBound,2) - Math.pow(speedX,2));
-        speedY = -speedY;
-
-        ball.setVelocity(speedX, speedY);
-
-        GameRenderer renderer = new GameRenderer(width, height, ball, player, gc);
+        GameRenderer renderer = new GameRenderer(width, height, ball, player, bricks, gc);
     }
 
     public void begin() {
-        GameController controller = new GameController(width, height, stage, ball, player);
+        GameController controller = new GameController(width, height, stage, ball, player, bricks);
+    }
+
+    private ArrayList makeBricks(int level) {
+        ArrayList<Brick> bricks = new ArrayList<>();
+        Brick brick = new Brick(1, 0, 0);
+        int brickWidth = (int)brick.getWidth();
+        int brickHeight = (int)brick.getHeight();
+        int maxLineBricks = width / brickWidth + 1;
+
+        switch (level) {
+            case 1:
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < maxLineBricks; j++) {
+                        Brick tmp = new Brick(i+1, j*brickWidth, upSpaceHeight+i*brickHeight);
+                        bricks.add(tmp);
+                    }
+                }
+                break;
+        }
+        return bricks;
     }
 
 }

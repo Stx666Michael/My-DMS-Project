@@ -25,12 +25,12 @@ public class Sprite {
         gc.drawImage( image, positionX, positionY );
     }
 
-    public double getWidth() {
-        return width;
+    public double getPositionX() {
+        return positionX;
     }
 
-    public double getHeight() {
-        return height;
+    public double getPositionY() {
+        return positionY;
     }
 
     public double getVelocityX() {
@@ -39,6 +39,14 @@ public class Sprite {
 
     public double getVelocityY() {
         return velocityY;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 
     public Rectangle2D getBoundary() {

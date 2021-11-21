@@ -3,7 +3,6 @@ package com.example.mydmsproject.model.scenes;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -23,9 +22,7 @@ public class StartScreen extends BorderPane {
 
     private final SettingScreen settings;
     private GameScreen game;
-
     private static Scene settingScene;
-    private static Scene gameScene;
 
     private static final String TITLE = "BREAKOUT";
     private static final String START = "Start!";
@@ -63,12 +60,6 @@ public class StartScreen extends BorderPane {
 
         start.setOnAction(e -> {
             game = new GameScreen(stage, width, height);
-            gameScene = new Scene(game, width, height);
-            stage.setScene(gameScene);
-            gameScene.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.SPACE)
-                    game.begin();
-            });
         });
         settings.setOnAction(e -> {
             this.settings.setLastScene(stage.getScene());

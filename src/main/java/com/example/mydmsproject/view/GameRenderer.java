@@ -7,13 +7,14 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class GameRenderer {
 
-    private final int refreshInterval = 10;
+    private final int refreshInterval = 5;
     private final int width;
     private final int height;
     private final Ball ball;
@@ -29,6 +30,8 @@ public class GameRenderer {
         this.bricks = bricks;
         this.gc = gc;
 
+        gc.setTextAlign(TextAlignment.CENTER);
+
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> render()));
 
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -39,6 +42,7 @@ public class GameRenderer {
         gc.clearRect(0, 0, width, height);
         ball.render(gc);
         player.render(gc);
+        gc.fillText("Ball Left: " + ball.getBallCount(), width/2, height/2);
         for (Brick brick : bricks) {
             brick.render(gc);
         }

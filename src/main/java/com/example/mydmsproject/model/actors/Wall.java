@@ -1,7 +1,9 @@
 package com.example.mydmsproject.model.actors;
 
 import com.example.mydmsproject.controller.GameController;
+import com.example.mydmsproject.model.scenes.GameScreen;
 import com.example.mydmsproject.view.GameRenderer;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
@@ -15,11 +17,13 @@ public class Wall {
     private final Paddle player;
     private ArrayList<Brick> bricks;
     private final Stage stage;
+    private final int ballCount = 3;
     private int ballSpeedBound;
     private int playerSpeedBound;
     private int upSpaceHeight;
+    private static Scene gameScene;
 
-    public Wall(int WIDTH, int HEIGHT, Stage stage, GraphicsContext gc) {
+    public Wall(int WIDTH, int HEIGHT, Stage stage, GameScreen game, GraphicsContext gc) {
         width = WIDTH;
         height = HEIGHT;
         this.stage = stage;
@@ -27,18 +31,23 @@ public class Wall {
         playerSpeedBound = 2;
         upSpaceHeight = height / 10;
 
-        ball = new Ball(ballSpeedBound);
+        ball = new Ball(ballCount);
         player = new Paddle(playerSpeedBound, width);
+        initializeBallPlayer();
 
-        ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight()*2);
-        player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
         bricks = makeBricks(1);
 
+        gameScene = new Scene(game, width, height);
+        stage.setScene(gameScene);
+
+        GameController controller = new GameController(width, height, this, stage, ball, player, bricks);
         GameRenderer renderer = new GameRenderer(width, height, ball, player, bricks, gc);
     }
 
-    public void begin() {
-        GameController controller = new GameController(width, height, stage, ball, player, bricks);
+    public void initializeBallPlayer() {
+        ball.initialize(ballSpeedBound);
+        ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight()*2);
+        player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
     }
 
     private ArrayList makeBricks(int level) {

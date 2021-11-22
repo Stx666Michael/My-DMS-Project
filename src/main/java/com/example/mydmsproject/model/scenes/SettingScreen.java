@@ -1,5 +1,6 @@
 package com.example.mydmsproject.model.scenes;
 
+import com.example.mydmsproject.controller.GameController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 public class SettingScreen extends BorderPane {
 
     private Scene lastScene;
+    private GameController controller;
     private final Stage stage;
     private final int width;
     private final int height;
@@ -61,7 +63,11 @@ public class SettingScreen extends BorderPane {
         move.setPrefSize(buttonWidth, buttonHeight);
         confirm.setPrefSize(buttonWidth, buttonHeight);
 
-        confirm.setOnAction(e -> stage.setScene(lastScene));
+        confirm.setOnAction(e -> {
+            stage.setScene(lastScene);
+            if (controller != null)
+                controller.settingConfirmed();
+        });
 
         menu.getChildren().addAll(title, theme, speed, move, confirm);
         menu.setMaxSize(width/2.0,height/2.0);
@@ -77,5 +83,9 @@ public class SettingScreen extends BorderPane {
 
     public void setLastScene(Scene lastScene) {
         this.lastScene = lastScene;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
     }
 }

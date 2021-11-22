@@ -8,6 +8,7 @@ public class Brick extends Sprite {
     public static final int DOWN_IMPACT = 2;
     public static final int LEFT_IMPACT = 3;
     public static final int RIGHT_IMPACT = 4;
+    private final int score;
     private final Rectangle2D up;
     private final Rectangle2D down;
     private final Rectangle2D left;
@@ -15,15 +16,29 @@ public class Brick extends Sprite {
 
     public Brick(int type, int positionX, int positionY) {
         switch (type) {
-            case 1 -> setImage("file:src/main/resources/com/example/mydmsproject/Brick1.png");
-            case 2 -> setImage("file:src/main/resources/com/example/mydmsproject/Brick2.png");
-            case 3 -> setImage("file:src/main/resources/com/example/mydmsproject/Brick3.png");
+            case 1 -> {
+                score = 3;
+                setImage("file:src/main/resources/com/example/mydmsproject/Brick1.png");
+            }
+            case 2 -> {
+                score = 2;
+                setImage("file:src/main/resources/com/example/mydmsproject/Brick2.png");
+            }
+            case 3 -> {
+                score = 1;
+                setImage("file:src/main/resources/com/example/mydmsproject/Brick3.png");
+            }
+            default -> score = 0;
         }
         setPosition(positionX, positionY);
         up = new Rectangle2D(getPositionX(), getPositionY(), getWidth(), 1);
         down = new Rectangle2D(getPositionX(), getPositionY()+getHeight(), getWidth(), 1);
         left = new Rectangle2D(getPositionX(), getPositionY(), 1, getHeight());
         right = new Rectangle2D(getPositionX()+getWidth(), getPositionY(), 1, getHeight());
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public Rectangle2D getUp() {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class GameRenderer {
 
-    private final int refreshInterval = 5;
+    private final int refreshInterval = 10;
     private final int width;
     private final int height;
     private final Ball ball;
@@ -42,7 +42,7 @@ public class GameRenderer {
         gc.clearRect(0, 0, width, height);
         ball.render(gc);
         player.render(gc);
-        gc.fillText("Ball Left: " + ball.getBallCount(), width/2, height/2);
+        gc.fillText("Ball: "+ball.getBallCount()+"\nScore: "+ball.getScore(), width/2, height/2);
         for (Brick brick : bricks) {
             brick.render(gc);
         }

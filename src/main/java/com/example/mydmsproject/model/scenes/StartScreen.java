@@ -21,8 +21,7 @@ public class StartScreen extends BorderPane {
     private final Font titleFont;
 
     private final SettingScreen settings;
-    private GameScreen game;
-    private static Scene settingScene;
+    private final Scene settingScene;
 
     private static final String TITLE = "BREAKOUT";
     private static final String START = "Start!";
@@ -58,9 +57,7 @@ public class StartScreen extends BorderPane {
         start.setPrefSize(buttonWidth, buttonHeight);
         settings.setPrefSize(buttonWidth, buttonHeight);
 
-        start.setOnAction(e -> {
-            game = new GameScreen(stage, width, height);
-        });
+        start.setOnAction(e -> new GameScreen(stage, this.settings, width, height));
         settings.setOnAction(e -> {
             this.settings.setLastScene(stage.getScene());
             stage.setScene(settingScene);

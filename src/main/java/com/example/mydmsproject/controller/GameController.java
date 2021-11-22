@@ -27,12 +27,14 @@ public class GameController {
     private final Wall wall;
     private final Ball ball;
     private final Paddle player;
+    private final Stage stage;
     private final ArrayList<Brick> bricks;
     private final ArrayList<String> input = new ArrayList<>();
     private Point mouseLocation;
     private double playerSpeed;
     private final Timeline timeline;
     private boolean isBegin = false;
+    private boolean isSetting = false;
 
     public GameController(int WIDTH, int HEIGHT, Wall wall, Stage stage, Ball ball, Paddle player, ArrayList<Brick> bricks) {
         width = WIDTH;
@@ -41,6 +43,8 @@ public class GameController {
         this.ball = ball;
         this.player = player;
         this.bricks = bricks;
+        this.stage = stage;
+        wall.getSettings().setController(this);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         screenWidth = screenSize.getWidth();
@@ -54,7 +58,7 @@ public class GameController {
             String code = e.getCode().toString();
             if (!input.contains(code))
                 input.add(code);
-            if (e.getCode() == KeyCode.SPACE)
+            if (e.getCode() == KeyCode.SPACE && !isSetting) {
                 if (isBegin) {
                     timeline.stop();
                     isBegin = false;
@@ -62,6 +66,14 @@ public class GameController {
                     timeline.play();
                     isBegin = true;
                 }
+            }
+            if (e.getCode() == KeyCode.ESCAPE && !isSetting) {
+                timeline.stop();
+                isSetting = true;
+                isBegin = false;
+                stage.setScene(wall.getSettingScene());
+                wall.getSettings().setLastScene(gameScene);
+            }
         });
         gameScene.setOnKeyReleased(e -> {
             String code = e.getCode().toString();
@@ -105,8 +117,16 @@ public class GameController {
                 timeline.stop();
                 isBegin = false;
                 wall.initializeBallPlayer();
+                if (ball.getBallCount() == 0) {
+                    wall.getEnd().setScore(ball.getScore());
+                    stage.setScene(wall.getEndScene());
+                }
             }
         }
         ball.impactBricks(bricks);
+    }
+
+    public void settingConfirmed() {
+        isSetting = false;
     }
 }

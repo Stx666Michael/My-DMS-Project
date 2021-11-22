@@ -1,7 +1,9 @@
 package com.example.mydmsproject.model.actors;
 
 import com.example.mydmsproject.controller.GameController;
+import com.example.mydmsproject.model.scenes.EndScreen;
 import com.example.mydmsproject.model.scenes.GameScreen;
+import com.example.mydmsproject.model.scenes.SettingScreen;
 import com.example.mydmsproject.view.GameRenderer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,17 +18,17 @@ public class Wall {
     private final Ball ball;
     private final Paddle player;
     private ArrayList<Brick> bricks;
-    private final Stage stage;
     private final int ballCount = 3;
     private int ballSpeedBound;
     private int playerSpeedBound;
     private int upSpaceHeight;
     private static Scene gameScene;
+    private final GameScreen game;
 
     public Wall(int WIDTH, int HEIGHT, Stage stage, GameScreen game, GraphicsContext gc) {
         width = WIDTH;
         height = HEIGHT;
-        this.stage = stage;
+        this.game = game;
         ballSpeedBound = 2;
         playerSpeedBound = 2;
         upSpaceHeight = height / 10;
@@ -42,6 +44,29 @@ public class Wall {
 
         GameController controller = new GameController(width, height, this, stage, ball, player, bricks);
         GameRenderer renderer = new GameRenderer(width, height, ball, player, bricks, gc);
+    }
+
+    public Scene getSettingScene() {
+        return game.getSettingScene();
+    }
+
+    public Scene getEndScene() {
+        return game.getEndScene();
+    }
+
+    public SettingScreen getSettings() {
+        return game.getSettings();
+    }
+
+    public EndScreen getEnd() {
+        return game.getEnd();
+    }
+
+    public void resetGame() {
+        ball.reset();
+        ArrayList<Brick> tmp = makeBricks(1);
+        bricks.removeAll(bricks);
+        bricks.addAll(tmp);
     }
 
     public void initializeBallPlayer() {

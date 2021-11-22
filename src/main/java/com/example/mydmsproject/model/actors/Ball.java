@@ -5,9 +5,12 @@ import java.util.ArrayList;
 public class Ball extends Sprite {
 
     private int ballCount;
+    private int ballSum;
+    private int score = 0;
 
     public Ball(int ballCount) {
         this.ballCount = ballCount;
+        ballSum = ballCount;
         setImage("file:src/main/resources/com/example/mydmsproject/Ball.png");
     }
 
@@ -19,8 +22,17 @@ public class Ball extends Sprite {
         setVelocity(speedX, speedY);
     }
 
+    public void reset() {
+        ballCount = ballSum;
+        score = 0;
+    }
+
     public int getBallCount() {
         return ballCount;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void setBallCount(int ballCount) {
@@ -55,21 +67,25 @@ public class Ball extends Sprite {
                     if (getVelocityY() > 0)
                         reverseY();
                     bricks.remove(brick);
+                    score += brick.getScore();
                 }
                 case Brick.DOWN_IMPACT -> {
                     if (getVelocityY() < 0)
                         reverseY();
                     bricks.remove(brick);
+                    score += brick.getScore();
                 }
                 case Brick.LEFT_IMPACT -> {
                     if (getVelocityX() > 0)
                         reverseX();
                     bricks.remove(brick);
+                    score += brick.getScore();
                 }
                 case Brick.RIGHT_IMPACT -> {
                     if (getVelocityX() < 0)
                         reverseX();
                     bricks.remove(brick);
+                    score += brick.getScore();
                 }
             }
         }

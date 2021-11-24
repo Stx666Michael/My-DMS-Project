@@ -1,4 +1,4 @@
-package com.example.mydmsproject.model.actors;
+package com.example.mydmsproject.model;
 
 import javafx.scene.image.Image;
 import javafx.scene.canvas.GraphicsContext;

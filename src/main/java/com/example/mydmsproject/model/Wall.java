@@ -1,13 +1,8 @@
-package com.example.mydmsproject.model.actors;
+package com.example.mydmsproject.model;
 
 import com.example.mydmsproject.controller.GameController;
-import com.example.mydmsproject.model.scenes.EndScreen;
-import com.example.mydmsproject.model.scenes.GameScreen;
-import com.example.mydmsproject.model.scenes.SettingScreen;
 import com.example.mydmsproject.view.GameRenderer;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -22,13 +17,12 @@ public class Wall {
     private int ballSpeedBound;
     private int playerSpeedBound;
     private int upSpaceHeight;
-    private static Scene gameScene;
-    private final GameScreen game;
+    private final GraphicsContext gc;
 
-    public Wall(int WIDTH, int HEIGHT, Stage stage, GameScreen game, GraphicsContext gc) {
+    public Wall(int WIDTH, int HEIGHT, GraphicsContext gc) {
+        this.gc = gc;
         width = WIDTH;
         height = HEIGHT;
-        this.game = game;
         ballSpeedBound = 2;
         playerSpeedBound = 2;
         upSpaceHeight = height / 10;
@@ -38,34 +32,17 @@ public class Wall {
         initializeBallPlayer();
 
         bricks = makeBricks(1);
-
-        gameScene = new Scene(game, width, height);
-        stage.setScene(gameScene);
-
-        GameController controller = new GameController(width, height, this, stage, ball, player, bricks);
-        GameRenderer renderer = new GameRenderer(width, height, ball, player, bricks, gc);
     }
 
-    public Scene getSettingScene() {
-        return game.getSettingScene();
-    }
-
-    public Scene getEndScene() {
-        return game.getEndScene();
-    }
-
-    public SettingScreen getSettings() {
-        return game.getSettings();
-    }
-
-    public EndScreen getEnd() {
-        return game.getEnd();
+    public void initializeGame(Scenes scenes) {
+        new GameController(width, height, scenes, ball, player, bricks);
+        new GameRenderer(width, height, ball, player, bricks, gc);
     }
 
     public void resetGame() {
         ball.reset();
         ArrayList<Brick> tmp = makeBricks(1);
-        bricks.removeAll(bricks);
+        bricks.clear();
         bricks.addAll(tmp);
     }
 
@@ -73,6 +50,14 @@ public class Wall {
         ball.initialize(ballSpeedBound);
         ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight()*2);
         player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
+    }
+
+    public Paddle getPlayer() {
+        return player;
+    }
+
+    public int getScore() {
+        return ball.getScore();
     }
 
     private ArrayList makeBricks(int level) {

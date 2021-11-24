@@ -1,15 +1,11 @@
 package com.example.mydmsproject.controller;
 
-import com.example.mydmsproject.model.actors.Ball;
-import com.example.mydmsproject.model.actors.Brick;
-import com.example.mydmsproject.model.actors.Paddle;
-import com.example.mydmsproject.model.actors.Wall;
+import com.example.mydmsproject.model.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -18,47 +14,38 @@ import java.util.ArrayList;
 public class GameController {
 
     private final int refreshInterval = 5;
-    private final int KEYS = 1;
-    private final int MOUSE = 2;
-    private int moveControl = KEYS;
     private final int width;
     private final int height;
-    private final double screenWidth;
     private final Wall wall;
     private final Ball ball;
     private final Paddle player;
-    private final Stage stage;
     private final ArrayList<Brick> bricks;
-    private final ArrayList<String> input = new ArrayList<>();
+    private final ArrayList<String> input;
     private Point mouseLocation;
     private double playerSpeed;
     private final Timeline timeline;
+    private final Scenes scenes;
     private boolean isBegin = false;
-    private boolean isSetting = false;
 
-    public GameController(int WIDTH, int HEIGHT, Wall wall, Stage stage, Ball ball, Paddle player, ArrayList<Brick> bricks) {
+    public GameController(int WIDTH, int HEIGHT, Scenes scenes, Ball ball, Paddle player, ArrayList<Brick> bricks) {
         width = WIDTH;
         height = HEIGHT;
-        this.wall = wall;
         this.ball = ball;
         this.player = player;
         this.bricks = bricks;
-        this.stage = stage;
-        wall.getSettings().setController(this);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenWidth = screenSize.getWidth();
+        this.scenes = scenes;
+        this.wall = scenes.getWall();
 
         timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        Scene gameScene = stage.getScene();
-
+        Scene gameScene = scenes.getGameScene();
+        input = new ArrayList<>();
         gameScene.setOnKeyPressed(e -> {
             String code = e.getCode().toString();
             if (!input.contains(code))
                 input.add(code);
-            if (e.getCode() == KeyCode.SPACE && !isSetting) {
+            if (e.getCode() == KeyCode.SPACE && !scenes.isSetting()) {
                 if (isBegin) {
                     timeline.stop();
                     isBegin = false;
@@ -67,12 +54,12 @@ public class GameController {
                     isBegin = true;
                 }
             }
-            if (e.getCode() == KeyCode.ESCAPE && !isSetting) {
+            if (e.getCode() == KeyCode.ESCAPE && !scenes.isSetting()) {
                 timeline.stop();
-                isSetting = true;
+                scenes.setSetting(true);
                 isBegin = false;
-                stage.setScene(wall.getSettingScene());
-                wall.getSettings().setLastScene(gameScene);
+                scenes.getStage().setScene(scenes.getSettingScene());
+                scenes.setLastScene(gameScene);
             }
         });
         gameScene.setOnKeyReleased(e -> {
@@ -83,15 +70,16 @@ public class GameController {
 
     private void update() {
         ball.update();
-        if (moveControl == KEYS) {
+        if (player.getMoveControl() == 1) {
             if (input.contains("LEFT"))
                 player.moveLeft();
             if (input.contains("RIGHT"))
                 player.moveRight();
         }
-        else if (moveControl == MOUSE) {
+        else if (player.getMoveControl() == 2) {
             mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            double mouseX = mouseLocation.getX()-((screenWidth-width)+player.getWidth())/2;
+            double windowX = scenes.getGameScene().getWindow().getX();
+            double mouseX = mouseLocation.getX()-windowX-player.getWidth()/2;
             playerSpeed = (mouseX-player.getPositionX()) / refreshInterval;
             player.setPositionX(mouseX);
         }
@@ -101,9 +89,9 @@ public class GameController {
     private void findImpacts() {
         if (ball.impactPlayer(player)) {
             ball.reverseY();
-            if (moveControl == KEYS)
+            if (player.getMoveControl() == 1)
                 ball.addVelocity(player.getVelocityX()/10, 0);
-            else if (moveControl == MOUSE)
+            else if (player.getMoveControl() == 2)
                 ball.addVelocity(playerSpeed/10, 0);
         }
         else if (ball.impactBorderX(width)) {
@@ -116,17 +104,15 @@ public class GameController {
                 ball.setBallCount(ball.getBallCount()-1);
                 timeline.stop();
                 isBegin = false;
+                input.clear();
                 wall.initializeBallPlayer();
                 if (ball.getBallCount() == 0) {
-                    wall.getEnd().setScore(ball.getScore());
-                    stage.setScene(wall.getEndScene());
+                    scenes.getStage().setScene(scenes.getEndScene());
+                    ((EndController) scenes.getEndLoader().getController()).updateScore();
                 }
             }
         }
         ball.impactBricks(bricks);
     }
 
-    public void settingConfirmed() {
-        isSetting = false;
-    }
 }

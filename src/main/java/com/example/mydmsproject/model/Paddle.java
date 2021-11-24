@@ -1,14 +1,16 @@
-package com.example.mydmsproject.model.actors;
+package com.example.mydmsproject.model;
 
 public class Paddle extends Sprite {
 
     private int moveSpeed;
     private int windowWidth;
+    private int moveControl;
 
     public Paddle(int moveSpeed, int screenWidth) {
         setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
         this.moveSpeed = moveSpeed;
         this.windowWidth = screenWidth;
+        moveControl = 1;
     }
 
     public void moveLeft() {
@@ -23,6 +25,14 @@ public class Paddle extends Sprite {
             setVelocity(moveSpeed, 0);
             update();
         }
+    }
+
+    public int getMoveControl() {
+        return moveControl;
+    }
+
+    public void setMoveControl(int moveControl) {
+        this.moveControl = moveControl;
     }
 
     public void setPositionX(double x) {

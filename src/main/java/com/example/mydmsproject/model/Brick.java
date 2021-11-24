@@ -1,4 +1,4 @@
-package com.example.mydmsproject.model.actors;
+package com.example.mydmsproject.model;
 
 import javafx.geometry.Rectangle2D;
 

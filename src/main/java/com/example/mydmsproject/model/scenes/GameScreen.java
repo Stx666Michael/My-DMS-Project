@@ -1,6 +1,6 @@
 package com.example.mydmsproject.model.scenes;
 
-import com.example.mydmsproject.model.actors.Wall;
+import com.example.mydmsproject.model.Wall;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -39,7 +39,7 @@ public class GameScreen extends BorderPane {
         game.getChildren().add(canvas);
         this.setCenter(game);
 
-        wall = new Wall(width, height, stage, this, gc);
+        wall = new Wall(width, height, gc);
     }
 
     public Scene getSettingScene() {

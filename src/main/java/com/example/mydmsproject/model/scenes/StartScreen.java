@@ -1,5 +1,7 @@
 package com.example.mydmsproject.model.scenes;
 
+import com.example.mydmsproject.main.BreakoutApp;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +12,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class StartScreen extends BorderPane {
 
@@ -27,16 +31,17 @@ public class StartScreen extends BorderPane {
     private static final String START = "Start!";
     private static final String SETTINGS = "Settings";
 
-    public StartScreen(Stage stage, int WIDTH, int HEIGHT) {
+    public StartScreen(Stage stage, int WIDTH, int HEIGHT) throws IOException {
         this.stage = stage;
         this.width = WIDTH;
         this.height = HEIGHT;
         buttonWidth = 100;
         buttonHeight = 30;
-        titleFont = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30);
+        titleFont = Font.font("Arial", FontWeight.BOLD, FontPosture.REGULAR, 30);
 
         settings = new SettingScreen(stage, WIDTH, HEIGHT);
-        settingScene = new Scene(settings, WIDTH, HEIGHT);
+        FXMLLoader fxmlLoader = new FXMLLoader(BreakoutApp.class.getResource("end.fxml"));
+        settingScene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
 
         setUp();
     }

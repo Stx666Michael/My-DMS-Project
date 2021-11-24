@@ -1,8 +1,8 @@
 package com.example.mydmsproject.view;
 
-import com.example.mydmsproject.model.actors.Ball;
-import com.example.mydmsproject.model.actors.Brick;
-import com.example.mydmsproject.model.actors.Paddle;
+import com.example.mydmsproject.model.Ball;
+import com.example.mydmsproject.model.Brick;
+import com.example.mydmsproject.model.Paddle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

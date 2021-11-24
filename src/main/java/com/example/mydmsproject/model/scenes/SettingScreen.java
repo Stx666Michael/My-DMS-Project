@@ -65,8 +65,6 @@ public class SettingScreen extends BorderPane {
 
         confirm.setOnAction(e -> {
             stage.setScene(lastScene);
-            if (controller != null)
-                controller.settingConfirmed();
         });
 
         menu.getChildren().addAll(title, theme, speed, move, confirm);

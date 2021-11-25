@@ -2,11 +2,11 @@ package com.example.mydmsproject.model;
 
 public class Paddle extends Sprite {
 
-    private int moveSpeed;
+    private double moveSpeed;
     private int windowWidth;
     private int moveControl;
 
-    public Paddle(int moveSpeed, int screenWidth) {
+    public Paddle(double moveSpeed, int screenWidth) {
         setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
         this.moveSpeed = moveSpeed;
         this.windowWidth = screenWidth;
@@ -29,6 +29,10 @@ public class Paddle extends Sprite {
 
     public int getMoveControl() {
         return moveControl;
+    }
+
+    public void setMoveSpeed(double moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 
     public void setMoveControl(int moveControl) {

@@ -14,8 +14,8 @@ public class Wall {
     private final Paddle player;
     private ArrayList<Brick> bricks;
     private final int ballCount = 3;
-    private int ballSpeedBound;
-    private int playerSpeedBound;
+    private double ballSpeedBound;
+    private double playerSpeedBound;
     private int upSpaceHeight;
     private final GraphicsContext gc;
 
@@ -56,8 +56,20 @@ public class Wall {
         return player;
     }
 
+    public double getBallSpeedBound() {
+        return ballSpeedBound;
+    }
+
+    public double getPlayerSpeedBound() {
+        return playerSpeedBound;
+    }
+
     public int getScore() {
         return ball.getScore();
+    }
+
+    public void setBallSpeedBound(double ballSpeedBound) {
+        this.ballSpeedBound = ballSpeedBound;
     }
 
     private ArrayList makeBricks(int level) {

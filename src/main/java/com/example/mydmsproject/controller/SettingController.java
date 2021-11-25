@@ -3,11 +3,14 @@ package com.example.mydmsproject.controller;
 import com.example.mydmsproject.model.Scenes;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
 
 public class SettingController {
 
     private Scenes scenes;
 
+    @FXML private Slider ballSpeed;
+    @FXML private Slider paddleSpeed;
     @FXML private ComboBox<String> theme;
     @FXML private ComboBox<String> control;
 
@@ -17,8 +20,10 @@ public class SettingController {
 
     @FXML
     private void initialize() {
+        ballSpeed.setValue(2);
+        paddleSpeed.setValue(2);
         theme.setPromptText("Light");
-        control.setPromptText("Keys");
+        control.setPromptText("Keyboard");
     }
 
     @FXML
@@ -46,6 +51,8 @@ public class SettingController {
 
     @FXML
     private void confirm() {
+        scenes.getWall().setBallSpeedBound(ballSpeed.getValue());
+        scenes.getWall().getPlayer().setMoveSpeed(paddleSpeed.getValue());
         scenes.getStage().setScene(scenes.getLastScene());
         scenes.setSetting(false);
     }

@@ -14,7 +14,7 @@ public class Ball extends Sprite {
         setImage("file:src/main/resources/com/example/mydmsproject/Ball.png");
     }
 
-    public void initialize(int speedBound) {
+    public void initialize(double speedBound) {
         double speedX, speedY;
         speedX = (Math.random()-1)*speedBound/2;
         speedY = Math.sqrt(Math.pow(speedBound,2) - Math.pow(speedX,2));

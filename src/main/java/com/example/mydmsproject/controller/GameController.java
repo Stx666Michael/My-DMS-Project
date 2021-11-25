@@ -58,6 +58,7 @@ public class GameController {
                 timeline.stop();
                 scenes.setSetting(true);
                 isBegin = false;
+                input.clear();
                 scenes.getStage().setScene(scenes.getSettingScene());
                 scenes.setLastScene(gameScene);
             }

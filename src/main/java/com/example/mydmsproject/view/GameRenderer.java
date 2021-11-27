@@ -3,6 +3,7 @@ package com.example.mydmsproject.view;
 import com.example.mydmsproject.model.Ball;
 import com.example.mydmsproject.model.Brick;
 import com.example.mydmsproject.model.Paddle;
+import com.example.mydmsproject.model.Scenes;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,12 +23,12 @@ public class GameRenderer {
     private final ArrayList<Brick> bricks;
     private final GraphicsContext gc;
 
-    public GameRenderer(int WIDTH, int HEIGHT, Ball ball, Paddle player, ArrayList<Brick> bricks, GraphicsContext gc) {
-        width = WIDTH;
-        height = HEIGHT;
-        this.ball = ball;
-        this.player = player;
-        this.bricks = bricks;
+    public GameRenderer(Scenes scenes, GraphicsContext gc) {
+        width = (int) scenes.getStage().getWidth();
+        height = (int) scenes.getStage().getHeight();
+        ball = scenes.getWall().getBall();
+        player = scenes.getWall().getPlayer();
+        bricks = scenes.getWall().getBricks();
         this.gc = gc;
 
         gc.setTextAlign(TextAlignment.CENTER);

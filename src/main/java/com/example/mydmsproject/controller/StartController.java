@@ -15,6 +15,7 @@ public class StartController {
     private void startGame() {
         scenes.getStage().setScene(scenes.getGameScene());
         scenes.getWall().initializeGame(scenes);
+        ((SettingController) scenes.getSettingLoader().getController()).changeLayout();
     }
 
     @FXML

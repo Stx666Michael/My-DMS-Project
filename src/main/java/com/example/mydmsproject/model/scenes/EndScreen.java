@@ -1,7 +1,6 @@
 package com.example.mydmsproject.model.scenes;
 
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -60,7 +59,7 @@ public class EndScreen extends BorderPane {
 
         replay.setOnAction(e -> {
             stage.setScene(game.getScene());
-            game.getWall().resetGame();
+            game.getWall().resetGame(1);
         });
         quit.setOnAction(e -> System.exit(0));
 

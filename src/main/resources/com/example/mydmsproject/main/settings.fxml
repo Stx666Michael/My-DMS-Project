@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mydmsproject.controller.SettingController">
-   <Text layoutX="250.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SETTINGS">
+   <Text fx:id="title" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="600.0" text="SETTINGS" textAlignment="CENTER">
       <font>
          <Font name="Arial Bold" size="20.0" />
       </font>
@@ -37,6 +37,7 @@
          </FXCollections>
       </items>
    </ComboBox>
-   <Button layoutX="170.0" layoutY="330.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" textFill="#ff0000" />
-   <Button layoutX="350.0" layoutY="330.0" mnemonicParsing="false" onAction="#confirm" prefWidth="80.0" text="Confirm" />
+   <Button layoutX="150.0" layoutY="330.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" textFill="#ff0000" />
+   <Button fx:id="restart" layoutX="260.0" layoutY="330.0" mnemonicParsing="false" onAction="#restart" prefWidth="80.0" text="Restart" />
+   <Button layoutX="370.0" layoutY="330.0" mnemonicParsing="false" onAction="#confirm" prefWidth="80.0" text="Confirm" />
 </Pane>

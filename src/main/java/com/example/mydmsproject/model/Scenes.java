@@ -24,7 +24,8 @@ public class Scenes {
     private Wall wall;
     private Pane game;
     private boolean isSetting;
-    private FXMLLoader endLoader;
+    private final FXMLLoader settingLoader;
+    private final FXMLLoader endLoader;
 
     public Scenes(int width, int height, Stage stage) throws IOException {
         this.stage = stage;
@@ -35,6 +36,7 @@ public class Scenes {
         FXMLLoader settings = new FXMLLoader(BreakoutApp.class.getResource("settings.fxml"));
         FXMLLoader end = new FXMLLoader(BreakoutApp.class.getResource("end.fxml"));
 
+        settingLoader = settings;
         endLoader = end;
 
         startScene = new Scene(start.load(), width, height);
@@ -96,6 +98,10 @@ public class Scenes {
 
     public Wall getWall() {
         return wall;
+    }
+
+    public FXMLLoader getSettingLoader() {
+        return settingLoader;
     }
 
     public FXMLLoader getEndLoader() {

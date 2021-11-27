@@ -22,9 +22,10 @@ public class Ball extends Sprite {
         setVelocity(speedX, speedY);
     }
 
-    public void reset() {
+    public void reset(boolean cleanScore) {
         ballCount = ballSum;
-        score = 0;
+        if (cleanScore)
+            score = 0;
     }
 
     public int getBallCount() {

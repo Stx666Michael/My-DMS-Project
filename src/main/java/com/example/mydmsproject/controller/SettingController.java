@@ -2,20 +2,29 @@ package com.example.mydmsproject.controller;
 
 import com.example.mydmsproject.model.Scenes;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.text.Text;
 
 public class SettingController {
 
     private Scenes scenes;
 
+    @FXML private Text title;
     @FXML private Slider ballSpeed;
     @FXML private Slider paddleSpeed;
     @FXML private ComboBox<String> theme;
     @FXML private ComboBox<String> control;
+    @FXML private Button restart;
 
     public void initData(Scenes scenes) {
         this.scenes = scenes;
+    }
+
+    public void changeLayout() {
+        title.setText("Pause Menu");
+        restart.setVisible(true);
     }
 
     @FXML
@@ -24,6 +33,7 @@ public class SettingController {
         paddleSpeed.setValue(2);
         theme.setPromptText("Light");
         control.setPromptText("Keyboard");
+        restart.setVisible(false);
     }
 
     @FXML
@@ -47,6 +57,13 @@ public class SettingController {
     @FXML
     private void quitGame() {
         System.exit(0);
+    }
+
+    @FXML
+    private void restart() {
+        scenes.getWall().resetGame(1);
+        scenes.getStage().setScene(scenes.getGameScene());
+        scenes.setSetting(false);
     }
 
     @FXML

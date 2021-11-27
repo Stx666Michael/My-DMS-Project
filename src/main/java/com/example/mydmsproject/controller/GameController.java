@@ -26,21 +26,23 @@ public class GameController {
     private final Timeline timeline;
     private final Scenes scenes;
     private boolean isBegin = false;
+    private EndController endController;
 
-    public GameController(int WIDTH, int HEIGHT, Scenes scenes, Ball ball, Paddle player, ArrayList<Brick> bricks) {
-        width = WIDTH;
-        height = HEIGHT;
-        this.ball = ball;
-        this.player = player;
-        this.bricks = bricks;
+    public GameController(Scenes scenes) {
         this.scenes = scenes;
-        this.wall = scenes.getWall();
+        Scene gameScene = scenes.getGameScene();
+        width = (int) gameScene.getWidth();
+        height = (int) gameScene.getHeight();
+        wall = scenes.getWall();
+        ball = wall.getBall();
+        player = wall.getPlayer();
+        bricks = wall.getBricks();
+        input = new ArrayList<>();
+        endController = scenes.getEndLoader().getController();
 
         timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        Scene gameScene = scenes.getGameScene();
-        input = new ArrayList<>();
         gameScene.setOnKeyPressed(e -> {
             String code = e.getCode().toString();
             if (!input.contains(code))
@@ -66,10 +68,19 @@ public class GameController {
         gameScene.setOnKeyReleased(e -> {
             String code = e.getCode().toString();
             input.remove(code);
+            player.setVelocity(0, 0);
         });
     }
 
     private void update() {
+        if (bricks.isEmpty()) {
+            timeline.stop();
+            isBegin = false;
+            input.clear();
+            endController.setWinLayout();
+            endController.updateScore();
+            scenes.getStage().setScene(scenes.getEndScene());
+        }
         ball.update();
         if (player.getMoveControl() == 1) {
             if (input.contains("LEFT"))
@@ -108,8 +119,9 @@ public class GameController {
                 input.clear();
                 wall.initializeBallPlayer();
                 if (ball.getBallCount() == 0) {
+                    endController.setLoseLayout();
+                    endController.updateScore();
                     scenes.getStage().setScene(scenes.getEndScene());
-                    ((EndController) scenes.getEndLoader().getController()).updateScore();
                 }
             }
         }

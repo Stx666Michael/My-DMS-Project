@@ -35,13 +35,14 @@ public class Wall {
     }
 
     public void initializeGame(Scenes scenes) {
-        new GameController(width, height, scenes, ball, player, bricks);
-        new GameRenderer(width, height, ball, player, bricks, gc);
+        new GameController(scenes);
+        new GameRenderer(scenes, gc);
     }
 
-    public void resetGame() {
-        ball.reset();
-        ArrayList<Brick> tmp = makeBricks(1);
+    public void resetGame(int level) {
+        ball.reset(level == 1);
+        initializeBallPlayer();
+        ArrayList<Brick> tmp = makeBricks(level);
         bricks.clear();
         bricks.addAll(tmp);
     }
@@ -52,16 +53,16 @@ public class Wall {
         player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
     }
 
+    public Ball getBall() {
+        return ball;
+    }
+
     public Paddle getPlayer() {
         return player;
     }
 
-    public double getBallSpeedBound() {
-        return ballSpeedBound;
-    }
-
-    public double getPlayerSpeedBound() {
-        return playerSpeedBound;
+    public ArrayList<Brick> getBricks() {
+        return bricks;
     }
 
     public int getScore() {
@@ -72,7 +73,7 @@ public class Wall {
         this.ballSpeedBound = ballSpeedBound;
     }
 
-    private ArrayList makeBricks(int level) {
+    private ArrayList<Brick> makeBricks(int level) {
         ArrayList<Brick> bricks = new ArrayList<>();
         Brick brick = new Brick(1, 0, 0);
         int brickWidth = (int)brick.getWidth();
@@ -80,14 +81,23 @@ public class Wall {
         int maxLineBricks = width / brickWidth + 1;
 
         switch (level) {
-            case 1:
-                for (int i = 0; i < 3; i++) {
+            case 1 -> {
+                for (int i = 0; i < 1; i++) {
                     for (int j = 0; j < maxLineBricks; j++) {
                         Brick tmp = new Brick(i+1, j*brickWidth, upSpaceHeight+i*brickHeight);
                         bricks.add(tmp);
                     }
                 }
-                break;
+            }
+            case 2 -> {
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < maxLineBricks; j++) {
+                        Brick tmp = new Brick(i+1, j*brickWidth, upSpaceHeight+i*brickHeight);
+                        bricks.add(tmp);
+                    }
+                }
+            }
+
         }
         return bricks;
     }

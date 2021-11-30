@@ -48,7 +48,7 @@ public class SettingController {
     @FXML
     private void setControl() {
         String s = control.getSelectionModel().getSelectedItem();
-        if (s.equals("Keys"))
+        if (s.equals("Keyboard"))
             scenes.getWall().getPlayer().setMoveControl(1);
         else if (s.equals("Mouse"))
             scenes.getWall().getPlayer().setMoveControl(2);

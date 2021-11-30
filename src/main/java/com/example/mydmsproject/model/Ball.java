@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 public class Ball extends Sprite {
 
-    private int ballCount;
+    private int ballCount = 0;
     private int ballSum;
     private int score = 0;
+    private final ArrayList<BonusBall> bonusBalls = new ArrayList<>();
+    private final ArrayList<Buff> buffs = new ArrayList<>();
 
     public Ball(int ballCount) {
         this.ballCount = ballCount;
         ballSum = ballCount;
         setImage("file:src/main/resources/com/example/mydmsproject/Ball.png");
+    }
+
+    public Ball() {
     }
 
     public void initialize(double speedBound) {
@@ -36,8 +41,16 @@ public class Ball extends Sprite {
         return score;
     }
 
+    public ArrayList<BonusBall> getBonusBalls() {
+        return bonusBalls;
+    }
+
     public void setBallCount(int ballCount) {
         this.ballCount = ballCount;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
     }
 
     public void reverseX() {
@@ -61,34 +74,56 @@ public class Ball extends Sprite {
     }
 
     public void impactBricks(ArrayList<Brick> bricks) {
-        Brick[] tmp = bricks.toArray(new Brick[bricks.size()]);
+        Brick[] tmp = bricks.toArray(new Brick[0]);
         for (Brick brick : tmp) {
             switch (brick.findImpact(this)) {
                 case Brick.UP_IMPACT -> {
-                    if (getVelocityY() > 0)
-                        reverseY();
-                    bricks.remove(brick);
-                    score += brick.getScore();
+                    if (getVelocityY() > 0) reverseY();
+                    removeBrick(bricks, brick, 1);
                 }
                 case Brick.DOWN_IMPACT -> {
-                    if (getVelocityY() < 0)
-                        reverseY();
-                    bricks.remove(brick);
-                    score += brick.getScore();
+                    if (getVelocityY() < 0) reverseY();
+                    removeBrick(bricks, brick, 0);
                 }
                 case Brick.LEFT_IMPACT -> {
-                    if (getVelocityX() > 0)
-                        reverseX();
-                    bricks.remove(brick);
-                    score += brick.getScore();
+                    if (getVelocityX() > 0) reverseX();
+                    removeBrick(bricks, brick, 1);
                 }
                 case Brick.RIGHT_IMPACT -> {
-                    if (getVelocityX() < 0)
-                        reverseX();
-                    bricks.remove(brick);
-                    score += brick.getScore();
+                    if (getVelocityX() < 0) reverseX();
+                    removeBrick(bricks, brick, 1);
                 }
             }
         }
+    }
+
+    private void removeBrick(ArrayList<Brick> bricks, Brick brick, int initialSpeed) {
+        bricks.remove(brick);
+        score += brick.getScore();
+        if (ballCount>0) {
+            if (brick.isBonusBall())
+                bonusBalls.add(brick.makeBonusBall(initialSpeed));
+            else if (brick.isBuff1())
+                buffs.add(brick.makeBuff(initialSpeed, 1));
+            else if (brick.isBuff2())
+                buffs.add(brick.makeBuff(initialSpeed, 2));
+        }
+    }
+
+    public void updateBonusBall() {
+        for (BonusBall bonusBall : bonusBalls) {
+            bonusBall.updateSpeed();
+            bonusBall.update();
+        }
+    }
+
+    public void updateScore() {
+        for (BonusBall bonusBall : bonusBalls) {
+            score += bonusBall.getScore();
+        }
+    }
+
+    public String getData() {
+        return "Ball: "+ballCount+"\nScore: "+score;
     }
 }

@@ -3,7 +3,7 @@ package com.example.mydmsproject.model;
 public class Paddle extends Sprite {
 
     private double moveSpeed;
-    private int windowWidth;
+    private final int windowWidth;
     private int moveControl;
 
     public Paddle(double moveSpeed, int screenWidth) {

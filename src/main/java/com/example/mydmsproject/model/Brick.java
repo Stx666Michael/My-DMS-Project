@@ -2,6 +2,8 @@ package com.example.mydmsproject.model;
 
 import javafx.geometry.Rectangle2D;
 
+import java.util.Random;
+
 public class Brick extends Sprite {
 
     public static final int UP_IMPACT = 1;
@@ -13,28 +15,25 @@ public class Brick extends Sprite {
     private final Rectangle2D down;
     private final Rectangle2D left;
     private final Rectangle2D right;
+    private boolean isBonusBall = false;
+    private boolean isBuff1 = false;
+    private boolean isBuff2 = false;
 
     public Brick(int type, int positionX, int positionY) {
-        switch (type) {
-            case 1 -> {
-                score = 3;
-                setImage("file:src/main/resources/com/example/mydmsproject/Brick1.png");
-            }
-            case 2 -> {
-                score = 2;
-                setImage("file:src/main/resources/com/example/mydmsproject/Brick2.png");
-            }
-            case 3 -> {
-                score = 1;
-                setImage("file:src/main/resources/com/example/mydmsproject/Brick3.png");
-            }
-            default -> score = 0;
-        }
+        score = type;
+        setImage("file:src/main/resources/com/example/mydmsproject/Brick"+type+".png");
         setPosition(positionX, positionY);
         up = new Rectangle2D(getPositionX(), getPositionY(), getWidth(), 1);
         down = new Rectangle2D(getPositionX(), getPositionY()+getHeight(), getWidth(), 1);
         left = new Rectangle2D(getPositionX(), getPositionY(), 1, getHeight());
         right = new Rectangle2D(getPositionX()+getWidth(), getPositionY(), 1, getHeight());
+
+        if (new Random().nextInt(3) == 0 && type == 1)
+            switch (type) {
+                case 1 -> isBonusBall = true;
+                case 2 -> isBuff1 = true;
+                case 3 -> isBuff2 = true;
+            }
     }
 
     public int getScore() {
@@ -57,6 +56,18 @@ public class Brick extends Sprite {
         return right;
     }
 
+    public boolean isBonusBall() {
+        return isBonusBall;
+    }
+
+    public boolean isBuff1() {
+        return isBuff1;
+    }
+
+    public boolean isBuff2() {
+        return isBuff2;
+    }
+
     public final int findImpact(Ball ball) {
         if (getUp().intersects(ball.getBoundary()))
             return UP_IMPACT;
@@ -68,4 +79,24 @@ public class Brick extends Sprite {
             return RIGHT_IMPACT;
         return 0;
     }
+
+    public BonusBall makeBonusBall(int initialSpeed) {
+        BonusBall bonus = new BonusBall();
+        makeIt(bonus, initialSpeed);
+        return bonus;
+    }
+
+    public Buff makeBuff(int initialSpeed, int type) {
+        Buff buff = new Buff(type);
+        makeIt(buff, initialSpeed);
+        return buff;
+    }
+
+    private void makeIt(Ball ball, int initialSpeed) {
+        int offsetX = (int) (getWidth()-ball.getWidth()) / 2;
+        int offsetY = (int) (getHeight()-ball.getHeight()) / 2;
+        ball.setPosition(getPositionX()+offsetX, getPositionY()+offsetY);
+        ball.setVelocity(0, initialSpeed);
+    }
+
 }

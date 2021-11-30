@@ -1,9 +1,6 @@
 package com.example.mydmsproject.view;
 
-import com.example.mydmsproject.model.Ball;
-import com.example.mydmsproject.model.Brick;
-import com.example.mydmsproject.model.Paddle;
-import com.example.mydmsproject.model.Scenes;
+import com.example.mydmsproject.model.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -43,9 +40,12 @@ public class GameRenderer {
         gc.clearRect(0, 0, width, height);
         ball.render(gc);
         player.render(gc);
-        gc.fillText("Ball: "+ball.getBallCount()+"\nScore: "+ball.getScore(), width/2, height/2);
+        gc.fillText(ball.getData(), width/2, height/2);
         for (Brick brick : bricks) {
             brick.render(gc);
+        }
+        for (BonusBall bonusBall : ball.getBonusBalls()) {
+            bonusBall.render(gc);
         }
     }
 }

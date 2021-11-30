@@ -78,7 +78,7 @@ public class Wall {
         Brick brick = new Brick(1, 0, 0);
         int brickWidth = (int)brick.getWidth();
         int brickHeight = (int)brick.getHeight();
-        int maxLineBricks = width / brickWidth + 1;
+        int maxLineBricks = width / brickWidth;
 
         switch (level) {
             case 1 -> {

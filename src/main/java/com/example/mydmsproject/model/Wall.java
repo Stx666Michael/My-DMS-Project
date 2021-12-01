@@ -49,6 +49,7 @@ public class Wall {
 
     public void initializeBallPlayer() {
         ball.initialize(ballSpeedBound);
+        player.removeBuff();
         ball.setPosition((width-ball.getWidth())/2.0, height-ball.getHeight()-player.getHeight()*2);
         player.setPosition((width-player.getWidth())/2.0, height-player.getHeight()*2);
     }
@@ -82,7 +83,7 @@ public class Wall {
 
         switch (level) {
             case 1 -> {
-                for (int i = 0; i < 1; i++) {
+                for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < maxLineBricks; j++) {
                         Brick tmp = new Brick(i+1, j*brickWidth, upSpaceHeight+i*brickHeight);
                         bricks.add(tmp);

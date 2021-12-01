@@ -41,11 +41,8 @@ public class GameRenderer {
         ball.render(gc);
         player.render(gc);
         gc.fillText(ball.getData(), width/2, height/2);
-        for (Brick brick : bricks) {
-            brick.render(gc);
-        }
-        for (BonusBall bonusBall : ball.getBonusBalls()) {
-            bonusBall.render(gc);
-        }
+        for (Brick brick : bricks) brick.render(gc);
+        for (BonusBall bonusBall : ball.getBonusBalls()) bonusBall.render(gc);
+        for (Buff buff : ball.getBuffs()) buff.render(gc);
     }
 }

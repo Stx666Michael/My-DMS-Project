@@ -20,7 +20,7 @@ public class Brick extends Sprite {
     private boolean isBuff2 = false;
 
     public Brick(int type, int positionX, int positionY) {
-        score = type;
+        score = 4 - type;
         setImage("file:src/main/resources/com/example/mydmsproject/Brick"+type+".png");
         setPosition(positionX, positionY);
         up = new Rectangle2D(getPositionX(), getPositionY(), getWidth(), 1);
@@ -28,10 +28,10 @@ public class Brick extends Sprite {
         left = new Rectangle2D(getPositionX(), getPositionY(), 1, getHeight());
         right = new Rectangle2D(getPositionX()+getWidth(), getPositionY(), 1, getHeight());
 
-        if (new Random().nextInt(3) == 0 && type == 1)
+        if (new Random().nextInt(3) == 0)
             switch (type) {
-                case 1 -> isBonusBall = true;
-                case 2 -> isBuff1 = true;
+                case 1 -> isBuff1 = true;
+                case 2 -> isBonusBall = true;
                 case 3 -> isBuff2 = true;
             }
     }

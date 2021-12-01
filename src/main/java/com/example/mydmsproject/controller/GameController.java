@@ -77,7 +77,7 @@ public class GameController {
             nextLevel();
         }
         ball.update();
-        ball.updateBonusBall();
+        ball.updateBonusBuff(height);
         if (player.getMoveControl() == 1) {
             if (input.contains("LEFT"))
                 player.moveLeft();
@@ -92,6 +92,7 @@ public class GameController {
             player.setPositionX(mouseX);
         }
         findImpacts(ball);
+        player.findBuffImpacts(ball.getBuffs());
         BonusBall[] tmp = ball.getBonusBalls().toArray(new BonusBall[0]);
         for (BonusBall bonusBall : tmp) {
             findImpacts(bonusBall);
@@ -110,9 +111,9 @@ public class GameController {
             ball.reverseX();
         }
         else if (ball.impactBorderY(height)) {
-            if (ball.getVelocityY()<0)
+            if (ball.getVelocityY() < 0)
                 ball.reverseY();
-            else if (ball.getBallCount()>0)
+            else if (ball.getBallCount() > 0)
                 loseBall();
             else {
                 this.ball.getBonusBalls().remove(ball);
@@ -128,7 +129,6 @@ public class GameController {
         isBegin = false;
         input.clear();
         ball.updateScore();
-        ball.getBonusBalls().clear();
         wall.initializeBallPlayer();
         if (ball.getBallCount() == 0) {
             endController.setLoseLayout();
@@ -142,7 +142,7 @@ public class GameController {
         isBegin = false;
         input.clear();
         ball.updateScore();
-        ball.getBonusBalls().clear();
+        ball.clearBonus();
         endController.setWinLayout();
         endController.updateScore();
         scenes.getStage().setScene(scenes.getEndScene());

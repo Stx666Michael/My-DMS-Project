@@ -1,5 +1,7 @@
 package com.example.mydmsproject.model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 
 public class Ball extends Sprite {
@@ -7,6 +9,9 @@ public class Ball extends Sprite {
     private int ballCount = 0;
     private int ballSum;
     private int score = 0;
+    private int lightningBreak = 0;
+    private boolean isLightning = false;
+    private Lightning lightning = new Lightning("ball");
     private final ArrayList<BonusBall> bonusBalls = new ArrayList<>();
     private final ArrayList<Buff> buffs = new ArrayList<>();
 
@@ -25,6 +30,7 @@ public class Ball extends Sprite {
         speedY = Math.sqrt(Math.pow(speedBound,2) - Math.pow(speedX,2));
         speedY = -speedY;
         setVelocity(speedX, speedY);
+        clearBonus();
     }
 
     public void reset(boolean cleanScore) {
@@ -45,6 +51,10 @@ public class Ball extends Sprite {
         return bonusBalls;
     }
 
+    public ArrayList<Buff> getBuffs() {
+        return buffs;
+    }
+
     public void setBallCount(int ballCount) {
         this.ballCount = ballCount;
     }
@@ -62,7 +72,9 @@ public class Ball extends Sprite {
     }
 
     public boolean impactPlayer(Paddle player) {
-        return (player.intersects(this) && getVelocityY()>0);
+        boolean isImpact = player.intersects(this) && getVelocityY()>0;
+        if (isImpact && player.isBuff2()) isLightning = true;
+        return isImpact;
     }
 
     public boolean impactBorderX(int width) {
@@ -78,19 +90,19 @@ public class Ball extends Sprite {
         for (Brick brick : tmp) {
             switch (brick.findImpact(this)) {
                 case Brick.UP_IMPACT -> {
-                    if (getVelocityY() > 0) reverseY();
+                    if (getVelocityY()>0 && !isLightning) reverseY();
                     removeBrick(bricks, brick, 1);
                 }
                 case Brick.DOWN_IMPACT -> {
-                    if (getVelocityY() < 0) reverseY();
+                    if (getVelocityY()<0 && !isLightning) reverseY();
                     removeBrick(bricks, brick, 0);
                 }
                 case Brick.LEFT_IMPACT -> {
-                    if (getVelocityX() > 0) reverseX();
+                    if (getVelocityX()>0 && !isLightning) reverseX();
                     removeBrick(bricks, brick, 1);
                 }
                 case Brick.RIGHT_IMPACT -> {
-                    if (getVelocityX() < 0) reverseX();
+                    if (getVelocityX()<0 && !isLightning) reverseX();
                     removeBrick(bricks, brick, 1);
                 }
             }
@@ -100,7 +112,8 @@ public class Ball extends Sprite {
     private void removeBrick(ArrayList<Brick> bricks, Brick brick, int initialSpeed) {
         bricks.remove(brick);
         score += brick.getScore();
-        if (ballCount>0) {
+        if (ballCount > 0) {
+            lightningBreak++;
             if (brick.isBonusBall())
                 bonusBalls.add(brick.makeBonusBall(initialSpeed));
             else if (brick.isBuff1())
@@ -110,20 +123,34 @@ public class Ball extends Sprite {
         }
     }
 
-    public void updateBonusBall() {
-        for (BonusBall bonusBall : bonusBalls) {
-            bonusBall.updateSpeed();
-            bonusBall.update();
+    public void updateBonusBuff(int height) {
+        for (BonusBall bonusBall : bonusBalls) bonusBall.update();
+        for (Buff buff : buffs) buff.update(height);
+        if (isLightning) lightning.update(this);
+        if (lightningBreak >= lightning.getMaxLightningBreak()) {
+            isLightning = false;
+            lightningBreak = 0;
         }
     }
 
+    public void clearBonus() {
+        bonusBalls.clear();
+        buffs.clear();
+        isLightning = false;
+        lightningBreak = 0;
+    }
+
     public void updateScore() {
-        for (BonusBall bonusBall : bonusBalls) {
-            score += bonusBall.getScore();
-        }
+        for (BonusBall bonusBall : bonusBalls) score += bonusBall.getScore();
     }
 
     public String getData() {
         return "Ball: "+ballCount+"\nScore: "+score;
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+        if (isLightning && ballCount>0) lightning.render(gc);
     }
 }

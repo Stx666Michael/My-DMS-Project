@@ -26,7 +26,7 @@ public class Ball extends Sprite {
 
     public void initialize(double speedBound) {
         double speedX, speedY;
-        speedX = (Math.random()-1)*speedBound/2;
+        speedX = (Math.random()-0.5)*speedBound/2;
         speedY = Math.sqrt(Math.pow(speedBound,2) - Math.pow(speedX,2));
         speedY = -speedY;
         setVelocity(speedX, speedY);

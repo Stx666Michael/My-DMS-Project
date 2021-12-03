@@ -3,7 +3,7 @@ package com.example.mydmsproject.model;
 import com.example.mydmsproject.controller.EndController;
 import com.example.mydmsproject.controller.SettingController;
 import com.example.mydmsproject.controller.StartController;
-import com.example.mydmsproject.main.BreakoutApp;
+import com.example.mydmsproject.view.GameRenderer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -32,9 +32,9 @@ public class Scenes {
         isSetting = false;
         game = gamePane(width, height);
 
-        FXMLLoader start = new FXMLLoader(BreakoutApp.class.getResource("start.fxml"));
-        FXMLLoader settings = new FXMLLoader(BreakoutApp.class.getResource("settings.fxml"));
-        FXMLLoader end = new FXMLLoader(BreakoutApp.class.getResource("end.fxml"));
+        FXMLLoader start = new FXMLLoader(GameRenderer.class.getResource("start.fxml"));
+        FXMLLoader settings = new FXMLLoader(GameRenderer.class.getResource("settings.fxml"));
+        FXMLLoader end = new FXMLLoader(GameRenderer.class.getResource("end.fxml"));
 
         settingLoader = settings;
         endLoader = end;

@@ -14,12 +14,13 @@ import java.util.*;
 public class EndController {
 
     private Scenes scenes;
-    private int currentLevel = 1;
     private TextInputDialog dialog = new TextInputDialog();
     private HashMap<String, Integer> scoreList = new LinkedHashMap<>();
 
     @FXML private Text title;
     @FXML private Text score;
+    @FXML private Text ballLeft;
+    @FXML private Text breakout;
     @FXML private Text list;
     @FXML private Button play;
 
@@ -43,13 +44,20 @@ public class EndController {
     }
 
     public void updateScore() {
+        int ballLeftScore = scenes.getWall().getBall().getBallCount()*10;
+        int lastLevelScore = scenes.getWall().getLastLevelScore();
+        scenes.getWall().getBall().addScore(ballLeftScore);
         int score = scenes.getWall().getScore();
+
+        ballLeft.setText("+" + ballLeftScore);
+        breakout.setText("+" + (score-lastLevelScore-ballLeftScore));
         this.score.setText(Integer.toString(score));
+        scenes.getWall().setLastLevelScore(score);
     }
 
     private void playNextLevel() {
-        currentLevel++;
-        scenes.getWall().resetGame(currentLevel);
+        scenes.getWall().addCurrentLevel();
+        scenes.getWall().resetGame(scenes.getWall().getCurrentLevel());
         scenes.getStage().setScene(scenes.getGameScene());
     }
 

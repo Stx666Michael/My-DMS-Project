@@ -11,3 +11,5 @@ shit,4
 michael,72
 balabala,9
 lion,55
+idk,132
+gooood,162

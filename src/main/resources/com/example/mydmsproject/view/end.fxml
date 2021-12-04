@@ -11,7 +11,7 @@
          <Font name="Arial Bold" size="30.0" />
       </font>
    </Text>
-   <Text layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Score" textAlignment="CENTER" wrappingWidth="600" />
+   <Text layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Score" textAlignment="CENTER" wrappingWidth="600" />
    <Text fx:id="score" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
       <font>
          <Font size="24.0" />
@@ -20,11 +20,26 @@
    <Text layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="High Scores" textAlignment="CENTER" underline="true" wrappingWidth="600" />
    <Text fx:id="list" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
       <font>
-         <Font name="Courier" size="13.0" />
+         <Font name="Arial Bold" size="13.0" />
       </font>
    </Text>
    <Button fx:id="play" layoutX="370.0" layoutY="320.0" mnemonicParsing="false" prefWidth="80.0" />
    <Button layoutX="260.0" layoutY="320.0" mnemonicParsing="false" onAction="#saveScore" prefWidth="80.0" text="Save Score" />
    <Button layoutX="150.0" layoutY="320.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" textFill="RED" />
+   <Text layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ball Left                                            Breakout" textAlignment="CENTER" wrappingWidth="600">
+      <font>
+         <Font size="12.0" />
+      </font>
+   </Text>
+   <Text fx:id="ballLeft" layoutX="210.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00" wrappingWidth="27.570938110351562">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="breakout" layoutX="360.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00" wrappingWidth="27.570938110351562">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
 
 </Pane>

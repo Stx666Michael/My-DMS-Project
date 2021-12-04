@@ -17,6 +17,8 @@ public class Wall {
     private double ballSpeedBound;
     private double playerSpeedBound;
     private int upSpaceHeight;
+    private int currentLevel;
+    private int lastLevelScore = 0;
     private final GraphicsContext gc;
 
     public Wall(int WIDTH, int HEIGHT, GraphicsContext gc) {
@@ -25,6 +27,7 @@ public class Wall {
         height = HEIGHT;
         ballSpeedBound = 2;
         playerSpeedBound = 2;
+        currentLevel = 1;
         upSpaceHeight = height / 10;
 
         ball = new Ball(ballCount);
@@ -41,8 +44,10 @@ public class Wall {
 
     public void resetGame(int level) {
         ball.reset(level == 1);
+        if (level == 1) lastLevelScore = 0;
         initializeBallPlayer();
         ArrayList<Brick> tmp = makeBricks(level);
+        currentLevel = level;
         bricks.clear();
         bricks.addAll(tmp);
     }
@@ -68,6 +73,22 @@ public class Wall {
 
     public int getScore() {
         return ball.getScore();
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public int getLastLevelScore() {
+        return lastLevelScore;
+    }
+
+    public void addCurrentLevel() {
+        currentLevel++;
+    }
+
+    public void setLastLevelScore(int lastLevelScore) {
+        this.lastLevelScore = lastLevelScore;
     }
 
     public void setBallSpeedBound(double ballSpeedBound) {

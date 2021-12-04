@@ -144,10 +144,6 @@ public class Ball extends Sprite {
         for (BonusBall bonusBall : bonusBalls) score += bonusBall.getScore();
     }
 
-    public String getData() {
-        return "Ball: "+ballCount+"\nScore: "+score;
-    }
-
     @Override
     public void render(GraphicsContext gc) {
         super.render(gc);

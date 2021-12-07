@@ -9,49 +9,51 @@ import javafx.scene.text.Text;
 
 public class SettingController {
 
-    private Scenes scenes;
+    private Scenes m_scenes;
 
-    @FXML private Text title;
-    @FXML private Slider ballSpeed;
-    @FXML private Slider paddleSpeed;
-    @FXML private ComboBox<String> theme;
-    @FXML private ComboBox<String> control;
-    @FXML private Button restart;
+    @FXML private Text m_title;
+    @FXML private Slider m_ballSpeed;
+    @FXML private Slider m_paddleSpeed;
+    @FXML private ComboBox<String> m_theme;
+    @FXML private ComboBox<String> m_control;
+    @FXML private Button m_restart;
 
     public void initData(Scenes scenes) {
-        this.scenes = scenes;
+        m_scenes = scenes;
     }
 
     public void changeLayout() {
-        title.setText("Pause Menu");
-        restart.setVisible(true);
+        m_title.setText("Pause Menu");
+        m_restart.setVisible(true);
     }
 
     @FXML
     private void initialize() {
-        ballSpeed.setValue(2);
-        paddleSpeed.setValue(2);
-        theme.setPromptText("Light");
-        control.setPromptText("Keyboard");
-        restart.setVisible(false);
+        m_ballSpeed.setValue(2);
+        m_paddleSpeed.setValue(2);
+        m_theme.setPromptText("Light");
+        m_control.setPromptText("Keyboard");
+        m_restart.setVisible(false);
     }
 
     @FXML
     private void setTheme() {
-        String s = theme.getSelectionModel().getSelectedItem();
+        String s = m_theme.getSelectionModel().getSelectedItem();
         switch (s) {
-            case "Light" -> scenes.setGameTheme("transparent");
-            case "Dark" -> scenes.setGameTheme("rgb(50, 50, 50)");
+            case "Light" -> m_scenes.setGameTheme("transparent");
+            case "Dark" -> m_scenes.setGameTheme("rgb(50, 50, 50)");
         }
     }
 
     @FXML
     private void setControl() {
-        String s = control.getSelectionModel().getSelectedItem();
+        String s = m_control.getSelectionModel().getSelectedItem();
+        final int KEYBOARD = 1;
+        final int MOUSE = 2;
         if (s.equals("Keyboard"))
-            scenes.getWall().getPlayer().setMoveControl(1);
+            m_scenes.getWall().getPlayer().setMoveControl(KEYBOARD);
         else if (s.equals("Mouse"))
-            scenes.getWall().getPlayer().setMoveControl(2);
+            m_scenes.getWall().getPlayer().setMoveControl(MOUSE);
     }
 
     @FXML
@@ -61,16 +63,17 @@ public class SettingController {
 
     @FXML
     private void restart() {
-        scenes.getWall().resetGame(1);
-        scenes.getStage().setScene(scenes.getGameScene());
-        scenes.setSetting(false);
+        m_scenes.getWall().resetGame(1);
+        m_scenes.getStage().setScene(m_scenes.getGameScene());
+        m_scenes.setSetting(false);
     }
 
     @FXML
     private void confirm() {
-        scenes.getWall().setBallSpeedBound(ballSpeed.getValue());
-        scenes.getWall().getPlayer().setMoveSpeed(paddleSpeed.getValue());
-        scenes.getStage().setScene(scenes.getLastScene());
-        scenes.setSetting(false);
+        m_scenes.getWall().setBallInitialSpeed(m_ballSpeed.getValue());
+        m_scenes.getWall().getPlayer().setMoveSpeed(m_paddleSpeed.getValue());
+        m_scenes.getStage().setScene(m_scenes.getLastScene());
+        m_scenes.setSetting(false);
     }
+
 }

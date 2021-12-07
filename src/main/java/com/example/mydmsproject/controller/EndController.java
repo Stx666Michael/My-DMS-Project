@@ -13,57 +13,58 @@ import java.util.*;
 
 public class EndController {
 
-    private Scenes scenes;
-    private TextInputDialog dialog = new TextInputDialog();
-    private HashMap<String, Integer> scoreList = new LinkedHashMap<>();
+    private Scenes m_scenes;
+    private final TextInputDialog m_dialog = new TextInputDialog();
+    private HashMap<String, Integer> m_scoreList = new LinkedHashMap<>();
 
-    @FXML private Text title;
-    @FXML private Text score;
-    @FXML private Text ballLeft;
-    @FXML private Text breakout;
-    @FXML private Text list;
-    @FXML private Button play;
+    @FXML private Text m_title;
+    @FXML private Text m_score;
+    @FXML private Text m_ballLeft;
+    @FXML private Text m_breakout;
+    @FXML private Text m_list;
+    @FXML private Button m_play;
 
     public void initData(Scenes scenes) {
-        this.scenes = scenes;
-        dialog.setTitle("Well Done!");
-        dialog.setHeaderText("Enter your name:");
+        m_scenes = scenes;
+        m_dialog.setTitle("Well Done!");
+        m_dialog.setHeaderText("Enter your name:");
         updateScoreList();
     }
 
     public void setWinLayout() {
-        title.setText("YOU  WIN");
-        play.setText("Next Level");
-        play.setOnAction(e -> playNextLevel());
+        m_title.setText("YOU  WIN");
+        m_play.setText("Next Level");
+        m_play.setOnAction(e -> playNextLevel());
     }
 
     public void setLoseLayout() {
-        title.setText("GAME OVER");
-        play.setText("Play Again");
-        play.setOnAction(e -> restart());
+        m_title.setText("GAME OVER");
+        m_play.setText("Play Again");
+        m_play.setOnAction(e -> restart());
     }
 
     public void updateScore() {
-        int ballLeftScore = scenes.getWall().getBall().getBallCount()*10;
-        int lastLevelScore = scenes.getWall().getLastLevelScore();
-        scenes.getWall().getBall().addScore(ballLeftScore);
-        int score = scenes.getWall().getScore();
-
-        ballLeft.setText("+" + ballLeftScore);
-        breakout.setText("+" + (score-lastLevelScore-ballLeftScore));
-        this.score.setText(Integer.toString(score));
-        scenes.getWall().setLastLevelScore(score);
+        final int LEFT_BALL_SCORE = 10;
+        int ballLeftCount = m_scenes.getWall().getBall().getBallCount();
+        int ballLeftScore = ballLeftCount * LEFT_BALL_SCORE;
+        int lastLevelScore = m_scenes.getWall().getLastLevelScore();
+        m_scenes.getWall().getBall().addScore(ballLeftScore);
+        int score = m_scenes.getWall().getBall().getScore();
+        m_ballLeft.setText("+" + ballLeftScore);
+        m_breakout.setText("+" + (score-lastLevelScore-ballLeftScore));
+        m_score.setText(Integer.toString(score));
+        m_scenes.getWall().setLastLevelScore(score);
     }
 
     private void playNextLevel() {
-        scenes.getWall().addCurrentLevel();
-        scenes.getWall().resetGame(scenes.getWall().getCurrentLevel());
-        scenes.getStage().setScene(scenes.getGameScene());
+        m_scenes.getWall().addCurrentLevel();
+        m_scenes.getWall().resetGame(m_scenes.getWall().getCurrentLevel());
+        m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 
     private void restart() {
-        scenes.getWall().resetGame(1);
-        scenes.getStage().setScene(scenes.getGameScene());
+        m_scenes.getWall().resetGame(1);
+        m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 
     private void writeFile(String name, int score) {
@@ -86,11 +87,11 @@ public class EndController {
                 String[] data = myReader.nextLine().split(",");
                 String name = data[0];
                 Integer score = Integer.valueOf(data[1]);
-                scoreList.put(name, score);
+                m_scoreList.put(name, score);
             }
             sortScoreList();
             updateListView();
-            System.out.println(scoreList.toString());
+            System.out.println(m_scoreList.toString());
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -99,42 +100,43 @@ public class EndController {
     }
 
     private void updateListView() {
-        String s = "";
-        List<String> nameList = new ArrayList<>(scoreList.keySet());
-        for (String name : nameList.subList(0, 5)) {
-            s += name + " : " + scoreList.get(name) + "\n";
+        StringBuilder s = new StringBuilder();
+        List<String> nameList = new ArrayList<>(m_scoreList.keySet());
+        final int SHOW_TOP_SCORE = 5;
+        for (String name : nameList.subList(0, SHOW_TOP_SCORE)) {
+            s.append(name).append(" : ")
+                    .append(m_scoreList.get(name)).append("\n");
         }
-        list.setText(s);
+        m_list.setText(s.toString());
     }
 
     private void sortScoreList() {
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(scoreList.entrySet());
+        List<Map.Entry<String, Integer>> list =
+                new ArrayList<>(m_scoreList.entrySet());
         list.sort(Map.Entry.comparingByValue());
         Collections.reverse(list);
         HashMap<String, Integer> sortedList = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> entry : list) {
             sortedList.put(entry.getKey(), entry.getValue());
         }
-        scoreList = sortedList;
+        m_scoreList = sortedList;
     }
 
     @FXML
     private void saveScore() {
-        Optional<String> result = dialog.showAndWait();
+        Optional<String> result = m_dialog.showAndWait();
         result.ifPresent(name -> {
-
             if (name.isEmpty() || name.contains(",")) {
                 Alert a = new Alert(Alert.AlertType.WARNING);
                 a.setHeaderText("Invalid name! Please try again.");
                 a.show();
             }
-            else if (scoreList.containsKey(name)) {
+            else if (m_scoreList.containsKey(name)) {
                 Alert a = new Alert(Alert.AlertType.WARNING);
                 a.setHeaderText("Name exists! Please try again.");
                 a.show();
             }
-            else
-                writeFile(name, scenes.getWall().getScore());
+            else writeFile(name, m_scenes.getWall().getBall().getScore());
         });
     }
 

@@ -6,146 +6,144 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.util.Duration;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
-import java.awt.*;
+import javafx.util.Duration;
 import java.util.ArrayList;
 
 public class GameController {
 
-    private final int refreshInterval = 5;
-    private final int width;
-    private final int height;
-    private final Wall wall;
-    private final Ball ball;
-    private final Paddle player;
-    private final ArrayList<Brick> bricks;
-    private final ArrayList<String> input;
-    private Point mouseLocation;
-    private double playerSpeed;
-    private final Timeline timeline;
-    private final Scenes scenes;
-    private boolean isBegin = false;
-    private EndController endController;
+    private final int REFRESH_TIME = 5;
+
+    private final int m_width;
+    private final int m_height;
+    private final Wall m_wall;
+    private final Ball m_ball;
+    private final Paddle m_player;
+    private final Scenes m_scenes;
+    private final Scene m_gameScene;
+    private final Timeline m_timeline;
+    private final EndController m_endController;
+    private final ArrayList<Brick> m_bricks;
+    private final ArrayList<String> m_input = new ArrayList<>();
+
+    private boolean m_isBegin = false;
 
     public GameController(Scenes scenes) {
-        this.scenes = scenes;
-        Scene gameScene = scenes.getGameScene();
-        width = (int) gameScene.getWidth();
-        height = (int) gameScene.getHeight();
-        wall = scenes.getWall();
-        ball = wall.getBall();
-        player = wall.getPlayer();
-        bricks = wall.getBricks();
-        input = new ArrayList<>();
-        endController = scenes.getEndLoader().getController();
+        m_scenes = scenes;
+        m_gameScene = scenes.getGameScene();
+        m_width = (int) m_gameScene.getWidth();
+        m_height = (int) m_gameScene.getHeight();
+        m_wall = scenes.getWall();
+        m_ball = m_wall.getBall();
+        m_player = m_wall.getPlayer();
+        m_bricks = m_wall.getBricks();
+        m_endController = scenes.getEndLoader().getController();
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> update()));
-        timeline.setCycleCount(Animation.INDEFINITE);
+        m_gameScene.setOnKeyPressed(this::keyPressEvent);
+        m_gameScene.setOnKeyReleased(this::keyReleaseEvent);
+        m_gameScene.setOnMouseMoved(this::mouseMoveEvent);
 
-        gameScene.setOnKeyPressed(e -> {
-            String code = e.getCode().toString();
-            if (!input.contains(code))
-                input.add(code);
-            if (e.getCode() == KeyCode.SPACE && !scenes.isSetting()) {
-                if (isBegin) {
-                    timeline.stop();
-                    isBegin = false;
-                } else {
-                    timeline.play();
-                    isBegin = true;
-                }
+        m_timeline = new Timeline(new KeyFrame(Duration.millis(REFRESH_TIME),
+                event -> update()));
+        m_timeline.setCycleCount(Animation.INDEFINITE);
+    }
+
+    private void keyPressEvent(KeyEvent e) {
+        String code = e.getCode().toString();
+        if (!m_input.contains(code)) m_input.add(code);
+        if (e.getCode() == KeyCode.SPACE && m_scenes.isNotSetting()) {
+            if (m_isBegin) {
+                m_timeline.stop();
+                m_isBegin = false;
+            } else {
+                m_timeline.play();
+                m_isBegin = true;
             }
-            if (e.getCode() == KeyCode.ESCAPE && !scenes.isSetting()) {
-                timeline.stop();
-                scenes.setSetting(true);
-                isBegin = false;
-                input.clear();
-                scenes.getStage().setScene(scenes.getSettingScene());
-                scenes.setLastScene(gameScene);
-            }
-        });
-        gameScene.setOnKeyReleased(e -> {
-            String code = e.getCode().toString();
-            input.remove(code);
-            player.setVelocity(0, 0);
-        });
+        }
+        if (e.getCode() == KeyCode.ESCAPE && m_scenes.isNotSetting()) {
+            m_timeline.stop();
+            m_scenes.setSetting(true);
+            m_isBegin = false;
+            m_input.clear();
+            m_scenes.getStage().setScene(m_scenes.getSettingScene());
+            m_scenes.setLastScene(m_gameScene);
+        }
+    }
+
+    private void keyReleaseEvent(KeyEvent e) {
+        String code = e.getCode().toString();
+        m_input.remove(code);
+        m_player.setVelocity(0, 0);
+    }
+
+    private void mouseMoveEvent(MouseEvent e) {
+        final int MOUSE = 2;
+        if (m_player.getMoveControl() == MOUSE && m_isBegin)
+            m_player.setPositionX(e.getX() - m_player.getWidth() / 2);
     }
 
     private void update() {
-        if (bricks.isEmpty()) {
-            nextLevel();
+        if (m_bricks.isEmpty()) nextLevel();
+        m_ball.update();
+        m_ball.updateBonusBuff(m_height);
+        final int KEYBOARD = 1;
+        if (m_player.getMoveControl() == KEYBOARD) {
+            if (m_input.contains("LEFT")) m_player.moveLeft();
+            if (m_input.contains("RIGHT")) m_player.moveRight();
         }
-        ball.update();
-        ball.updateBonusBuff(height);
-        if (player.getMoveControl() == 1) {
-            if (input.contains("LEFT"))
-                player.moveLeft();
-            if (input.contains("RIGHT"))
-                player.moveRight();
+        else {
+            double dist = m_player.getPositionX()-m_player.getLastPositionX();
+            if (dist != 0) {
+                m_player.setVelocity(dist/REFRESH_TIME, 0);
+                m_player.setLastPositionX(m_player.getPositionX());
+            }
         }
-        else if (player.getMoveControl() == 2) {
-            mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            double windowX = scenes.getStage().getX();
-            double mouseX = mouseLocation.getX()-windowX-player.getWidth()/2;
-            playerSpeed = (mouseX-player.getPositionX()) / refreshInterval;
-            player.setPositionX(mouseX);
-        }
-        findImpacts(ball);
-        player.findBuffImpacts(ball.getBuffs());
-        BonusBall[] tmp = ball.getBonusBalls().toArray(new BonusBall[0]);
-        for (BonusBall bonusBall : tmp) {
-            findImpacts(bonusBall);
-        }
+        findImpacts(m_ball);
+        m_player.findBuffImpacts(m_ball.getBuffs());
+        BonusBall[] tmp = m_ball.getBonusBalls().toArray(new BonusBall[0]);
+        for (BonusBall bonusBall : tmp) findImpacts(bonusBall);
     }
 
     private void findImpacts(Ball ball) {
-        if (ball.impactPlayer(player)) {
+        if (ball.impactPlayer(m_player)) {
             ball.reverseY();
-            if (player.getMoveControl() == 1)
-                ball.addVelocity(player.getVelocityX()/10, 0);
-            else if (player.getMoveControl() == 2)
-                ball.addVelocity(playerSpeed/10, 0);
+            final double FRICTION = 0.1;
+            ball.addVelocity(m_player.getVelocityX()*FRICTION, 0);
         }
-        else if (ball.impactBorderX(width)) {
-            ball.reverseX();
+        else if (ball.impactBorderX(m_width)) ball.reverseX();
+        else if (ball.impactBorderY(m_height)) {
+            if (ball.getVelocityY() < 0) ball.reverseY();
+            else if (ball.getBallCount() > 0) loseBall();
+            else m_ball.loseBonusBall((BonusBall) ball);
         }
-        else if (ball.impactBorderY(height)) {
-            if (ball.getVelocityY() < 0)
-                ball.reverseY();
-            else if (ball.getBallCount() > 0)
-                loseBall();
-            else {
-                this.ball.getBonusBalls().remove(ball);
-                this.ball.addScore(ball.getScore());
-            }
-        }
-        ball.impactBricks(bricks);
+        ball.impactBricks(m_bricks);
     }
 
     private void loseBall() {
-        ball.setBallCount(ball.getBallCount()-1);
-        timeline.stop();
-        isBegin = false;
-        input.clear();
-        ball.updateScore();
-        wall.initializeBallPlayer();
-        if (ball.getBallCount() == 0) {
-            endController.setLoseLayout();
-            endController.updateScore();
-            scenes.getStage().setScene(scenes.getEndScene());
+        m_ball.setBallCount(m_ball.getBallCount()-1);
+        m_timeline.stop();
+        m_isBegin = false;
+        m_input.clear();
+        m_ball.updateScore();
+        m_wall.initializeBallPlayer();
+        if (m_ball.getBallCount() == 0) {
+            m_endController.setLoseLayout();
+            m_endController.updateScore();
+            m_scenes.getStage().setScene(m_scenes.getEndScene());
         }
     }
 
     private void nextLevel() {
-        timeline.stop();
-        isBegin = false;
-        input.clear();
-        ball.updateScore();
-        ball.clearBonus();
-        endController.setWinLayout();
-        endController.updateScore();
-        scenes.getStage().setScene(scenes.getEndScene());
+        m_timeline.stop();
+        m_isBegin = false;
+        m_input.clear();
+        m_ball.updateScore();
+        m_ball.clearBonus();
+        m_endController.setWinLayout();
+        m_endController.updateScore();
+        m_scenes.getStage().setScene(m_scenes.getEndScene());
     }
 
 }

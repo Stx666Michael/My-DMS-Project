@@ -6,57 +6,46 @@ import javafx.geometry.Rectangle2D;
 
 public abstract class Sprite {
 
-    private Image image;
-    private double positionX;
-    private double positionY;
-    private double velocityX;
-    private double velocityY;
-    private double width;
-    private double height;
-
-    public Sprite() {
-        positionX = 0;
-        positionY = 0;
-        velocityX = 0;
-        velocityY = 0;
-    }
-
-    public void render(GraphicsContext gc) {
-        gc.drawImage( image, positionX, positionY );
-    }
+    private Image m_image;
+    private double m_positionX;
+    private double m_positionY;
+    private double m_velocityX;
+    private double m_velocityY;
+    private double m_width;
+    private double m_height;
 
     public double getPositionX() {
-        return positionX;
+        return m_positionX;
     }
 
     public double getPositionY() {
-        return positionY;
+        return m_positionY;
     }
 
     public double getVelocityX() {
-        return velocityX;
+        return m_velocityX;
     }
 
     public double getVelocityY() {
-        return velocityY;
+        return m_velocityY;
     }
 
     public double getWidth() {
-        return width;
+        return m_width;
     }
 
     public double getHeight() {
-        return height;
+        return m_height;
     }
 
     public Rectangle2D getBoundary() {
-        return new Rectangle2D(positionX,positionY,width,height);
+        return new Rectangle2D(m_positionX, m_positionY, m_width, m_height);
     }
 
     public void setImage(Image i) {
-        image = i;
-        width = i.getWidth();
-        height = i.getHeight();
+        m_image = i;
+        m_width = i.getWidth();
+        m_height = i.getHeight();
     }
 
     public void setImage(String filename) {
@@ -65,23 +54,34 @@ public abstract class Sprite {
     }
 
     public void setPosition(double x, double y) {
-        positionX = x;
-        positionY = y;
+        m_positionX = x;
+        m_positionY = y;
     }
 
     public void setVelocity(double x, double y) {
-        velocityX = x;
-        velocityY = y;
+        m_velocityX = x;
+        m_velocityY = y;
     }
 
     public void addVelocity(double x, double y) {
-        velocityX += x;
-        velocityY += y;
+        m_velocityX += x;
+        m_velocityY += y;
+    }
+
+    public Sprite() {
+        m_positionX = 0;
+        m_positionY = 0;
+        m_velocityX = 0;
+        m_velocityY = 0;
+    }
+
+    public void render(GraphicsContext gc) {
+        gc.drawImage(m_image, m_positionX, m_positionY);
     }
 
     public void update() {
-        positionX += velocityX;
-        positionY += velocityY;
+        m_positionX += m_velocityX;
+        m_positionY += m_velocityY;
     }
 
     public boolean intersects(Sprite s) {
@@ -89,7 +89,8 @@ public abstract class Sprite {
     }
 
     public String toString() {
-        return " Position: [" + positionX + "," + positionY + "]"
-                + " Velocity: [" + velocityX + "," + velocityY + "]";
+        return " Position: [" + m_positionX + "," + m_positionY + "]"
+                + " Velocity: [" + m_velocityX + "," + m_velocityY + "]";
     }
+
 }

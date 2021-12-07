@@ -5,22 +5,24 @@ import javafx.fxml.FXML;
 
 public class StartController {
 
-    private Scenes scenes;
+    private Scenes m_scenes;
 
     public void initData(Scenes scenes) {
-        this.scenes = scenes;
+        m_scenes = scenes;
     }
 
     @FXML
     private void startGame() {
-        scenes.getStage().setScene(scenes.getGameScene());
-        scenes.getWall().initializeGame(scenes);
-        ((SettingController) scenes.getSettingLoader().getController()).changeLayout();
+        m_scenes.getStage().setScene(m_scenes.getGameScene());
+        m_scenes.getWall().initializeGame(m_scenes);
+        ((SettingController) m_scenes.getSettingLoader().getController())
+                .changeLayout();
     }
 
     @FXML
     private void getSettings() {
-        scenes.getStage().setScene(scenes.getSettingScene());
-        scenes.setLastScene(scenes.getStartScene());
+        m_scenes.getStage().setScene(m_scenes.getSettingScene());
+        m_scenes.setLastScene(m_scenes.getStartScene());
     }
+
 }

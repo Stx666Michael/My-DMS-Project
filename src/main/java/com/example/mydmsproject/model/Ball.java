@@ -6,18 +6,47 @@ import java.util.ArrayList;
 
 public class Ball extends Sprite {
 
-    private int ballCount = 0;
-    private int ballSum;
-    private int score = 0;
-    private int lightningBreak = 0;
-    private boolean isLightning = false;
-    private Lightning lightning = new Lightning("ball");
-    private final ArrayList<BonusBall> bonusBalls = new ArrayList<>();
-    private final ArrayList<Buff> buffs = new ArrayList<>();
+    private final Lightning m_lightning = new Lightning("ball");
+    private final ArrayList<BonusBall> m_bonusBalls = new ArrayList<>();
+    private final ArrayList<Buff> m_buffs = new ArrayList<>();
+
+    private int m_ballCount = 0;
+    private int m_ballSum;
+    private int m_score = 0;
+    private int m_lightningBreak = 0;
+    private boolean m_isLightning = false;
+
+    public int getBallCount() {
+        return m_ballCount;
+    }
+
+    public int getScore() {
+        return m_score;
+    }
+
+    public ArrayList<BonusBall> getBonusBalls() {
+        return m_bonusBalls;
+    }
+
+    public ArrayList<Buff> getBuffs() {
+        return m_buffs;
+    }
+
+    public boolean notLightning() {
+        return !m_isLightning;
+    }
+
+    public void setBallCount(int ballCount) {
+        m_ballCount = ballCount;
+    }
+
+    public void addScore(int score) {
+        m_score += score;
+    }
 
     public Ball(int ballCount) {
-        this.ballCount = ballCount;
-        ballSum = ballCount;
+        m_ballCount = ballCount;
+        m_ballSum = ballCount;
         setImage("file:src/main/resources/com/example/mydmsproject/Ball.png");
     }
 
@@ -25,8 +54,11 @@ public class Ball extends Sprite {
     }
 
     public void initialize(double speedBound) {
+        final double INITIAL_SPEED_OFFSET = 0.5;
+        final double INITIAL_SPEED_FACTOR = 0.5;
         double speedX, speedY;
-        speedX = (Math.random()-0.5)*speedBound/2;
+        speedX = (Math.random()- INITIAL_SPEED_OFFSET)
+                *speedBound* INITIAL_SPEED_FACTOR;
         speedY = Math.sqrt(Math.pow(speedBound,2) - Math.pow(speedX,2));
         speedY = -speedY;
         setVelocity(speedX, speedY);
@@ -34,33 +66,8 @@ public class Ball extends Sprite {
     }
 
     public void reset(boolean cleanScore) {
-        ballCount = ballSum;
-        if (cleanScore)
-            score = 0;
-    }
-
-    public int getBallCount() {
-        return ballCount;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public ArrayList<BonusBall> getBonusBalls() {
-        return bonusBalls;
-    }
-
-    public ArrayList<Buff> getBuffs() {
-        return buffs;
-    }
-
-    public void setBallCount(int ballCount) {
-        this.ballCount = ballCount;
-    }
-
-    public void addScore(int score) {
-        this.score += score;
+        m_ballCount = m_ballSum;
+        if (cleanScore) m_score = 0;
     }
 
     public void reverseX() {
@@ -73,7 +80,8 @@ public class Ball extends Sprite {
 
     public boolean impactPlayer(Paddle player) {
         boolean isImpact = player.intersects(this) && getVelocityY()>0;
-        if (isImpact && player.isBuff2()) isLightning = true;
+        if (isImpact && player.isBuff2() && m_ballCount >0)
+            m_isLightning = true;
         return isImpact;
     }
 
@@ -87,66 +95,54 @@ public class Ball extends Sprite {
 
     public void impactBricks(ArrayList<Brick> bricks) {
         Brick[] tmp = bricks.toArray(new Brick[0]);
-        for (Brick brick : tmp) {
-            switch (brick.findImpact(this)) {
-                case Brick.UP_IMPACT -> {
-                    if (getVelocityY()>0 && !isLightning) reverseY();
-                    removeBrick(bricks, brick, 1);
-                }
-                case Brick.DOWN_IMPACT -> {
-                    if (getVelocityY()<0 && !isLightning) reverseY();
-                    removeBrick(bricks, brick, 0);
-                }
-                case Brick.LEFT_IMPACT -> {
-                    if (getVelocityX()>0 && !isLightning) reverseX();
-                    removeBrick(bricks, brick, 1);
-                }
-                case Brick.RIGHT_IMPACT -> {
-                    if (getVelocityX()<0 && !isLightning) reverseX();
-                    removeBrick(bricks, brick, 1);
-                }
-            }
-        }
+        for (Brick brick : tmp) brick.findImpact(this, bricks);
     }
 
-    private void removeBrick(ArrayList<Brick> bricks, Brick brick, int initialSpeed) {
+    public void removeBrick(ArrayList<Brick> bricks, Brick brick, int speed) {
         bricks.remove(brick);
-        score += brick.getScore();
-        if (ballCount > 0) {
-            lightningBreak++;
+        m_score += brick.getScore();
+        if (m_ballCount > 0) {
+            m_lightningBreak++;
             if (brick.isBonusBall())
-                bonusBalls.add(brick.makeBonusBall(initialSpeed));
+                m_bonusBalls.add(brick.makeBonusBall(speed));
             else if (brick.isBuff1())
-                buffs.add(brick.makeBuff(initialSpeed, 1));
+                m_buffs.add(brick.makeBuff(speed, 1));
             else if (brick.isBuff2())
-                buffs.add(brick.makeBuff(initialSpeed, 2));
+                m_buffs.add(brick.makeBuff(speed, 2));
         }
     }
 
     public void updateBonusBuff(int height) {
-        for (BonusBall bonusBall : bonusBalls) bonusBall.update();
-        for (Buff buff : buffs) buff.update(height);
-        if (isLightning) lightning.update(this);
-        if (lightningBreak >= lightning.getMaxLightningBreak()) {
-            isLightning = false;
-            lightningBreak = 0;
+        for (BonusBall bonusBall : m_bonusBalls) bonusBall.update();
+        for (Buff buff : m_buffs) buff.update(height);
+        if (m_isLightning) m_lightning.update(this);
+        if (m_lightningBreak >= m_lightning.getMaxLightningBreak()) {
+            m_isLightning = false;
+            m_lightningBreak = 0;
         }
     }
 
     public void clearBonus() {
-        bonusBalls.clear();
-        buffs.clear();
-        isLightning = false;
-        lightningBreak = 0;
+        m_bonusBalls.clear();
+        m_buffs.clear();
+        m_isLightning = false;
+        m_lightningBreak = 0;
+    }
+
+    public void loseBonusBall(BonusBall ball) {
+        m_bonusBalls.remove(ball);
+        addScore(ball.getScore());
     }
 
     public void updateScore() {
-        for (BonusBall bonusBall : bonusBalls) score += bonusBall.getScore();
+        for (BonusBall bonusBall : m_bonusBalls)
+            m_score += bonusBall.getScore();
     }
 
     @Override
     public void render(GraphicsContext gc) {
         super.render(gc);
-        if (isLightning && ballCount>0) lightning.render(gc);
+        if (m_isLightning && m_ballCount >0) m_lightning.render(gc);
     }
+
 }

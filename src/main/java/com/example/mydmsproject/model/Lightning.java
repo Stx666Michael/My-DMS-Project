@@ -2,28 +2,27 @@ package com.example.mydmsproject.model;
 
 public class Lightning extends Sprite {
 
-    private int offsetX = 0;
-    private int offsetY = 0;
-    private final int maxLightningBreak = 5;
-
-    public Lightning(String type) {
-        setImage("file:src/main/resources/com/example/mydmsproject/Lightning-"+type+".png");
-    }
+    private int m_offsetX = 0;
+    private int m_offsetY = 0;
 
     public int getMaxLightningBreak() {
-        return maxLightningBreak;
+        return 5;
+    }
+
+    public Lightning(String type) {
+        setImage("file:src/main/resources/com/example/mydmsproject/" +
+                "Lightning-" + type + ".png");
     }
 
     public void update(Sprite s) {
-        if (offsetX == 0 && offsetY == 0)
-            updateOffset(s);
-        setPosition(s.getPositionX()+offsetX, s.getPositionY()+offsetY);
+        if (m_offsetX == 0 && m_offsetY == 0) updateOffset(s);
+        setPosition(s.getPositionX()+ m_offsetX, s.getPositionY()+ m_offsetY);
         super.update();
     }
 
     public void updateOffset(Sprite s) {
-        offsetX = (int) (s.getWidth()-getWidth()) / 2;
-        offsetY = (int) (s.getHeight()-getHeight()) / 2;
+        m_offsetX = (int) (s.getWidth()-getWidth()) / 2;
+        m_offsetY = (int) (s.getHeight()-getHeight()) / 2;
     }
 
 }

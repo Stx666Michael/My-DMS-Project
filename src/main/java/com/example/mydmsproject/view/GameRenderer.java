@@ -8,64 +8,74 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 
+import javafx.util.Duration;
 import java.util.ArrayList;
 
 public class GameRenderer {
 
-    private final int refreshInterval = 10;
-    private final int width;
-    private final int height;
-    private final int drawUnitY;
-    private final int drawUnitX;
-    private final Ball ball;
-    private final Paddle player;
-    private final ArrayList<Brick> bricks;
-    private final Scenes scenes;
-    private final GraphicsContext gc;
+    private final int m_width;
+    private final int m_height;
+    private final Ball m_ball;
+    private final Paddle m_player;
+    private final ArrayList<Brick> m_bricks;
+    private final Scenes m_scenes;
+    private final GraphicsContext m_gc;
 
     public GameRenderer(Scenes scenes, GraphicsContext gc) {
-        width = (int) scenes.getStage().getWidth();
-        height = (int) scenes.getStage().getHeight();
-        ball = scenes.getWall().getBall();
-        player = scenes.getWall().getPlayer();
-        bricks = scenes.getWall().getBricks();
-        drawUnitY = height / 50;
-        drawUnitX  = width / 50;
-        this.scenes = scenes;
-        this.gc = gc;
+        m_width = (int) scenes.getStage().getWidth();
+        m_height = (int) scenes.getStage().getHeight();
+        m_ball = scenes.getWall().getBall();
+        m_player = scenes.getWall().getPlayer();
+        m_bricks = scenes.getWall().getBricks();
+        m_scenes = scenes;
+        m_gc = gc;
 
         gc.setTextAlign(TextAlignment.CENTER);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refreshInterval), event -> render()));
-
+        final int REFRESH_TIME = 10;
+        Timeline timeline = new Timeline(new KeyFrame
+                (Duration.millis(REFRESH_TIME), event -> render()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void render() {
-        gc.clearRect(0, 0, width, height);
-        ball.render(gc);
-        player.render(gc);
-        drawLeftBall(ball.getBallCount());
+        m_gc.clearRect(0, 0, m_width, m_height);
+        m_ball.render(m_gc);
+        m_player.render(m_gc);
+        drawLeftBall(m_ball.getBallCount());
         drawText();
-        for (Brick brick : bricks) brick.render(gc);
-        for (BonusBall bonusBall : ball.getBonusBalls()) bonusBall.render(gc);
-        for (Buff buff : ball.getBuffs()) buff.render(gc);
+        for (Brick brick : m_bricks)
+            brick.render(m_gc);
+        for (BonusBall bonusBall : m_ball.getBonusBalls())
+            bonusBall.render(m_gc);
+        for (Buff buff : m_ball.getBuffs())
+            buff.render(m_gc);
     }
 
     private void drawLeftBall(int ballCount) {
-        Image ball = new Image("file:src/main/resources/com/example/mydmsproject/Ball.png");
-        gc.drawImage(ball, drawUnitX, drawUnitY);
-        if (ballCount > 1) gc.drawImage(ball, drawUnitX*3, drawUnitY);
-        if (ballCount > 2) gc.drawImage(ball, drawUnitX*5, drawUnitY);
+        Image ball = new Image("file:src/main/resources/com/example/" +
+                "mydmsproject/Ball.png");
+        final int UNIT_X = 12;
+        final int UNIT_Y = 9;
+        final int SEC_BALL_X = 36;
+        final int THI_BALL_X = 60;
+        m_gc.drawImage(ball, UNIT_X, UNIT_Y);
+        if (ballCount > 1) m_gc.drawImage(ball, SEC_BALL_X, UNIT_Y);
+        if (ballCount > 2) m_gc.drawImage(ball, THI_BALL_X, UNIT_Y);
     }
 
     private void drawText() {
-        gc.setFont(new Font("Arial", 20));
-        gc.fillText(String.valueOf(ball.getScore()), drawUnitX*25, drawUnitY*2.5);
-        int currentLevel = scenes.getWall().getCurrentLevel();
-        gc.fillText("  Level "+currentLevel, drawUnitX*46, drawUnitY*2.5);
+        int TEXT_FONT = 20;
+        int SCORE_TEXT_X = 300;
+        int LEVEL_TEXT_X = 552;
+        int TEXT_Y = 24;
+        int currentLevel = m_scenes.getWall().getCurrentLevel();
+
+        m_gc.setFont(new Font("Arial", TEXT_FONT));
+        m_gc.fillText(String.valueOf(m_ball.getScore()), SCORE_TEXT_X, TEXT_Y);
+        m_gc.fillText("  Level "+currentLevel, LEVEL_TEXT_X, TEXT_Y);
     }
+
 }

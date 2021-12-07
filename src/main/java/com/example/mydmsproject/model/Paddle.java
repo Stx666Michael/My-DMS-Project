@@ -6,56 +6,68 @@ import java.util.ArrayList;
 
 public class Paddle extends Sprite {
 
-    private double moveSpeed;
-    private final int windowWidth;
-    private int moveControl;
-    private boolean isBuff1 = false;
-    private boolean isBuff2 = false;
-    private int buff1Timer = 0;
-    private int buff2Timer = 0;
-    private final int buffTimerLength = 1000;
-    private Lightning lightning = new Lightning("paddle");
+    private final int m_windowWidth;
+    private final Lightning m_lightning = new Lightning("paddle");
+    private final String m_path = "file:src/main/resources/com/example/";
+
+    private int m_buff1Timer = 0;
+    private int m_buff2Timer = 0;
+    private int m_moveControl;
+    private double m_moveSpeed;
+    private double m_lastPositionX;
+    private boolean m_isBuff1 = false;
+    private boolean m_isBuff2 = false;
+
+    public int getMoveControl() {
+        return m_moveControl;
+    }
+
+    public double getLastPositionX() {
+        return m_lastPositionX;
+    }
+
+    public boolean isBuff2() {
+        return m_isBuff2;
+    }
+
+    public void setLastPositionX(double lastPositionX) {
+        m_lastPositionX = lastPositionX;
+    }
+
+    public void setMoveSpeed(double moveSpeed) {
+        m_moveSpeed = moveSpeed;
+    }
+
+    public void setMoveControl(int moveControl) {
+        m_moveControl = moveControl;
+    }
+
+    public void setPositionX(double x) {
+        if (x >= 0 && x+getWidth() <= m_windowWidth)
+            setPosition(x, getPositionY());
+    }
 
     public Paddle(double moveSpeed, int screenWidth) {
-        setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
-        this.moveSpeed = moveSpeed;
-        this.windowWidth = screenWidth;
-        moveControl = 1;
+        setImage(m_path + "mydmsproject/Paddle.png");
+        //final int KEYBOARD = 1;
+        final int MOUSE = 2;
+        m_moveSpeed = moveSpeed;
+        m_windowWidth = screenWidth;
+        m_moveControl = MOUSE;
     }
 
     public void moveLeft() {
-        if (getPositionX()-moveSpeed >= 0) {
-            setVelocity(-moveSpeed, 0);
+        if (getPositionX()- m_moveSpeed >= 0) {
+            setVelocity(-m_moveSpeed, 0);
             update();
         }
     }
 
     public void moveRight() {
-        if (getPositionX()+getWidth()+moveSpeed <= windowWidth) {
-            setVelocity(moveSpeed, 0);
+        if (getPositionX()+getWidth()+ m_moveSpeed <= m_windowWidth) {
+            setVelocity(m_moveSpeed, 0);
             update();
         }
-    }
-
-    public int getMoveControl() {
-        return moveControl;
-    }
-
-    public boolean isBuff2() {
-        return isBuff2;
-    }
-
-    public void setMoveSpeed(double moveSpeed) {
-        this.moveSpeed = moveSpeed;
-    }
-
-    public void setMoveControl(int moveControl) {
-        this.moveControl = moveControl;
-    }
-
-    public void setPositionX(double x) {
-        if (x >= 0 && x+getWidth() <= windowWidth)
-            setPosition(x, getPositionY());
     }
 
     public void findBuffImpacts(ArrayList<Buff> buffs) {
@@ -63,55 +75,54 @@ public class Paddle extends Sprite {
         for (Buff buff : tmp) {
             if (buff.intersects(this)) {
                 switch (buff.getType()) {
-                    case 1 -> isBuff1 = true;
-                    case 2 -> isBuff2 = true;
+                    case 1 -> m_isBuff1 = true;
+                    case 2 -> m_isBuff2 = true;
                 }
                 buff.setValid(false);
             }
-            if (!buff.isValid())
-                buffs.remove(buff);
+            if (!buff.isValid()) buffs.remove(buff);
         }
         updateBuff();
     }
 
     private void updateBuff() {
-        if (isBuff1) {
-            if (buff1Timer == 0) {
-                setImage("file:src/main/resources/com/example/mydmsproject/Paddle-big.png");
-                lightning.updateOffset(this);
+        final int BUFF_TIMER_LENGTH = 1000;
+        if (m_isBuff1) {
+            if (m_buff1Timer == 0) {
+                setImage(m_path + "mydmsproject/Paddle-big.png");
+                m_lightning.updateOffset(this);
             }
-            buff1Timer++;
-            if (buff1Timer == buffTimerLength) {
-                setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
-                lightning.updateOffset(this);
-                isBuff1 = false;
-                buff1Timer = 0;
+            m_buff1Timer++;
+            if (m_buff1Timer == BUFF_TIMER_LENGTH) {
+                setImage(m_path + "mydmsproject/Paddle.png");
+                m_lightning.updateOffset(this);
+                m_isBuff1 = false;
+                m_buff1Timer = 0;
             }
         }
-        if (isBuff2) {
-            if (buff2Timer < buffTimerLength)
-                lightning.update(this);
-            buff2Timer++;
-            if (buff2Timer == buffTimerLength) {
-                isBuff2 = false;
-                buff2Timer = 0;
+        if (m_isBuff2) {
+            if (m_buff2Timer < BUFF_TIMER_LENGTH) m_lightning.update(this);
+            m_buff2Timer++;
+            if (m_buff2Timer == BUFF_TIMER_LENGTH) {
+                m_isBuff2 = false;
+                m_buff2Timer = 0;
             }
         }
     }
 
     public void removeBuff() {
-        setImage("file:src/main/resources/com/example/mydmsproject/Paddle.png");
-        lightning.updateOffset(this);
-        isBuff1 = false;
-        isBuff2 = false;
-        buff1Timer = 0;
-        buff2Timer = 0;
+        setImage(m_path + "mydmsproject/Paddle.png");
+        m_lightning.updateOffset(this);
+        m_isBuff1 = false;
+        m_isBuff2 = false;
+        m_buff1Timer = 0;
+        m_buff2Timer = 0;
     }
 
     @Override
     public void render(GraphicsContext gc) {
         super.render(gc);
-        if (isBuff2) lightning.render(gc);
+        if (m_isBuff2) m_lightning.render(gc);
     }
 
 }

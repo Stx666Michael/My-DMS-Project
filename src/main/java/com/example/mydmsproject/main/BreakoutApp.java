@@ -6,12 +6,25 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The main JavaFX application class containing the main method.
+ */
 public class BreakoutApp extends Application {
 
+    /**
+     * The main method to start a JavaFX application.
+     * @param args default param of the main method
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * The main entry point for the JavaFX applications.
+     * @param stage the primary stage for this application,
+     *              onto which the application scene can be set
+     * @throws IOException signals that an I/O exception has occurred
+     */
     @Override
     public void start(Stage stage) throws IOException {
         final String TITLE = "Breakout";

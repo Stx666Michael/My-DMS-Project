@@ -12,6 +12,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import java.util.ArrayList;
 
+/**
+ * The view class for rendering all objects in game scene.
+ * See code to get information about private methods.
+ */
 public class GameRenderer {
 
     private final int m_width;
@@ -22,6 +26,13 @@ public class GameRenderer {
     private final Scenes m_scenes;
     private final GraphicsContext m_gc;
 
+    /**
+     * Default class constructor, initialize a timeline for rendering all
+     * objects in game scene, refresh periodically.
+     * @param scenes the model class that stores all scenes and game elements
+     * @param gc the GraphicsContext of Canvas in the game scene
+     * @see Scenes
+     */
     public GameRenderer(Scenes scenes, GraphicsContext gc) {
         m_width = (int) scenes.getStage().getWidth();
         m_height = (int) scenes.getStage().getHeight();
@@ -40,6 +51,9 @@ public class GameRenderer {
         timeline.play();
     }
 
+    /**
+     * Render all objects in game scene.
+     */
     private void render() {
         m_gc.clearRect(0, 0, m_width, m_height);
         m_ball.render(m_gc);
@@ -54,6 +68,10 @@ public class GameRenderer {
             buff.render(m_gc);
     }
 
+    /**
+     * Draw image of ball to represent number of ball left.
+     * @param ballCount number of ball left
+     */
     private void drawLeftBall(int ballCount) {
         Image ball = new Image("file:src/main/resources/com/example/" +
                 "mydmsproject/Ball.png");
@@ -66,12 +84,15 @@ public class GameRenderer {
         if (ballCount > 2) m_gc.drawImage(ball, THI_BALL_X, UNIT_Y);
     }
 
+    /**
+     * Draw text of current score and level.
+     */
     private void drawText() {
-        int TEXT_FONT = 20;
-        int SCORE_TEXT_X = 300;
-        int LEVEL_TEXT_X = 552;
-        int TEXT_Y = 24;
-        int currentLevel = m_scenes.getWall().getCurrentLevel();
+        final int TEXT_FONT = 20;
+        final int SCORE_TEXT_X = 300;
+        final int LEVEL_TEXT_X = 552;
+        final int TEXT_Y = 24;
+        final int currentLevel = m_scenes.getWall().getCurrentLevel();
 
         m_gc.setFont(new Font("Arial", TEXT_FONT));
         m_gc.fillText(String.valueOf(m_ball.getScore()), SCORE_TEXT_X, TEXT_Y);

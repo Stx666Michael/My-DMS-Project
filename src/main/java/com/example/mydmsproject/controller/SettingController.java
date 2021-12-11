@@ -7,6 +7,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 
+/**
+ * A controller class for handling key/mouse event in setting scene (pause
+ * menu), to change game theme, paddle control and speed of ball/paddle.
+ * See code to get information about private methods.
+ */
 public class SettingController {
 
     private Scenes m_scenes;
@@ -18,15 +23,27 @@ public class SettingController {
     @FXML private ComboBox<String> m_control;
     @FXML private Button m_restart;
 
+    /**
+     * Store other scenes.
+     * @param scenes the model class that stores all scenes and game elements
+     * @see Scenes
+     */
     public void initData(Scenes scenes) {
         m_scenes = scenes;
     }
 
+    /**
+     * Change the title to "Pause Menu" and add restart button to the layout
+     * when in game scene.
+     */
     public void changeLayout() {
         m_title.setText("Pause Menu");
         m_restart.setVisible(true);
     }
 
+    /**
+     * Initialize the layout in start scene (set title to "Settings").
+     */
     @FXML
     private void initialize() {
         m_ballSpeed.setValue(2);
@@ -36,6 +53,9 @@ public class SettingController {
         m_restart.setVisible(false);
     }
 
+    /**
+     * Set the background of game scene.
+     */
     @FXML
     private void setTheme() {
         String s = m_theme.getSelectionModel().getSelectedItem();
@@ -45,6 +65,9 @@ public class SettingController {
         }
     }
 
+    /**
+     * Set the control method of paddle.
+     */
     @FXML
     private void setControl() {
         String s = m_control.getSelectionModel().getSelectedItem();
@@ -56,11 +79,17 @@ public class SettingController {
             m_scenes.getWall().getPlayer().setMoveControl(MOUSE);
     }
 
+    /**
+     * Exit the whole program.
+     */
     @FXML
     private void quitGame() {
         System.exit(0);
     }
 
+    /**
+     * Change to game scene and reset the game to first level.
+     */
     @FXML
     private void restart() {
         m_scenes.getWall().resetGame(1);
@@ -68,6 +97,9 @@ public class SettingController {
         m_scenes.setSetting(false);
     }
 
+    /**
+     * Confirm settings and change to previous scene.
+     */
     @FXML
     private void confirm() {
         m_scenes.getWall().setBallInitialSpeed(m_ballSpeed.getValue());

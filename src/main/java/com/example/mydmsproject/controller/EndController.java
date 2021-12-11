@@ -11,6 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * A controller class for handling key/mouse event and set score content
+ * in end scene (including end of a level and end of game).
+ * See code to get information about private methods.
+ */
 public class EndController {
 
     private Scenes m_scenes;
@@ -24,6 +29,11 @@ public class EndController {
     @FXML private Text m_list;
     @FXML private Button m_play;
 
+    /**
+     * Initialize dialog of entering player name and store other scenes.
+     * @param scenes the model class that stores all scenes and game elements
+     * @see Scenes
+     */
     public void initData(Scenes scenes) {
         m_scenes = scenes;
         m_dialog.setTitle("Well Done!");
@@ -31,18 +41,27 @@ public class EndController {
         updateScoreList();
     }
 
+    /**
+     * Set the layout when a level passed.
+     */
     public void setWinLayout() {
         m_title.setText("YOU  WIN");
         m_play.setText("Next Level");
         m_play.setOnAction(e -> playNextLevel());
     }
 
+    /**
+     * Set the layout when the game ends.
+     */
     public void setLoseLayout() {
         m_title.setText("GAME OVER");
         m_play.setText("Play Again");
         m_play.setOnAction(e -> restart());
     }
 
+    /**
+     * Get total score and score from current level, set them to the layout.
+     */
     public void updateScore() {
         final int LEFT_BALL_SCORE = 10;
         int ballLeftCount = m_scenes.getWall().getBall().getBallCount();
@@ -56,17 +75,28 @@ public class EndController {
         m_scenes.getWall().setLastLevelScore(score);
     }
 
+    /**
+     * Change to game scene and initialize next level.
+     */
     private void playNextLevel() {
         m_scenes.getWall().addCurrentLevel();
         m_scenes.getWall().resetGame(m_scenes.getWall().getCurrentLevel());
         m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 
+    /**
+     * Change to game scene and reset the game to first level.
+     */
     private void restart() {
         m_scenes.getWall().resetGame(1);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 
+    /**
+     * Store player name and score to a text file.
+     * @param name user input player name
+     * @param score total score in the game
+     */
     private void writeFile(String name, int score) {
         try {
             FileWriter myWriter = new FileWriter("scoreList.txt", true);
@@ -79,6 +109,10 @@ public class EndController {
         }
     }
 
+    /**
+     * Read the text file to get player name and score and store them to
+     * a hash map.
+     */
     private void updateScoreList() {
         try {
             File myObj = new File("scoreList.txt");
@@ -99,6 +133,9 @@ public class EndController {
         }
     }
 
+    /**
+     * Set top players' name and score to the layout.
+     */
     private void updateListView() {
         StringBuilder s = new StringBuilder();
         List<String> nameList = new ArrayList<>(m_scoreList.keySet());
@@ -110,6 +147,9 @@ public class EndController {
         m_list.setText(s.toString());
     }
 
+    /**
+     * Sort the name-score list by score in descending order.
+     */
     private void sortScoreList() {
         List<Map.Entry<String, Integer>> list =
                 new ArrayList<>(m_scoreList.entrySet());
@@ -122,6 +162,10 @@ public class EndController {
         m_scoreList = sortedList;
     }
 
+    /**
+     * Open a dialog to let user enter their name, store name and score if
+     * name is valid and new to the existing list, else pop a warning alert.
+     */
     @FXML
     private void saveScore() {
         Optional<String> result = m_dialog.showAndWait();
@@ -140,6 +184,9 @@ public class EndController {
         });
     }
 
+    /**
+     * Exit the whole program.
+     */
     @FXML
     private void quitGame() {
         System.exit(0);

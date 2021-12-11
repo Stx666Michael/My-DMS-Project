@@ -5,6 +5,9 @@ import javafx.geometry.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A Sprite class implements the main game element Brick.
+ */
 public class Brick extends Sprite {
 
     private final int m_score;
@@ -17,22 +20,48 @@ public class Brick extends Sprite {
     private boolean m_isBuff1 = false;
     private boolean m_isBuff2 = false;
 
+    /**
+     * Get breaking score of this brick.
+     * @return the breaking score of this brick
+     */
     public int getScore() {
         return m_score;
     }
 
+    /**
+     * Get a boolean value indicates if this brick has a BonusBall.
+     * @return a boolean value indicates if this brick has a BonusBall
+     * @see BonusBall
+     */
     public boolean isBonusBall() {
         return m_isBonusBall;
     }
 
+    /**
+     * Get a boolean value indicates if this brick has a type 1 Buff.
+     * @return a boolean value indicates if this brick has a type 1 Buff
+     * @see Buff
+     */
     public boolean isBuff1() {
         return m_isBuff1;
     }
 
+    /**
+     * Get a boolean value indicates if this brick has a type 2 Buff.
+     * @return a boolean value indicates if this brick has a type 2 Buff
+     * @see Buff
+     */
     public boolean isBuff2() {
         return m_isBuff2;
     }
 
+    /**
+     * Default class constructor, set type, score and position of this brick,
+     * assign Buff/BonusBall to it with specific probability.
+     * @param type the type of this brick
+     * @param positionX the X position of this brick
+     * @param positionY the Y position of this brick
+     */
     public Brick(int type, int positionX, int positionY) {
         final int BRICK_SCORE_BOUND = 4;
         final int NUM_BRICKS_PER_BUFF = 3;
@@ -58,6 +87,13 @@ public class Brick extends Sprite {
             }
     }
 
+    /**
+     * Check if a ball/bonusBall intersects with any bricks.
+     * @param ball the ball/bonusBall to be checked
+     * @param bricks the list of bricks
+     * @see Ball
+     * @see BonusBall
+     */
     public void findImpact(Ball ball, ArrayList<Brick> bricks) {
         if (m_up.intersects(ball.getBoundary())) {
             if (ball.getVelocityY()>0 && ball.notLightning()) ball.reverseY();
@@ -77,19 +113,37 @@ public class Brick extends Sprite {
         }
     }
 
+    /**
+     * Create an instance of BonusBall.
+     * @param initialSpeed the initial speed of BonusBall
+     * @return an instance of BonusBall
+     * @see BonusBall
+     */
     public BonusBall makeBonusBall(int initialSpeed) {
         BonusBall bonus = new BonusBall();
-        makeIt(bonus, initialSpeed);
+        initialize(bonus, initialSpeed);
         return bonus;
     }
 
+    /**
+     * Create an instance of Buff of specific type.
+     * @param initialSpeed the initial speed of Buff
+     * @param type the type of Buff
+     * @return an instance of Buff of specific type
+     * @see Buff
+     */
     public Buff makeBuff(int initialSpeed, int type) {
         Buff buff = new Buff(type);
-        makeIt(buff, initialSpeed);
+        initialize(buff, initialSpeed);
         return buff;
     }
 
-    private void makeIt(Ball ball, int initialSpeed) {
+    /**
+     * Initialize a BonusBall/Buff, set its initial position and speed.
+     * @param ball the BonusBall/Buff to be initialized
+     * @param initialSpeed the initial speed of BonusBall/Buff
+     */
+    private void initialize(Ball ball, int initialSpeed) {
         int offsetX = (int) (getWidth()-ball.getWidth()) / 2;
         int offsetY = (int) (getHeight()-ball.getHeight()) / 2;
         ball.setPosition(getPositionX()+offsetX, getPositionY()+offsetY);

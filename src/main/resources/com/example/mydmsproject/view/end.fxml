@@ -5,38 +5,38 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mydmsproject.controller.EndController">
-   <Text fx:id="m_title" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(file:src/main/resources/com/example/mydmsproject/Over.jpg);" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mydmsproject.controller.EndController">
+   <Text fill="white" fx:id="m_title" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
       <font>
          <Font name="Arial Bold" size="30.0" />
       </font>
    </Text>
-   <Text layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Score" textAlignment="CENTER" wrappingWidth="600" />
-   <Text fx:id="m_score" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
+   <Text fill="white" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Score" textAlignment="CENTER" wrappingWidth="600" />
+   <Text fill="white" fx:id="m_score" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="High Scores" textAlignment="CENTER" underline="true" wrappingWidth="600" />
-   <Text fx:id="m_list" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
+   <Text fill="white" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="High Scores" textAlignment="CENTER" underline="true" wrappingWidth="600" />
+   <Text fill="white" fx:id="m_list" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600">
       <font>
          <Font name="Arial Bold" size="13.0" />
       </font>
    </Text>
-   <Button fx:id="m_play" layoutX="370.0" layoutY="320.0" mnemonicParsing="false" prefWidth="80.0" />
-   <Button layoutX="260.0" layoutY="320.0" mnemonicParsing="false" onAction="#saveScore" prefWidth="80.0" text="Save Score" />
-   <Button layoutX="150.0" layoutY="320.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" textFill="RED" />
-   <Text layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ball Left                                            Breakout" textAlignment="CENTER" wrappingWidth="600">
+   <Button fx:id="m_play" layoutX="370.0" layoutY="320.0" mnemonicParsing="false" prefWidth="80.0" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" textFill="WHITE"/>
+   <Button layoutX="260.0" layoutY="320.0" mnemonicParsing="false" onAction="#saveScore" prefWidth="80.0" text="Save Score" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" textFill="WHITE"/>
+   <Button layoutX="150.0" layoutY="320.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" textFill="WHITE"/>
+   <Text fill="white" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ball Left                                            Breakout" textAlignment="CENTER" wrappingWidth="600" >
       <font>
          <Font size="12.0" />
       </font>
    </Text>
-   <Text fx:id="m_ballLeft" layoutX="210.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00">
+   <Text fill="white" fx:id="m_ballLeft" layoutX="210.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="m_breakout" layoutX="360.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00">
+   <Text fill="white" fx:id="m_breakout" layoutX="360.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+00">
       <font>
          <Font size="15.0" />
       </font>

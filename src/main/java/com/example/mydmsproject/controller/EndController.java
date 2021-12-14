@@ -45,9 +45,17 @@ public class EndController {
      * Set the layout when a level passed.
      */
     public void setWinLayout() {
-        m_title.setText("YOU  WIN");
-        m_play.setText("Next Level");
-        m_play.setOnAction(e -> playNextLevel());
+        final int MAX_LEVEL = 2;
+        if (m_scenes.getWall().getCurrentLevel() < MAX_LEVEL) {
+            m_title.setText("YOU  WIN");
+            m_play.setText("Next Level");
+            m_play.setOnAction(e -> playNextLevel());
+        }
+        else {
+            m_title.setText("ALL LEVEL PASSED");
+            m_play.setText("Play Again");
+            m_play.setOnAction(e -> restart());
+        }
     }
 
     /**
@@ -125,7 +133,6 @@ public class EndController {
             }
             sortScoreList();
             updateListView();
-            System.out.println(m_scoreList.toString());
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");

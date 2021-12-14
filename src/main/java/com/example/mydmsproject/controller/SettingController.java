@@ -48,7 +48,7 @@ public class SettingController {
     private void initialize() {
         m_ballSpeed.setValue(2);
         m_paddleSpeed.setValue(2);
-        m_theme.setPromptText("Light");
+        m_theme.setPromptText("Universe");
         m_control.setPromptText("Keyboard");
         m_restart.setVisible(false);
     }
@@ -60,8 +60,9 @@ public class SettingController {
     private void setTheme() {
         String s = m_theme.getSelectionModel().getSelectedItem();
         switch (s) {
-            case "Light" -> m_scenes.setGameTheme("transparent");
-            case "Dark" -> m_scenes.setGameTheme("rgb(50, 50, 50)");
+            case "Universe" -> m_scenes.setGameTheme("Universe.jpg");
+            case "Stars" -> m_scenes.setGameTheme("Stars.jpg");
+            case"Sky" -> m_scenes.setGameTheme("Sky.jpg");
         }
     }
 

@@ -9,27 +9,28 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mydmsproject.controller.SettingController">
-   <Text fx:id="m_title" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="600.0" text="SETTINGS" textAlignment="CENTER">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(file:src/main/resources/com/example/mydmsproject/Settings.jpg);" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mydmsproject.controller.SettingController">
+   <Text fx:id="m_title" fill="WHITE" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SETTINGS" textAlignment="CENTER" wrappingWidth="600.0">
       <font>
          <Font name="Arial Bold" size="20.0" />
       </font>
    </Text>
    <Slider fx:id="m_ballSpeed" layoutX="353.0" layoutY="125.0" majorTickUnit="1" max="4" min="1" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-   <Text layoutX="133.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial Ball Speed" />
+   <Text fill="WHITE" layoutX="133.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial Ball Speed" />
    <Slider fx:id="m_paddleSpeed" layoutX="353.0" layoutY="170.0" majorTickUnit="1" max="4" min="1" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-   <Text layoutX="133.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paddle Speed (Keyboard)" />
-   <Text layoutX="133.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theme Colour" />
-   <ComboBox fx:id="m_theme" layoutX="355.0" layoutY="210.0" onAction="#setTheme" prefHeight="26.0" prefWidth="134.0">
+   <Text fill="WHITE" layoutX="133.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paddle Speed (Keyboard)" />
+   <Text fill="WHITE" layoutX="133.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Theme" />
+   <ComboBox fx:id="m_theme" layoutX="355.0" layoutY="210.0" onAction="#setTheme" prefHeight="26.0" prefWidth="134.0" style="-fx-background-color: rgba(200, 200, 200, 0.75); -fx-background-radius: 12px;" >
       <items>
          <FXCollections fx:factory="observableArrayList">
-            <String fx:value="Light" />
-            <String fx:value="Dark" />
+            <String fx:value="Universe" />
+            <String fx:value="Stars" />
+            <String fx:value="Sky" />
          </FXCollections>
       </items>
    </ComboBox>
-   <Text layoutX="133.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Control" />
-   <ComboBox fx:id="m_control" layoutX="355.0" layoutY="255.0" onAction="#setControl" prefHeight="26.0" prefWidth="134.0">
+   <Text fill="WHITE" layoutX="133.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Control" />
+   <ComboBox fx:id="m_control" layoutX="355.0" layoutY="255.0" onAction="#setControl" prefHeight="26.0" prefWidth="134.0" style="-fx-background-color: rgba(200, 200, 200, 0.75); -fx-background-radius: 12px;">
       <items>
          <FXCollections fx:factory="observableArrayList">
             <String fx:value="Keyboard" />
@@ -37,7 +38,7 @@
          </FXCollections>
       </items>
    </ComboBox>
-   <Button layoutX="150.0" layoutY="330.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" text="Quit Game" textFill="#ff0000" />
-   <Button fx:id="m_restart" layoutX="260.0" layoutY="330.0" mnemonicParsing="false" onAction="#restart" prefWidth="80.0" text="Restart" />
-   <Button layoutX="370.0" layoutY="330.0" mnemonicParsing="false" onAction="#confirm" prefWidth="80.0" text="Confirm" />
+   <Button layoutX="150.0" layoutY="330.0" mnemonicParsing="false" onAction="#quitGame" prefWidth="80.0" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" text="Quit Game" textFill="WHITE" />
+   <Button fx:id="m_restart" layoutX="260.0" layoutY="330.0" mnemonicParsing="false" onAction="#restart" prefWidth="80.0" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" text="Restart" textFill="WHITE" />
+   <Button layoutX="370.0" layoutY="330.0" mnemonicParsing="false" onAction="#confirm" prefWidth="80.0" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 12px;" text="Confirm" textFill="WHITE" />
 </Pane>

@@ -8,7 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -133,10 +134,15 @@ public class Scenes {
 
     /**
      * Set the background of the game scene.
-     * @param color a string represents the color
+     * @param name name of background image
      */
-    public void setGameTheme(String color) {
-        m_game.setStyle("-fx-background-color: " + color);
+    public void setGameTheme(String name) {
+        Image image = new Image("file:src/main/resources/com/example/" +
+                "mydmsproject/"+name);
+        BackgroundImage bgImage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        m_game.setBackground(new Background(bgImage));
     }
 
     /**

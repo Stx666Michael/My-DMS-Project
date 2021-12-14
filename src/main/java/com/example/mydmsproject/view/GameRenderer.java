@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -56,6 +57,7 @@ public class GameRenderer {
      */
     private void render() {
         m_gc.clearRect(0, 0, m_width, m_height);
+        m_gc.setFill(Color.WHITE);
         m_ball.render(m_gc);
         m_player.render(m_gc);
         drawLeftBall(m_ball.getBallCount());

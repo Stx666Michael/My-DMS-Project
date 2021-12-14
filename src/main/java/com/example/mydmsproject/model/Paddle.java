@@ -91,11 +91,11 @@ public class Paddle extends Sprite {
      */
     public Paddle(double moveSpeed, int windowWidth) {
         setImage(m_path + "mydmsproject/Paddle.png");
-        final int KEYBOARD = 1;
-        //final int MOUSE = 2;
+        //final int KEYBOARD = 1;
+        final int MOUSE = 2;
         m_moveSpeed = moveSpeed;
         m_windowWidth = windowWidth;
-        m_moveControl = KEYBOARD;
+        m_moveControl = MOUSE;
     }
 
     /**

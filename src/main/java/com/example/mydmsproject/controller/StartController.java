@@ -28,6 +28,7 @@ public class StartController {
      */
     @FXML
     private void startGame() {
+        m_scenes.setGameTheme("Universe.jpg");
         m_scenes.getStage().setScene(m_scenes.getGameScene());
         m_scenes.getWall().initializeGame(m_scenes);
         m_scenes.getSettingController().changeLayout();

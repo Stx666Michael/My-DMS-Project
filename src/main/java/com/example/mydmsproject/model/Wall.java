@@ -103,13 +103,14 @@ public class Wall {
      */
     public Wall(int width, int height, GraphicsContext gc) {
         final int BALL_COUNT = 3;
+        final int INITIAL_LEVEL = 1;
         final double PLAYER_SPEED_BOUND = 2;
         m_gc = gc;
         m_width = width;
         m_height = height;
         m_ball = new Ball(BALL_COUNT);
         m_player = new Paddle(PLAYER_SPEED_BOUND, m_width);
-        m_bricks = makeBricks(1);
+        m_bricks = makeBricks(INITIAL_LEVEL);
         initializeBallPlayer();
     }
 

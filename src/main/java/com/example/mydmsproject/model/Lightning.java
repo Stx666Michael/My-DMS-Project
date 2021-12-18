@@ -11,11 +11,11 @@ public class Lightning extends Sprite {
     private int m_offsetY = 0;
 
     /**
-     * Get the maximum number of bricks that a "Lightning" Ball can break.
-     * @return the maximum number of bricks that a "Lightning" Ball can break
+     * Get the maximum brick hits that a "Lightning" Ball can do at once.
+     * @return the maximum brick hits that a "Lightning" Ball can do at once
      */
     public int getMaxLightningBreak() {
-        return 5;
+        return 6;
     }
 
     /**

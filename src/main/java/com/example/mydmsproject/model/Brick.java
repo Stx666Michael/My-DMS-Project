@@ -1,12 +1,13 @@
 package com.example.mydmsproject.model;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * A Sprite class implements the main game element Brick.
+ * A Sprite class implements the main game element Brick, store Crack objects.
  */
 public class Brick extends Sprite {
 
@@ -19,6 +20,8 @@ public class Brick extends Sprite {
     private boolean m_isBonusBall = false;
     private boolean m_isBuff1 = false;
     private boolean m_isBuff2 = false;
+    private int m_leftHitCount;
+    private Crack m_crack;
 
     /**
      * Get breaking score of this brick.
@@ -57,7 +60,8 @@ public class Brick extends Sprite {
 
     /**
      * Default class constructor, set type, score and position of this brick,
-     * assign Buff/BonusBall to it with specific probability.
+     * assign Buff/BonusBall to it with specific probability and Crack with
+     * specific type.
      * @param type the type of this brick
      * @param positionX the X position of this brick
      * @param positionY the Y position of this brick
@@ -67,6 +71,7 @@ public class Brick extends Sprite {
         final int NUM_BRICKS_PER_BUFF = 3;
 
         m_score = BRICK_SCORE_BOUND - type;
+        m_leftHitCount = m_score;
         setImage("file:src/main/resources/com/example/mydmsproject/" +
                 "Brick" + type + ".png");
         setPosition(positionX, positionY);
@@ -85,6 +90,8 @@ public class Brick extends Sprite {
                 case 2 -> m_isBonusBall = true;
                 case 3 -> m_isBuff2 = true;
             }
+        if (type == 1) m_crack = new Crack(type, this);
+        else if (type == 2) m_crack = new Crack(type, this);
     }
 
     /**
@@ -97,20 +104,25 @@ public class Brick extends Sprite {
     public void findImpact(Ball ball, ArrayList<Brick> bricks) {
         if (m_up.intersects(ball.getBoundary())) {
             if (ball.getVelocityY()>0 && ball.notLightning()) ball.reverseY();
-            ball.removeBrick(bricks, this, 1);
+            m_leftHitCount--;
+            if (m_leftHitCount <= 0) ball.removeBrick(bricks, this, 1);
         }
         else if (m_down.intersects(ball.getBoundary())) {
             if (ball.getVelocityY()<0 && ball.notLightning()) ball.reverseY();
-            ball.removeBrick(bricks, this, 0);
+            m_leftHitCount--;
+            if (m_leftHitCount <= 0) ball.removeBrick(bricks, this, 0);
         }
         else if (m_left.intersects(ball.getBoundary())) {
             if (ball.getVelocityX()>0 && ball.notLightning()) ball.reverseX();
-            ball.removeBrick(bricks, this, 1);
+            m_leftHitCount--;
+            if (m_leftHitCount <= 0) ball.removeBrick(bricks, this, 1);
         }
         else if (m_right.intersects(ball.getBoundary())) {
             if (ball.getVelocityX()<0 && ball.notLightning()) ball.reverseX();
-            ball.removeBrick(bricks, this, 1);
+            m_leftHitCount--;
+            if (m_leftHitCount <= 0) ball.removeBrick(bricks, this, 1);
         }
+        if (m_score == 3 && m_leftHitCount == 1) m_crack.setType(2);
     }
 
     /**
@@ -148,6 +160,17 @@ public class Brick extends Sprite {
         int offsetY = (int) (getHeight()-ball.getHeight()) / 2;
         ball.setPosition(getPositionX()+offsetX, getPositionY()+offsetY);
         ball.setVelocity(0, initialSpeed);
+    }
+
+    /**
+     * Render itself and its associated Crack.
+     * @param gc the GraphicsContext of Canvas in the game scene
+     * @see Crack
+     */
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+        if (m_crack!=null && m_leftHitCount<m_score) m_crack.render(gc);
     }
 
 }

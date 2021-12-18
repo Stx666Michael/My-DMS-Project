@@ -29,32 +29,32 @@
       </font>
    </Button>
    <Pane fx:id="helpPane" prefHeight="400.0" prefWidth="600.0">
-      <Text fill="white" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Basic Control" textAlignment="CENTER" wrappingWidth="600.0">
+      <Text fill="white" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Basic Control" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font name="Arial Bold" size="20.0" />
          </font>
       </Text>
-      <Text fill="white" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SPACE - Start/Pause" textAlignment="CENTER" wrappingWidth="600.0">
+      <Text fill="white" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SPACE - Start/Pause" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Text>
-      <Text fill="white" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ESC - Pause Menu" textAlignment="CENTER" wrappingWidth="600.0">
+      <Text fill="white" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ESC - Pause Menu" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Text>
-      <Text fill="white" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LEFT/RIGHT - Move Left/Right" textAlignment="CENTER" wrappingWidth="600.0">
+      <Text fill="white" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LEFT/RIGHT - Move Left/Right" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Text>
-      <Text fill="white" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specials" textAlignment="CENTER" wrappingWidth="600.0">
+      <Text fill="white" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specials" textAlignment="CENTER" wrappingWidth="600.0">
          <font>
             <Font name="Arial Bold" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="175.0" fitWidth="450.0" layoutX="75.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="175.0" fitWidth="450.0" layoutX="75.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../specials.png" />
       </ImageView>
       <Button layoutX="500.0" layoutY="400.0" mnemonicParsing="false" onAction="#closeHelp" prefHeight="25.0" prefWidth="60.0" style="-fx-background-color: rgba(50, 50, 50, 0.75); -fx-background-radius: 15px;" text="Back" textFill="WHITE">
@@ -62,5 +62,15 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Button>
+      <Text fill="white" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The higher score, the stronger brick!" textAlignment="CENTER" wrappingWidth="600.0">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Text>
+      <Text fill="white" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Make good use of friction between paddle and ball!" textAlignment="CENTER" wrappingWidth="600.0">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Text>
    </Pane>
 </Pane>

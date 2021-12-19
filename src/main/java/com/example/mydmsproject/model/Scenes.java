@@ -10,12 +10,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
- * A model class that stores all scenes and game elements,
+ * A model class that stores all scenes, game elements and sounds,
  * used for controllers and renderer to get/set scenes and other elements.
  */
 public class Scenes {
@@ -28,10 +32,15 @@ public class Scenes {
     private final Pane m_game;
     private final FXMLLoader m_settingLoader;
     private final FXMLLoader m_endLoader;
+    private final Media m_break;
+    private final Media m_buff;
+    private final Media m_click;
+    private final MediaPlayer m_bgm;
 
     private Scene m_lastScene;
     private Wall m_wall;
-    private boolean m_isSetting;
+    private boolean m_isSetting = false;
+    private boolean m_isMutedEffects = false;
 
     /**
      * Get the boolean value indicates setting scene is not shown.
@@ -118,10 +127,26 @@ public class Scenes {
 
     /**
      * Set the boolean value indicates if setting scene is shown.
-     * @param setting the boolean value to set
+     * @param setting the boolean value to set to
      */
     public void setSetting(boolean setting) {
         m_isSetting = setting;
+    }
+
+    /**
+     * Set the boolean value indicates if effect audio is muted.
+     * @param isMutedEffects the boolean value to set to
+     */
+    public void setMutedEffects(boolean isMutedEffects) {
+        m_isMutedEffects = isMutedEffects;
+    }
+
+    /**
+     * Set whether mute the background audio.
+     * @param isMutedBgm whether mute the background audio
+     */
+    public void setMutedBgm(boolean isMutedBgm) {
+        m_bgm.setMute(isMutedBgm);
     }
 
     /**
@@ -146,7 +171,7 @@ public class Scenes {
     }
 
     /**
-     * Default class constructor, initialize all the scenes and
+     * Default class constructor, initialize all the scenes, sounds and
      * set start scene to the stage.
      * @param width the width of the stage
      * @param height the height of the stage
@@ -155,7 +180,6 @@ public class Scenes {
      */
     public Scenes(int width, int height, Stage stage) throws IOException {
         m_stage = stage;
-        m_isSetting = false;
         m_game = gamePane(width, height);
 
         FXMLLoader start = new FXMLLoader
@@ -173,6 +197,15 @@ public class Scenes {
         m_endScene = new Scene(end.load(), width, height);
         m_gameScene = new Scene(m_game, width, height);
 
+        final String PATH = "src/main/resources/com/example/" +
+                "mydmsproject/sounds/";
+        Media m_background = new Media
+                (new File(PATH+"Background.wav").toURI().toString());
+        m_break = new Media(new File(PATH+"Break.wav").toURI().toString());
+        m_buff = new Media(new File(PATH+"Buff.wav").toURI().toString());
+        m_click = new Media(new File(PATH+"Click.wav").toURI().toString());
+        m_bgm = new MediaPlayer(m_background);
+
         StartController startController = start.getController();
         startController.initData(this);
 
@@ -183,6 +216,30 @@ public class Scenes {
         endController.initData(this);
 
         stage.setScene(m_startScene);
+    }
+
+    /**
+     * Play sound of specified type.
+     * @param type the type of sound
+     */
+    public void playSound(String type) {
+        if (!m_isMutedEffects) {
+            MediaPlayer mediaPlayer;
+            switch (type) {
+                case "break" -> mediaPlayer = new MediaPlayer(m_break);
+                case "buff" -> mediaPlayer = new MediaPlayer(m_buff);
+                default -> mediaPlayer = new MediaPlayer(m_click);
+            }
+            mediaPlayer.play();
+        }
+    }
+
+    /**
+     * Play background music of game repeatedly.
+     */
+    public void playMusic() {
+        m_bgm.play();
+        m_bgm.setOnEndOfMedia(() -> m_bgm.seek(Duration.ZERO));
     }
 
     /**
@@ -198,7 +255,7 @@ public class Scenes {
         Canvas canvas = new Canvas(width, height);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        m_wall = new Wall(width, height, gc);
+        m_wall = new Wall(width, height, this, gc);
         game.getChildren().add(canvas);
 
         return game;

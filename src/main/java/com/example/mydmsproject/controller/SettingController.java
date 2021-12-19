@@ -3,6 +3,7 @@ package com.example.mydmsproject.controller;
 import com.example.mydmsproject.model.Scenes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
@@ -22,6 +23,8 @@ public class SettingController {
     @FXML private ComboBox<String> m_theme;
     @FXML private ComboBox<String> m_control;
     @FXML private Button m_restart;
+    @FXML private CheckBox m_effect;
+    @FXML private CheckBox m_background;
 
     /**
      * Store other scenes.
@@ -50,6 +53,8 @@ public class SettingController {
         m_paddleSpeed.setValue(2);
         m_theme.setPromptText("Universe");
         m_control.setPromptText("Keyboard");
+        m_effect.setSelected(true);
+        m_background.setSelected(true);
         m_restart.setVisible(false);
     }
 
@@ -62,7 +67,7 @@ public class SettingController {
         switch (s) {
             case "Universe" -> m_scenes.setGameTheme("Universe.jpg");
             case "Stars" -> m_scenes.setGameTheme("Stars.jpg");
-            case"Sky" -> m_scenes.setGameTheme("Sky.jpg");
+            case "Sky" -> m_scenes.setGameTheme("Sky.jpg");
         }
     }
 
@@ -81,6 +86,24 @@ public class SettingController {
     }
 
     /**
+     * Set whether mute the effect audio.
+     */
+    @FXML
+    private void setEffectAudio() {
+        boolean isSelected = m_effect.isSelected();
+        m_scenes.setMutedEffects(!isSelected);
+    }
+
+    /**
+     * Set whether mute the background audio.
+     */
+    @FXML
+    private void setBackgroundAudio() {
+        boolean isSelected = m_background.isSelected();
+        m_scenes.setMutedBgm(!isSelected);
+    }
+
+    /**
      * Exit the whole program.
      */
     @FXML
@@ -93,6 +116,7 @@ public class SettingController {
      */
     @FXML
     private void restart() {
+        m_scenes.playSound("click");
         final int INITIAL_LEVEL = 1;
         m_scenes.getWall().resetGame(INITIAL_LEVEL);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
@@ -104,6 +128,7 @@ public class SettingController {
      */
     @FXML
     private void confirm() {
+        m_scenes.playSound("click");
         m_scenes.getWall().setBallInitialSpeed(m_ballSpeed.getValue());
         m_scenes.getWall().getPlayer().setMoveSpeed(m_paddleSpeed.getValue());
         m_scenes.getStage().setScene(m_scenes.getLastScene());

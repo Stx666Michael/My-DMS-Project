@@ -11,8 +11,10 @@ public class BonusBall extends Ball {
 
     /**
      * Default class constructor, initialize a bonusBall with ballCount=0.
+     * @param scenes the model class that stores all scenes and game elements
      */
-    public BonusBall() {
+    public BonusBall(Scenes scenes) {
+        super(scenes);
         setImage("file:src/main/resources/com/example/mydmsproject/" +
                 "Ball-bonus.png");
     }

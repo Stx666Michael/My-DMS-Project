@@ -45,7 +45,7 @@ public class EndController {
      * Set the layout when a level passed.
      */
     public void setWinLayout() {
-        final int MAX_LEVEL = 2;
+        final int MAX_LEVEL = 3;
         if (m_scenes.getWall().getCurrentLevel() < MAX_LEVEL) {
             m_title.setText("YOU  WIN");
             m_play.setText("Next Level");
@@ -87,6 +87,7 @@ public class EndController {
      * Change to game scene and initialize next level.
      */
     private void playNextLevel() {
+        m_scenes.playSound("click");
         m_scenes.getWall().addCurrentLevel();
         m_scenes.getWall().resetGame(m_scenes.getWall().getCurrentLevel());
         m_scenes.getStage().setScene(m_scenes.getGameScene());
@@ -96,6 +97,7 @@ public class EndController {
      * Change to game scene and reset the game to first level.
      */
     private void restart() {
+        m_scenes.playSound("click");
         m_scenes.getWall().resetGame(1);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
@@ -175,6 +177,7 @@ public class EndController {
      */
     @FXML
     private void saveScore() {
+        m_scenes.playSound("click");
         Optional<String> result = m_dialog.showAndWait();
         result.ifPresent(name -> {
             if (name.isEmpty() || name.contains(",")) {

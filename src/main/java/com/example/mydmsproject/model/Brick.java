@@ -128,11 +128,12 @@ public class Brick extends Sprite {
     /**
      * Create an instance of BonusBall.
      * @param initialSpeed the initial speed of BonusBall
+     * @param scenes the model class that stores all scenes and game elements
      * @return an instance of BonusBall
      * @see BonusBall
      */
-    public BonusBall makeBonusBall(int initialSpeed) {
-        BonusBall bonus = new BonusBall();
+    public BonusBall makeBonusBall(int initialSpeed, Scenes scenes) {
+        BonusBall bonus = new BonusBall(scenes);
         initialize(bonus, initialSpeed);
         return bonus;
     }

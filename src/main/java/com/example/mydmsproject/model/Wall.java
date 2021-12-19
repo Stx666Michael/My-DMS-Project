@@ -98,18 +98,19 @@ public class Wall {
      * Default class constructor, initialize game elements and make level 1.
      * @param width the width of game scene
      * @param height the height of game scene
+     * @param scenes the model class that stores all scenes and game elements
      * @param gc the GraphicsContext of Canvas in the game scene
      * @see Wall#initializeBallPlayer()
      */
-    public Wall(int width, int height, GraphicsContext gc) {
+    public Wall(int width, int height, Scenes scenes, GraphicsContext gc) {
         final int BALL_COUNT = 3;
         final int INITIAL_LEVEL = 1;
         final double PLAYER_SPEED_BOUND = 2;
         m_gc = gc;
         m_width = width;
         m_height = height;
-        m_ball = new Ball(BALL_COUNT);
-        m_player = new Paddle(PLAYER_SPEED_BOUND, m_width);
+        m_ball = new Ball(BALL_COUNT, scenes);
+        m_player = new Paddle(PLAYER_SPEED_BOUND, m_width, scenes);
         m_bricks = makeBricks(INITIAL_LEVEL);
         initializeBallPlayer();
     }
@@ -172,21 +173,23 @@ public class Wall {
         m_brickHeight = (int)brick.getHeight();
         m_maxLineBricks = m_width / m_brickWidth;
         switch (level) {
-            case 1 -> makeLevelOne(bricks);
-            case 2 -> makeLevelTwo(bricks);
+            case 2 -> makeLevelOne(bricks);
+            case 3 -> makeLevelTwo(bricks);
+            case 1 -> makeLevelThree(bricks);
         }
         return bricks;
     }
 
     /**
-     * Create a list of Bricks of level one
+     * Create a list of Bricks of level one.
      * @param bricks the Brick list
      */
     private void makeLevelOne(ArrayList<Brick> bricks) {
         final int BRICK_LINES = 3;
         for (int i = 0; i < BRICK_LINES; i++) {
             for (int j = 0; j < m_maxLineBricks; j++) {
-                Brick brick = new Brick(i+1, j* m_brickWidth,
+                final int BRICK_TYPE = i+1;
+                Brick brick = new Brick(BRICK_TYPE, j* m_brickWidth,
                         UP_SPACE_HEIGHT+i* m_brickHeight);
                 bricks.add(brick);
             }
@@ -194,18 +197,45 @@ public class Wall {
     }
 
     /**
-     * Create a list of Bricks of level two
+     * Create a list of Bricks of level two.
      * @param bricks the Brick list
      */
     private void makeLevelTwo(ArrayList<Brick> bricks) {
         final int BRICK_LINES = 6;
         final int NUM_OF_TYPES = 3;
         for (int i = 0; i < BRICK_LINES; i++) {
-            for (int j = 0; j < m_maxLineBricks -(BRICK_LINES-i-1)*2; j++) {
-                Brick brick = new Brick(i%NUM_OF_TYPES+1, j* m_brickWidth,
-                        UP_SPACE_HEIGHT+i* m_brickHeight);
+            for (int j = 0; j < m_maxLineBricks-(BRICK_LINES-i-1)*2; j++) {
+                final int BRICK_TYPE = 4-(i%NUM_OF_TYPES+1);
+                Brick brick = new Brick(BRICK_TYPE, j*m_brickWidth,
+                        UP_SPACE_HEIGHT+i*m_brickHeight);
                 bricks.add(brick);
             }
+        }
+    }
+
+    /**
+     * Create a list of Bricks of level three.
+     * @param bricks the Brick list
+     */
+    private void makeLevelThree(ArrayList<Brick> bricks) {
+        final ArrayList<int[]> LAYOUT = new ArrayList<>();
+        LAYOUT.add(new int[]{0,1, 1,1, 4,2, 8,2, 10,3, 11,3});
+        LAYOUT.add(new int[]{0,1, 1,1, 2,1, 4,2, 5,2, 7,2, 8,2, 10,3, 11,3});
+        LAYOUT.add(new int[]{0,1, 2,1, 4,2, 5,2, 7,2, 8,2, 10,3});
+        LAYOUT.add(new int[]{0,1, 2,1, 4,2, 5,2, 6,2, 7,2, 8,2, 10,3, 11,3});
+        LAYOUT.add(new int[]{0,1, 2,1, 4,2, 6,2, 8,2, 10,3, 11,3});
+        LAYOUT.add(new int[]{0,1, 2,1, 4,2, 6,2, 8,2, 11,3});
+        LAYOUT.add(new int[]{0,1, 1,1, 2,1, 4,2, 6,2, 8,2, 10,3, 11,3});
+        LAYOUT.add(new int[]{0,1, 1,1, 4,2, 6,2, 8,2, 10,3, 11,3});
+        int line = 0;
+        for (int[] line_layout : LAYOUT) {
+            for (int i=0; i<line_layout.length/2; i++) {
+                final int BRICK_TYPE = line_layout[i*2+1];
+                Brick brick = new Brick(BRICK_TYPE,
+                        line_layout[i*2]*m_brickWidth,
+                        UP_SPACE_HEIGHT+line*m_brickHeight);
+                bricks.add(brick);
+            } line++;
         }
     }
 

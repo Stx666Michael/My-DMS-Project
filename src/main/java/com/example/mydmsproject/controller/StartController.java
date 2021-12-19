@@ -15,11 +15,11 @@ public class StartController {
 
     private Scenes m_scenes;
 
-    @FXML private Text title;
-    @FXML private Button start;
-    @FXML private Button settings;
-    @FXML private Button help;
-    @FXML private Pane helpPane;
+    @FXML private Text m_title;
+    @FXML private Button m_start;
+    @FXML private Button m_settings;
+    @FXML private Button m_help;
+    @FXML private Pane m_helpPane;
 
     /**
      * Store other scenes.
@@ -28,7 +28,7 @@ public class StartController {
      */
     public void initData(Scenes scenes) {
         m_scenes = scenes;
-        helpPane.setVisible(false);
+        m_helpPane.setVisible(false);
     }
 
     /**
@@ -38,10 +38,12 @@ public class StartController {
      */
     @FXML
     private void startGame() {
+        m_scenes.playSound("click");
         m_scenes.setGameTheme("Universe.jpg");
         m_scenes.getStage().setScene(m_scenes.getGameScene());
         m_scenes.getWall().initializeGame(m_scenes);
         m_scenes.getSettingController().changeLayout();
+        m_scenes.playMusic();
     }
 
     /**
@@ -49,6 +51,7 @@ public class StartController {
      */
     @FXML
     private void getSettings() {
+        m_scenes.playSound("click");
         m_scenes.getStage().setScene(m_scenes.getSettingScene());
         m_scenes.setLastScene(m_scenes.getStartScene());
     }
@@ -58,11 +61,12 @@ public class StartController {
      */
     @FXML
     private void getHelp() {
-        title.setVisible(false);
-        start.setVisible(false);
-        settings.setVisible(false);
-        help.setVisible(false);
-        helpPane.setVisible(true);
+        m_scenes.playSound("click");
+        m_title.setVisible(false);
+        m_start.setVisible(false);
+        m_settings.setVisible(false);
+        m_help.setVisible(false);
+        m_helpPane.setVisible(true);
     }
 
     /**
@@ -70,11 +74,12 @@ public class StartController {
      */
     @FXML
     private void closeHelp() {
-        title.setVisible(true);
-        start.setVisible(true);
-        settings.setVisible(true);
-        help.setVisible(true);
-        helpPane.setVisible(false);
+        m_scenes.playSound("click");
+        m_title.setVisible(true);
+        m_start.setVisible(true);
+        m_settings.setVisible(true);
+        m_help.setVisible(true);
+        m_helpPane.setVisible(false);
     }
 
 }

@@ -13,6 +13,7 @@ public class Paddle extends Sprite {
     private final int m_windowWidth;
     private final Lightning m_lightning = new Lightning("paddle");
     private final String m_path = "file:src/main/resources/com/example/";
+    private final Scenes m_scenes;
 
     private int m_buff1Timer = 0;
     private int m_buff2Timer = 0;
@@ -88,14 +89,16 @@ public class Paddle extends Sprite {
      * Default class constructor, set initial move control and move speed.
      * @param moveSpeed initial move speed in keyboard control
      * @param windowWidth the width of game scene
+     * @param scenes the model class that stores all scenes and game elements
      */
-    public Paddle(double moveSpeed, int windowWidth) {
+    public Paddle(double moveSpeed, int windowWidth, Scenes scenes) {
         setImage(m_path + "mydmsproject/Paddle.png");
         //final int KEYBOARD = 1;
         final int MOUSE = 2;
         m_moveSpeed = moveSpeed;
         m_windowWidth = windowWidth;
         m_moveControl = MOUSE;
+        m_scenes = scenes;
     }
 
     /**
@@ -128,6 +131,7 @@ public class Paddle extends Sprite {
         Buff[] tmp = buffs.toArray(new Buff[0]);
         for (Buff buff : tmp) {
             if (buff.intersects(this)) {
+                m_scenes.playSound("buff");
                 switch (buff.getType()) {
                     case 1 -> m_isBuff1 = true;
                     case 2 -> m_isBuff2 = true;

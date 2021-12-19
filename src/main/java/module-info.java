@@ -1,9 +1,12 @@
+/**
+ * The module of COMP2013 coursework by Tianxiang Song 20217424.
+ */
 module com.example.mydmsproject {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires java.desktop;
 
-    opens com.example.mydmsproject to javafx.fxml;
     exports com.example.mydmsproject.main;
     opens com.example.mydmsproject.main to javafx.fxml;
     exports com.example.mydmsproject.controller;

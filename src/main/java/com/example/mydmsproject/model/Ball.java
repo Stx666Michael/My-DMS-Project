@@ -19,6 +19,7 @@ public class Ball extends Sprite {
     private int m_score = 0;
     private int m_lightningBreak = 0;
     private boolean m_isLightning = false;
+    private Scenes m_scenes;
 
     /**
      * Get count of left balls.
@@ -82,18 +83,29 @@ public class Ball extends Sprite {
     /**
      * Constructor for the main ball, specifying number of ball count.
      * @param ballCount the number of balls.
+     * @param scenes the model class that stores all scenes and game elements
      */
-    public Ball(int ballCount) {
+    public Ball(int ballCount, Scenes scenes) {
         m_ballCount = ballCount;
         m_ballSum = ballCount;
+        m_scenes = scenes;
         setImage("file:src/main/resources/com/example/mydmsproject/Ball.png");
     }
 
     /**
-     * Constructor for classes inherit from Ball, with ballCount = 0.
+     * Constructor for BonusBall, with ballCount = 0.
+     * @param scenes the model class that stores all scenes and game elements
+     * @see BonusBall
      */
-    public Ball() {
+    public Ball(Scenes scenes) {
+        m_scenes = scenes;
     }
+
+    /**
+     * Constructor for Buff, with ballCount = 0.
+     * @see Buff
+     */
+    public Ball() {}
 
     /**
      * Generate random ball speed limited to speedBound,
@@ -191,12 +203,13 @@ public class Ball extends Sprite {
      * @see Buff
      */
     public void removeBrick(ArrayList<Brick> bricks, Brick brick, int speed) {
+        m_scenes.playSound("break");
         bricks.remove(brick);
         m_score += brick.getScore();
         if (m_ballCount > 0) {
             m_lightningBreak++;
             if (brick.isBonusBall())
-                m_bonusBalls.add(brick.makeBonusBall(speed));
+                m_bonusBalls.add(brick.makeBonusBall(speed, m_scenes));
             else if (brick.isBuff1())
                 m_buffs.add(brick.makeBuff(speed, 1));
             else if (brick.isBuff2())

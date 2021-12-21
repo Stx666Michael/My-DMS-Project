@@ -29,6 +29,11 @@ public class Lightning extends Sprite {
     }
 
     /**
+     * Constructor for unit test.
+     */
+    public Lightning() {}
+
+    /**
      * Set position of lightning the same as its owner.
      * @param s the owner of the lightning
      */

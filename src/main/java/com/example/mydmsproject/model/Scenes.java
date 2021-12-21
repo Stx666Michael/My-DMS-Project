@@ -198,7 +198,7 @@ public class Scenes {
         m_gameScene = new Scene(m_game, width, height);
 
         final String PATH = "src/main/resources/com/example/" +
-                "mydmsproject/sounds/";
+                "mydmsproject/audio/";
         Media m_background = new Media
                 (new File(PATH+"Background.wav").toURI().toString());
         m_break = new Media(new File(PATH+"Break.wav").toURI().toString());

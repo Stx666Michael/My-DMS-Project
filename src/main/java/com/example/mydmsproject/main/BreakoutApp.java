@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * The main JavaFX application class containing the main method.
+ * @author Tianxiang Song
  */
 public class BreakoutApp extends Application {
 

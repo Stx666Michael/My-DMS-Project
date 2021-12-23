@@ -13,6 +13,7 @@ import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
  * Junit Test for StartController Class.
+ * @author Tianxiang Song
  */
 public class StartControllerTest extends ApplicationTest {
 

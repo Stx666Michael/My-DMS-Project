@@ -4,6 +4,7 @@ package com.example.mydmsproject.model;
  * A Sprite class, can be "carried" by both the main Ball and the Paddle.
  * When the main Ball bounced from the "Lightning" Paddle, the Ball
  * carries "Lightning", which makes it able to penetrate a few Bricks.
+ * @author Tianxiang Song
  */
 public class Lightning extends Sprite {
 

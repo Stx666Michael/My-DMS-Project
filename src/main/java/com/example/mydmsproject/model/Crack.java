@@ -3,6 +3,7 @@ package com.example.mydmsproject.model;
 /**
  * A Sprite class, appears in red and green bricks when the brick is hit
  * by a ball.
+ * @author Tianxiang Song
  */
 public class Crack extends Sprite {
 

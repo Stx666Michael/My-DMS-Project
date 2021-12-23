@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * A model class that stores all game elements, act as a mediator
  * between GameController and GameRenderer, used for getting/setting
  * game elements and make new levels.
+ * @author Tianxiang Song - modified
  */
 public class Wall {
 

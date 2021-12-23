@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * A controller class for handling key/mouse event,
  * checking impacts and updating states of all objects in game scene.
  * See code to get information about private methods.
+ * @author Tianxiang Song
  */
 public class GameController {
 

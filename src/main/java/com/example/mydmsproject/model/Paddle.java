@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * A Sprite class implements the main game element Paddle, controlled by
  * keyboard or mouse.
+ * @author Tianxiang Song - modified
  */
 public class Paddle extends Sprite {
 

@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
  * A controller class for handling key/mouse event in setting scene (pause
  * menu), to change game theme, paddle control and speed of ball/paddle.
  * See code to get information about private methods.
+ * @author Tianxiang Song
  */
 public class SettingController {
 

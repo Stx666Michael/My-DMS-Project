@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
  * A controller class for handling key/mouse event in start scene, provide
  * access to the game, settings and help page.
  * See code to get information about private methods.
+ * @author Tianxiang Song
  */
 public class StartController {
 

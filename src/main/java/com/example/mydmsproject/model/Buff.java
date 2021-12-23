@@ -7,6 +7,7 @@ package com.example.mydmsproject.model;
  * bounce back, and disappear when falling out of the stage. When the
  * Paddle touches a Buff, it becomes larger or carries "Lightning" for
  * some time, these two effects can be superimposed.
+ * @author Tianxiang Song
  */
 public class Buff extends Ball {
 

@@ -22,6 +22,7 @@ import java.io.IOException;
  * A model class that stores all scenes, game elements and sounds,
  * act as a mediator between controllers, used for getting/setting
  * scenes and other elements.
+ * @author Tianxiang Song
  */
 public class Scenes {
 

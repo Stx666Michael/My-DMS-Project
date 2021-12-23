@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * A Sprite class implements the main game element Brick, store Crack objects.
+ * @author Tianxiang Song - modified
  */
 public class Brick extends Sprite {
 

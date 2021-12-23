@@ -16,6 +16,7 @@ import java.util.ArrayList;
 /**
  * The view class for rendering all objects in game scene.
  * See code to get information about private methods.
+ * @author Tianxiang Song
  */
 public class GameRenderer {
 

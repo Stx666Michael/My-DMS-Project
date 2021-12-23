@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * JUnit Test for Lightning Class.
+ * @author Tianxiang Song
  */
 public class LightningTest {
 

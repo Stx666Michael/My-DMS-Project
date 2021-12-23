@@ -15,6 +15,7 @@ import java.util.*;
  * A controller class for handling key/mouse event and set score content
  * in end scene (including end of a level and end of game).
  * See code to get information about private methods.
+ * @author Tianxiang Song
  */
 public class EndController {
 

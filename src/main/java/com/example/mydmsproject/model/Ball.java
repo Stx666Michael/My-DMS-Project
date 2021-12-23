@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * A Sprite class implements the main game element Ball, store lists of
  * buffs/bonusBalls and total game score as well.
+ * @author Tianxiang Song - modified
  */
 public class Ball extends Sprite {
 

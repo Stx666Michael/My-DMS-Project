@@ -7,6 +7,7 @@ import javafx.geometry.Rectangle2D;
 /**
  * An abstract parent model class providing basic functionalities
  * such as image rendering and position setting for other game elements.
+ * @author Tianxiang Song
  */
 public abstract class Sprite {
 

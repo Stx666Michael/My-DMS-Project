@@ -42,7 +42,7 @@ public class StartController {
         m_scenes.setGameTheme("Universe.jpg");
         m_scenes.getStage().setScene(m_scenes.getGameScene());
         m_scenes.getWall().initializeGame(m_scenes);
-        m_scenes.getSettingController().changeLayout();
+        m_scenes.changeSettingLayout();
         m_scenes.playMusic();
     }
 

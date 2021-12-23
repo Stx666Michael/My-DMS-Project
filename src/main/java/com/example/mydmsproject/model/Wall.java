@@ -7,8 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 
 /**
- * A model class that stores all game elements, used for game controller
- * and renderer to get/set game elements and make new levels.
+ * A model class that stores all game elements, act as a mediator
+ * between GameController and GameRenderer, used for getting/setting
+ * game elements and make new levels.
  */
 public class Wall {
 
@@ -27,6 +28,7 @@ public class Wall {
     private int m_currentLevel = 1;
     private int m_lastLevelScore = 0;
     private double m_ballInitialSpeed = 2;
+    private GameRenderer m_gameRenderer;
 
     /**
      * Get game elements Ball.
@@ -100,7 +102,6 @@ public class Wall {
      * @param height the height of game scene
      * @param scenes the model class that stores all scenes and game elements
      * @param gc the GraphicsContext of Canvas in the game scene
-     * @see Wall#initializeBallPlayer()
      */
     public Wall(int width, int height, Scenes scenes, GraphicsContext gc) {
         final int BALL_COUNT = 3;
@@ -112,18 +113,19 @@ public class Wall {
         m_ball = new Ball(BALL_COUNT, scenes);
         m_player = new Paddle(PLAYER_SPEED_BOUND, m_width, scenes);
         m_bricks = makeBricks(INITIAL_LEVEL);
-        initializeBallPlayer();
     }
 
     /**
-     * Initialize a GameController and GameRenderer.
+     * Initialize GameController, GameRenderer, ball and paddle.
      * @param scenes the collection of all scenes and game elements
      * @see GameController
      * @see GameRenderer
+     * @see #initializeBallPlayer()
      */
     public void initializeGame(Scenes scenes) {
         new GameController(scenes);
-        new GameRenderer(scenes, m_gc);
+        m_gameRenderer = new GameRenderer(scenes, m_gc);
+        initializeBallPlayer();
     }
 
     /**
@@ -131,17 +133,16 @@ public class Wall {
      * Initialize all game elements to a new level state,
      * if reset to level 1, clean the score.
      * @param level the level to reset
-     * @see Wall#initializeBallPlayer()
-     * @see Wall#makeBricks(int)
+     * @see #initializeBallPlayer()
      */
     public void resetGame(int level) {
         m_ball.reset(level == 1);
         if (level == 1) m_lastLevelScore = 0;
-        initializeBallPlayer();
         ArrayList<Brick> tmp = makeBricks(level);
         m_currentLevel = level;
         m_bricks.clear();
         m_bricks.addAll(tmp);
+        initializeBallPlayer();
     }
 
     /**
@@ -153,9 +154,20 @@ public class Wall {
         m_ball.initialize(m_ballInitialSpeed);
         m_player.removeBuff();
         m_ball.setPosition((m_width - m_ball.getWidth())/2.0,
-                m_height - m_ball.getHeight()- m_player.getHeight()*2);
+                m_height - m_ball.getHeight() - m_player.getHeight()*2);
         m_player.setPosition((m_width - m_player.getWidth())/2.0,
                 m_height - m_player.getHeight()*2);
+        m_gameRenderer.render();
+        m_gameRenderer.drawPromptText();
+    }
+
+    /**
+     * Set the state of render timeline.
+     * @param state "play" or "stop", indicate which kind of state to set
+     * @see GameRenderer#setTimeline(String)
+     */
+    public void setRenderState(String state) {
+        m_gameRenderer.setTimeline(state);
     }
 
     /**
@@ -163,8 +175,6 @@ public class Wall {
      * @param level the specific game level
      * @return a list of Bricks
      * @see Brick
-     * @see Wall#makeLevelOne(ArrayList)
-     * @see Wall#makeLevelTwo(ArrayList)
      */
     private ArrayList<Brick> makeBricks(int level) {
         ArrayList<Brick> bricks = new ArrayList<>();
@@ -173,9 +183,9 @@ public class Wall {
         m_brickHeight = (int)brick.getHeight();
         m_maxLineBricks = m_width / m_brickWidth;
         switch (level) {
-            case 2 -> makeLevelOne(bricks);
-            case 3 -> makeLevelTwo(bricks);
-            case 1 -> makeLevelThree(bricks);
+            case 1 -> makeLevelOne(bricks);
+            case 2 -> makeLevelTwo(bricks);
+            case 3 -> makeLevelThree(bricks);
         }
         return bricks;
     }

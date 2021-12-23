@@ -20,7 +20,8 @@ import java.io.IOException;
 
 /**
  * A model class that stores all scenes, game elements and sounds,
- * used for controllers and renderer to get/set scenes and other elements.
+ * act as a mediator between controllers, used for getting/setting
+ * scenes and other elements.
  */
 public class Scenes {
 
@@ -30,12 +31,12 @@ public class Scenes {
     private final Scene m_gameScene;
     private final Scene m_endScene;
     private final Pane m_game;
-    private final FXMLLoader m_settingLoader;
-    private final FXMLLoader m_endLoader;
     private final Media m_break;
     private final Media m_buff;
     private final Media m_click;
     private final MediaPlayer m_bgm;
+    private final SettingController m_settingController;
+    private final EndController m_endController;
 
     private Scene m_lastScene;
     private Wall m_wall;
@@ -108,24 +109,6 @@ public class Scenes {
     }
 
     /**
-     * Get the controller of setting scene.
-     * @return the controller of setting scene
-     * @see SettingController
-     */
-    public SettingController getSettingController() {
-        return m_settingLoader.getController();
-    }
-
-    /**
-     * Get the controller of end scene.
-     * @return the controller of end scene
-     * @see EndController
-     */
-    public EndController getEndController() {
-        return m_endLoader.getController();
-    }
-
-    /**
      * Set the boolean value indicates if setting scene is shown.
      * @param setting the boolean value to set to
      */
@@ -189,9 +172,6 @@ public class Scenes {
         FXMLLoader end = new FXMLLoader
                 (GameRenderer.class.getResource("end.fxml"));
 
-        m_settingLoader = settings;
-        m_endLoader = end;
-
         m_startScene = new Scene(start.load(), width, height);
         m_settingScene = new Scene(settings.load(), width, height);
         m_endScene = new Scene(end.load(), width, height);
@@ -209,11 +189,11 @@ public class Scenes {
         StartController startController = start.getController();
         startController.initData(this);
 
-        SettingController settingController = settings.getController();
-        settingController.initData(this);
+        m_settingController = settings.getController();
+        m_settingController.initData(this);
 
-        EndController endController = end.getController();
-        endController.initData(this);
+        m_endController = end.getController();
+        m_endController.initData(this);
 
         stage.setScene(m_startScene);
     }
@@ -240,6 +220,27 @@ public class Scenes {
     public void playMusic() {
         m_bgm.play();
         m_bgm.setOnEndOfMedia(() -> m_bgm.seek(Duration.ZERO));
+    }
+
+    /**
+     * Change the layout of setting scene.
+     * @see SettingController
+     */
+    public void changeSettingLayout() {
+        m_settingController.changeLayout();
+    }
+
+    /**
+     * Set the layout of end scene and update final score.
+     * @param result "win" or "lose", indicate which kind of layout to set
+     * @see EndController
+     */
+    public void setEndLayout(String result) {
+        switch (result) {
+            case "win" -> m_endController.setWinLayout();
+            case "lose" -> m_endController.setLoseLayout();
+        }
+        m_endController.updateScore();
     }
 
     /**

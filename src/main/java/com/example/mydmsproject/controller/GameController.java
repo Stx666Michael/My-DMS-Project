@@ -29,7 +29,6 @@ public class GameController {
     private final Scenes m_scenes;
     private final Scene m_gameScene;
     private final Timeline m_timeline;
-    private final EndController m_endController;
     private final ArrayList<Brick> m_bricks;
     private final ArrayList<String> m_input = new ArrayList<>();
 
@@ -50,7 +49,6 @@ public class GameController {
         m_ball = m_wall.getBall();
         m_player = m_wall.getPlayer();
         m_bricks = m_wall.getBricks();
-        m_endController = scenes.getEndController();
 
         m_gameScene.setOnKeyPressed(this::keyPressEvent);
         m_gameScene.setOnKeyReleased(this::keyReleaseEvent);
@@ -73,14 +71,17 @@ public class GameController {
         if (e.getCode() == KeyCode.SPACE && m_scenes.isNotSetting()) {
             if (m_isBegin) {
                 m_timeline.stop();
+                m_wall.setRenderState("stop");
                 m_isBegin = false;
             } else {
                 m_timeline.play();
+                m_wall.setRenderState("play");
                 m_isBegin = true;
             }
         }
         if (e.getCode() == KeyCode.ESCAPE && m_scenes.isNotSetting()) {
             m_timeline.stop();
+            m_wall.setRenderState("stop");
             m_scenes.setSetting(true);
             m_isBegin = false;
             m_input.clear();
@@ -166,13 +167,13 @@ public class GameController {
     private void loseBall() {
         m_ball.setBallCount(m_ball.getBallCount()-1);
         m_timeline.stop();
+        m_wall.setRenderState("stop");
         m_isBegin = false;
         m_input.clear();
         m_ball.updateScore();
         m_wall.initializeBallPlayer();
         if (m_ball.getBallCount() == 0) {
-            m_endController.setLoseLayout();
-            m_endController.updateScore();
+            m_scenes.setEndLayout("lose");
             m_scenes.getStage().setScene(m_scenes.getEndScene());
         }
     }
@@ -182,12 +183,12 @@ public class GameController {
      */
     private void nextLevel() {
         m_timeline.stop();
+        m_wall.setRenderState("stop");
         m_isBegin = false;
         m_input.clear();
         m_ball.updateScore();
         m_ball.clearBonusBuff();
-        m_endController.setWinLayout();
-        m_endController.updateScore();
+        m_scenes.setEndLayout("win");
         m_scenes.getStage().setScene(m_scenes.getEndScene());
     }
 

@@ -9,8 +9,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
+import javafx.util.Duration;
 import java.util.ArrayList;
 
 /**
@@ -56,7 +56,7 @@ public class GameController {
         m_gameScene.setOnKeyReleased(this::keyReleaseEvent);
         m_gameScene.setOnMouseMoved(this::mouseMoveEvent);
 
-        setFocusEvent(m_scenes.getStage());
+        windowFocusEvent(m_scenes.getStage());
 
         m_timeline = new Timeline(new KeyFrame(Duration.millis(REFRESH_TIME),
                 event -> update()));
@@ -72,22 +72,12 @@ public class GameController {
     private void keyPressEvent(KeyEvent e) {
         String code = e.getCode().toString();
         if (!m_input.contains(code)) m_input.add(code);
-        if (e.getCode() == KeyCode.SPACE && m_scenes.isNotSetting()) {
-            if (m_isBegin) {
-                m_timeline.stop();
-                m_wall.setRenderState("stop");
-                m_isBegin = false;
-            } else {
-                m_timeline.play();
-                m_wall.setRenderState("play");
-                m_isBegin = true;
-            }
+        if (e.getCode() == KeyCode.SPACE) {
+            if (m_isBegin) setGameState("stop");
+            else setGameState("play");
         }
-        if (e.getCode() == KeyCode.ESCAPE && m_scenes.isNotSetting()) {
-            m_timeline.stop();
-            m_wall.setRenderState("stop");
-            m_scenes.setSetting(true);
-            m_isBegin = false;
+        if (e.getCode() == KeyCode.ESCAPE) {
+            setGameState("stop");
             m_input.clear();
             m_scenes.getStage().setScene(m_scenes.getSettingScene());
             m_scenes.setLastScene(m_gameScene);
@@ -122,16 +112,33 @@ public class GameController {
      * Handling event when window lose/gain focus.
      * @param stage the primary stage of JavaFX application
      */
-    private void setFocusEvent(Stage stage) {
+    private void windowFocusEvent(Stage stage) {
         stage.focusedProperty().addListener((oV, lostFocus, gainFocus) -> {
-            if (lostFocus) {
-                m_timeline.stop();
-                m_wall.setRenderState("stop");
-            } else if (gainFocus) {
-                m_timeline.play();
-                m_wall.setRenderState("play");
+            if (stage.getScene() == m_gameScene) {
+                if (lostFocus) setGameState("stop");
+                else if (gainFocus) setGameState("play");
             }
         });
+    }
+
+    /**
+     * Start or pause game, keep the state of GameRenderer the same.
+     * @param state "play" or "stop", indicate which kind of state to set
+     * @see Wall#setRenderState(String)
+     */
+    private void setGameState(String state) {
+        switch (state) {
+            case "play" -> {
+                m_timeline.play();
+                m_wall.setRenderState("play");
+                m_isBegin = true;
+            }
+            case "stop" -> {
+                m_timeline.stop();
+                m_wall.setRenderState("stop");
+                m_isBegin = false;
+            }
+        }
     }
 
     /**
@@ -186,9 +193,7 @@ public class GameController {
      */
     private void loseBall() {
         m_ball.setBallCount(m_ball.getBallCount()-1);
-        m_timeline.stop();
-        m_wall.setRenderState("stop");
-        m_isBegin = false;
+        setGameState("stop");
         m_input.clear();
         m_ball.updateScore();
         m_wall.initializeBallPlayer();
@@ -202,9 +207,7 @@ public class GameController {
      * Called when all bricks cleared, set end scene with button to next level.
      */
     private void nextLevel() {
-        m_timeline.stop();
-        m_wall.setRenderState("stop");
-        m_isBegin = false;
+        setGameState("stop");
         m_input.clear();
         m_ball.updateScore();
         m_ball.clearBonusBuff();

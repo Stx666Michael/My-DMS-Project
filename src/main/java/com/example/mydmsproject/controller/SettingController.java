@@ -121,7 +121,6 @@ public class SettingController {
         final int INITIAL_LEVEL = 1;
         m_scenes.getWall().resetGame(INITIAL_LEVEL);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
-        m_scenes.setSetting(false);
     }
 
     /**
@@ -133,7 +132,6 @@ public class SettingController {
         m_scenes.getWall().setBallInitialSpeed(m_ballSpeed.getValue());
         m_scenes.getWall().getPlayer().setMoveSpeed(m_paddleSpeed.getValue());
         m_scenes.getStage().setScene(m_scenes.getLastScene());
-        m_scenes.setSetting(false);
     }
 
 }

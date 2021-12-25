@@ -41,16 +41,7 @@ public class Scenes {
 
     private Scene m_lastScene;
     private Wall m_wall;
-    private boolean m_isSetting = false;
     private boolean m_isMutedEffects = false;
-
-    /**
-     * Get the boolean value indicates setting scene is not shown.
-     * @return a boolean value indicates setting scene is not shown
-     */
-    public boolean isNotSetting() {
-        return !m_isSetting;
-    }
 
     /**
      * Get the primary stage of the game.
@@ -107,14 +98,6 @@ public class Scenes {
      */
     public Wall getWall() {
         return m_wall;
-    }
-
-    /**
-     * Set the boolean value indicates if setting scene is shown.
-     * @param setting the boolean value to set to
-     */
-    public void setSetting(boolean setting) {
-        m_isSetting = setting;
     }
 
     /**

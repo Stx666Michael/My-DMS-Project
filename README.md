@@ -15,23 +15,25 @@
 ### Maintenance
 - Apply **MVC pattern** to make development easier and more flexible. This includes:
   - **Splitting up classes** for single responsibility:
-    - The original class `Wall` is split into `GameController` and `Wall`
-      - `GameController` implements methods which are _called periodically_ in a timeline.
-      - `Wall` retains original methods that are used to _reset and initialize game objects_.
-    - The original class `GameBoard` is split into `GameController`, `GameRenderer` and `SettingController`
-      - `GameController` implements methods that _handles key/mouse event_.
-      - `GameRenderer` implements methods that _renders game objects and text_ on screen.
-      - `SettingController` implements methods in _Pause Menu_.
-    - The original class `Brick` is split into `Brick` and `Crack`.
+    - Split original `Wall` into
+      - `GameController`: for methods _called periodically_.
+      - `Wall`: for other methods.
+    - Split original `Brick` into
+      - `Crack`: showing cracks on brick.
+      - `Brick`: for other methods.
+    - Split original `GameBoard` into
+      - `GameController`: handling _key/mouse event_.
+      - `GameRenderer`: rendering _game objects and text_.
+      - `SettingController`: for _Pause Menu_.
   - **Organizing classes** into four packages:
-    - **main**: package contains one class of `main()` method.
-    - **model**: package contains 10 classes mainly used for _storing/accessing data_ of multiple game elements.
-    - **controller**: package contains 4 classes mainly used for _handling key/mouse event_ in different scenes.
-    - **view**: package contains one class mainly used for _rendering objects_ in game scene.
+    - **main**: contains one class of `main()` method.
+    - **model**: contains classes for _storing/accessing data_.
+    - **controller**: contains classes for _handling key/mouse event_ in different scenes.
+    - **view**: contains one class for _rendering objects_ in game scene.
 - Apply **Mediator pattern** to reduce coupling. This includes:
-  - Use `Scenes` as mediator for communication between four controllers.
-  - Use `Wall` as mediator for communication between GameController and GameRenderer.
-- **Improve encapsulation** by making all member variables **private** and accessed through **accessor methods**.
+  - Use `Scenes` as mediator between _four controllers_.
+  - Use `Wall` as mediator between `GameController` and `GameRenderer`.
+- **Improve encapsulation** by applying **accessor methods**.
 - **Delete** unused images and classes: 
   - `DebugConsole` and `DebugPanel` (Implemented by `SettingController`).
   - `GameFrame` (Implemented by `GameController`).
@@ -40,7 +42,8 @@
 - Add three **JUnit tests** (some use TestFX), one for model class and two for controllers.
 - Use **Maven** to easily manage dependencies.
 - Use `module-info.java` to package application as a separate Java module.
-- Completed **translation** from **Swing to JavaFX** for richer GUI features.
+- Complete **translation** from **Swing to JavaFX** for richer GUI features.
+- **Inherit common methods** from `Sprite` (for all game elements).
 - Use **two separate timelines** for _updating state_ and _rendering_ game objects, which **stabilize animation** 
   (e.g. move speed will not be affected by render speed).
 - Apply **Bob's Concise Coding Conventions** for maintenance.
@@ -64,10 +67,18 @@
     - Play next level (when win this level).
     - Restart game from first level (when lose or all levels passed).
     - Quit application.
-- **Use pictures** for _all game elements_ by inheriting from `Sprite` class.
-- Create **three playable game levels**.
+- **Use pictures** for _all game elements_ and _backgrounds_.
+- Create **three playable game levels** (the third is fun :D).
+- Add **mouse control** for paddle.
 - Add **background/effect audio**.
-- Add **new game elements** `BonusBall`, `Buff` and `Lightning` (see Javadoc for details).
-### Notes
-#### Unexpected Problem
-- When run `mvn test`, there are _Exceptions_ about TestFX. However, without using `mvn` command, no _Exception_ happens.
+- Add **"friction"** between `Paddle` and `Ball` (paddle can _change horizontal speed_ of ball)
+- Add **new game elements** (details in Javadoc)
+  - `BonusBall`: may appear when _a brick breaks_, act as the main `Ball`.
+  - `Buff`: may appear when _a brick breaks_, two kinds:
+    - Red: make the paddle _larger_.
+    - Blue: make the paddle "carry" `Lightning`.
+  - `Lightning`: Can be "carried" by `Paddle` and `Ball`, a "lightning" paddle makes a "lightning" ball (which is more powerful).
+
+## Notes
+### Unexpected Problem
+- When run `mvn test`, there are _Exceptions_ about TestFX. However, without using `mvn` command to test, no _Exception_ happens.

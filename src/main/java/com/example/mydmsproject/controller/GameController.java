@@ -8,8 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 /**
@@ -54,6 +55,8 @@ public class GameController {
         m_gameScene.setOnKeyPressed(this::keyPressEvent);
         m_gameScene.setOnKeyReleased(this::keyReleaseEvent);
         m_gameScene.setOnMouseMoved(this::mouseMoveEvent);
+
+        setFocusEvent(m_scenes.getStage());
 
         m_timeline = new Timeline(new KeyFrame(Duration.millis(REFRESH_TIME),
                 event -> update()));
@@ -113,6 +116,22 @@ public class GameController {
         final int MOUSE = 2;
         if (m_player.getMoveControl() == MOUSE && m_isBegin)
             m_player.setPositionX(e.getX() - m_player.getWidth() / 2);
+    }
+
+    /**
+     * Handling event when window lose/gain focus.
+     * @param stage the primary stage of JavaFX application
+     */
+    private void setFocusEvent(Stage stage) {
+        stage.focusedProperty().addListener((oV, lostFocus, gainFocus) -> {
+            if (lostFocus) {
+                m_timeline.stop();
+                m_wall.setRenderState("stop");
+            } else if (gainFocus) {
+                m_timeline.play();
+                m_wall.setRenderState("play");
+            }
+        });
     }
 
     /**

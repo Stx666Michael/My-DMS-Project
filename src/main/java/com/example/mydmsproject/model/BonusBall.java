@@ -1,8 +1,8 @@
 package com.example.mydmsproject.model;
 
 /**
- * A Ball class, hide within a brick and appear in a probability
- * when the brick breaks.
+ * A Ball class act as a ball, hide within a brick and appear in a probability
+ * when the brick breaks, fall with acceleration.
  * Like the main Ball, BonusBall can bounce back, break bricks and be lost.
  * Losing BonusBalls will not end the game, they only help to win the game.
  * @author Tianxiang Song

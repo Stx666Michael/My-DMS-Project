@@ -2,7 +2,7 @@ package com.example.mydmsproject.model;
 
 /**
  * A Ball class, hide within a brick and appear in a probability
- * when the brick breaks.
+ * when the brick breaks, fall with acceleration.
  * There are two kinds of Buff, hide within different Bricks. They cannot
  * bounce back, and disappear when falling out of the stage. When the
  * Paddle touches a Buff, it becomes larger or carries "Lightning" for

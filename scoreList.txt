@@ -20,3 +20,6 @@ GOOOODNESS,192
 Nice,198
 SSSS,7
 sss,2
+myname,62
+winner,66
+win!,173

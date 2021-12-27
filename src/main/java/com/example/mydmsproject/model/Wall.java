@@ -75,13 +75,6 @@ public class Wall {
     }
 
     /**
-     * Add one to level counter.
-     */
-    public void addCurrentLevel() {
-        m_currentLevel++;
-    }
-
-    /**
      * Set the score of last level.
      * @param lastLevelScore score of last level
      */

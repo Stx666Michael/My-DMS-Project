@@ -89,8 +89,8 @@ public class EndController {
      */
     private void playNextLevel() {
         m_scenes.playSound("click");
-        m_scenes.getWall().addCurrentLevel();
-        m_scenes.getWall().resetGame(m_scenes.getWall().getCurrentLevel());
+        m_scenes.getWall().resetGame(m_scenes.getWall().getCurrentLevel()+1);
+        m_scenes.setSettingLevel(m_scenes.getWall().getCurrentLevel());
         m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 
@@ -99,7 +99,9 @@ public class EndController {
      */
     private void restart() {
         m_scenes.playSound("click");
-        m_scenes.getWall().resetGame(1);
+        final int INITIAL_LEVEL = 1;
+        m_scenes.getWall().resetGame(INITIAL_LEVEL);
+        m_scenes.setSettingLevel(INITIAL_LEVEL);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
     }
 

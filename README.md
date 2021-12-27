@@ -55,9 +55,11 @@
     - Show **help** information.
   - **Setting screen** can
     - Adjust paddle/ball **speed**.
-    - Change three **game themes**.
-    - Change paddle **move control** between _keyboard_ and _mouse_.
+    - Choose three **game themes**.
+    - Set paddle **controlled by** _keyboard_ or _mouse_.
     - Mute background/effect **audio**.
+    - Go to **debug mode** (click title).
+    - Change **current level** (debug mode).
     - Reset game to first level (activates when game starts).
     - Quit application.
   - **End Screen** can
@@ -73,8 +75,8 @@
 - Add **background/effect audio**.
 - Add **"friction"** between `Paddle` and `Ball` (paddle can _change horizontal speed_ of ball)
 - Add **new game elements** (details in Javadoc)
-  - `BonusBall`: may appear when _a brick breaks_, act as the main `Ball`.
-  - `Buff`: may appear when _a brick breaks_, two kinds:
+  - `BonusBall`: may fall **with acceleration** when _a brick breaks_, act as the main `Ball`.
+  - `Buff`: may fall **with acceleration** when _a brick breaks_, two kinds:
     - Red: make the paddle _larger_.
     - Blue: make the paddle "carry" `Lightning`.
   - `Lightning`: Can be "carried" by `Paddle` and `Ball`, a "lightning" paddle makes a "lightning" ball (which is more powerful).

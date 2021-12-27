@@ -6,11 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 /**
  * A controller class for handling key/mouse event in setting scene (pause
- * menu), to change game theme, paddle control and speed of ball/paddle.
+ * menu), to change game theme, paddle control, ball/paddle speed and
+ * current level (for debug).
  * See code to get information about private methods.
  * @author Tianxiang Song
  */
@@ -19,13 +21,16 @@ public class SettingController {
     private Scenes m_scenes;
 
     @FXML private Text m_title;
+    @FXML private Slider m_level;
     @FXML private Slider m_ballSpeed;
     @FXML private Slider m_paddleSpeed;
     @FXML private ComboBox<String> m_theme;
     @FXML private ComboBox<String> m_control;
     @FXML private Button m_restart;
+    @FXML private Button m_debug;
     @FXML private CheckBox m_effect;
     @FXML private CheckBox m_background;
+    @FXML private Pane m_debugPane;
 
     /**
      * Store other scenes.
@@ -37,12 +42,21 @@ public class SettingController {
     }
 
     /**
-     * Change the title to "Pause Menu" and add restart button to the layout
-     * when in game scene.
+     * Change the title to "Pause Menu", add restart button to the layout
+     * and activate debug mode (called when start scene change to game scene).
      */
     public void changeLayout() {
         m_title.setText("Pause Menu");
         m_restart.setVisible(true);
+        m_debug.setVisible(true);
+    }
+
+    /**
+     * Set the value of slider for changing level (debug mode).
+     * @param level the level value to set to
+     */
+    public void setLevelSlider(int level) {
+        m_level.setValue(level);
     }
 
     /**
@@ -52,11 +66,14 @@ public class SettingController {
     private void initialize() {
         m_ballSpeed.setValue(2);
         m_paddleSpeed.setValue(2);
+        m_level.setValue(1);
         m_theme.setPromptText("Universe");
         m_control.setPromptText("Keyboard");
         m_effect.setSelected(true);
         m_background.setSelected(true);
         m_restart.setVisible(false);
+        m_debug.setVisible(false);
+        m_debugPane.setVisible(false);
     }
 
     /**
@@ -120,7 +137,10 @@ public class SettingController {
         m_scenes.playSound("click");
         final int INITIAL_LEVEL = 1;
         m_scenes.getWall().resetGame(INITIAL_LEVEL);
+        setLevelSlider(INITIAL_LEVEL);
         m_scenes.getStage().setScene(m_scenes.getGameScene());
+        m_title.setVisible(true);
+        m_debugPane.setVisible(false);
     }
 
     /**
@@ -131,7 +151,21 @@ public class SettingController {
         m_scenes.playSound("click");
         m_scenes.getWall().setBallInitialSpeed(m_ballSpeed.getValue());
         m_scenes.getWall().getPlayer().setMoveSpeed(m_paddleSpeed.getValue());
+        if (m_level.getValue() != m_scenes.getWall().getCurrentLevel()) {
+            m_scenes.getWall().resetGame((int) m_level.getValue());
+        }
         m_scenes.getStage().setScene(m_scenes.getLastScene());
+        m_title.setVisible(true);
+        m_debugPane.setVisible(false);
+    }
+
+    /**
+     * Show debug panel for skipping levels.
+     */
+    @FXML
+    private void showDebugPanel() {
+        m_title.setVisible(false);
+        m_debugPane.setVisible(true);
     }
 
 }

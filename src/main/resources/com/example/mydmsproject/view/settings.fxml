@@ -45,4 +45,9 @@
    <Text fill="WHITE" layoutX="133.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio" />
    <CheckBox fx:id="m_effect" layoutX="270.0" layoutY="306.0" mnemonicParsing="false" onAction="#setEffectAudio" text="Effect" textFill="WHITE" />
    <CheckBox fx:id="m_background" layoutX="400.0" layoutY="306.0" mnemonicParsing="false" onAction="#setBackgroundAudio" text="Background" textFill="WHITE" />
+   <Button fx:id="m_debug" layoutX="250.0" layoutY="60.0" mnemonicParsing="false" onAction="#showDebugPanel" prefWidth="100.0" style="-fx-background-color: transparent; " />
+   <Pane fx:id="m_debugPane" prefHeight="120.0" prefWidth="600.0">
+      <Slider fx:id="m_level" layoutX="353.0" layoutY="80.0" majorTickUnit="1" max="3.0" min="1" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true"/>
+      <Text fill="WHITE" layoutX="133.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Level (for debug)"/>
+   </Pane>
 </Pane>

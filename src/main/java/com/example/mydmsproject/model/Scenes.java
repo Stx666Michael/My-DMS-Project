@@ -208,10 +208,19 @@ public class Scenes {
 
     /**
      * Change the layout of setting scene.
-     * @see SettingController
+     * @see SettingController#changeLayout()
      */
     public void changeSettingLayout() {
         m_settingController.changeLayout();
+    }
+
+    /**
+     * Set the value of slider for changing level (debug mode) in settings.
+     * @param level the level value to set to
+     * @see SettingController#setLevelSlider(int)
+     */
+    public void setSettingLevel(int level) {
+        m_settingController.setLevelSlider(level);
     }
 
     /**

@@ -1,0 +1,5 @@
+module:com.example.mydmsproject
+com.example.mydmsproject.controller
+com.example.mydmsproject.main
+com.example.mydmsproject.model
+com.example.mydmsproject.view
